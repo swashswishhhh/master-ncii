@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF1B5583"
+    tools:context=".FirewallSimulatorActivity">
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT: Windows "Allowed Apps" Firewall dialog          -->
+    <!-- ============================================================ -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <!-- ====== WINDOW CARD ====== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardWindow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="8dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="#F0F0F0">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- ──── TITLE BAR ──── -->
+                    <LinearLayout
+                        android:id="@+id/titleBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:background="@color/win_title_bar"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="8dp">
+
+                        <!-- Windows shield icon -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🛡️"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Allowed apps"
+                            android:textColor="@android:color/white"
+                            android:textSize="13sp"
+                            android:fontFamily="sans-serif-medium" />
+
+                        <!-- Window controls (decorative) -->
+                        <TextView
+                            android:id="@+id/btnWinMinimize"
+                            android:layout_width="28dp"
+                            android:layout_height="24dp"
+                            android:gravity="center"
+                            android:text="—"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:background="?attr/selectableItemBackground" />
+
+                        <TextView
+                            android:id="@+id/btnWinMaximize"
+                            android:layout_width="28dp"
+                            android:layout_height="24dp"
+                            android:gravity="center"
+                            android:text="□"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:background="?attr/selectableItemBackground" />
+
+                        <TextView
+                            android:id="@+id/btnWinClose"
+                            android:layout_width="28dp"
+                            android:layout_height="24dp"
+                            android:gravity="center"
+                            android:text="✕"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:background="@color/win_close_btn" />
+                    </LinearLayout>
+
+                    <!-- ──── CONTENT PANEL ──── -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@android:color/white"
+                        android:layout_marginHorizontal="0dp"
+                        android:padding="14dp">
+
+                        <!-- Description text -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Allow apps to communicate through Windows Defender Firewall"
+                            android:textColor="#333333"
+                            android:textSize="12sp"
+                            android:lineSpacingMultiplier="1.3"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="To add, change, or remove allowed apps and ports, click Change settings."
+                            android:textColor="#666666"
+                            android:textSize="11sp"
+                            android:lineSpacingMultiplier="1.2"
+                            android:layout_marginBottom="10dp" />
+
+                        <!-- Change settings button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnChangeSettings"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="34dp"
+                            android:text="🛡️  Change settings"
+                            android:textAllCaps="false"
+                            android:textSize="11sp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            app:cornerRadius="3dp"
+                            android:layout_marginBottom="10dp" />
+
+                        <!-- Column headers -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:background="#E8E8E8"
+                            android:padding="6dp"
+                            android:layout_marginBottom="1dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Allowed apps and features"
+                                android:textColor="#333333"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Private"
+                                android:textColor="#333333"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Public"
+                                android:textColor="#333333"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:gravity="center" />
+                        </LinearLayout>
+
+                        <!-- ──── APP LIST ──── -->
+
+                        <!-- Row 1: Cast to Device -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:background="#FAFAFA">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <CheckBox
+                                    android:id="@+id/cbCastEnable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:clickable="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Cast to Device"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/cbCastPrivate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="true"
+                                android:clickable="false" />
+
+                            <CheckBox
+                                android:id="@+id/cbCastPublic"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false"
+                                android:clickable="false" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Row 2: Core Networking -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:background="#FFFFFF">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <CheckBox
+                                    android:id="@+id/cbCoreEnable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:clickable="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Core Networking"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/cbCorePrivate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="true"
+                                android:clickable="false" />
+
+                            <CheckBox
+                                android:id="@+id/cbCorePublic"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="true"
+                                android:clickable="false" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Row 3: ★ FILE AND PRINTER SHARING (the target) -->
+                        <LinearLayout
+                            android:id="@+id/rowFileSharing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:background="#FAFAFA">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <CheckBox
+                                    android:id="@+id/cbFileSharingEnable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:clickable="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="File and Printer Sharing"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/cbFileSharingPrivate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false" />
+
+                            <CheckBox
+                                android:id="@+id/cbFileSharingPublic"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Row 4: Google Chrome -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:background="#FFFFFF">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <CheckBox
+                                    android:id="@+id/cbChromeEnable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:clickable="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Google Chrome"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/cbChromePrivate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="true"
+                                android:clickable="false" />
+
+                            <CheckBox
+                                android:id="@+id/cbChromePublic"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false"
+                                android:clickable="false" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Row 5: Network Discovery -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:background="#FAFAFA">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <CheckBox
+                                    android:id="@+id/cbNetDiscEnable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+                                    android:clickable="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Network Discovery"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/cbNetDiscPrivate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false"
+                                android:clickable="false" />
+
+                            <CheckBox
+                                android:id="@+id/cbNetDiscPublic"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false"
+                                android:clickable="false" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Row 6: Remote Desktop -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:background="#FFFFFF">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <CheckBox
+                                    android:id="@+id/cbRemoteEnable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="false"
+                                    android:clickable="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Remote Desktop"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/cbRemotePrivate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false"
+                                android:clickable="false" />
+
+                            <CheckBox
+                                android:id="@+id/cbRemotePublic"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false"
+                                android:clickable="false" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E0E0E0" />
+
+                        <!-- Row 7: Windows Media Player -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:padding="6dp"
+                            android:background="#FAFAFA">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <CheckBox
+                                    android:id="@+id/cbWmpEnable"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:clickable="false" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Windows Media Player"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/cbWmpPrivate"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="true"
+                                android:clickable="false" />
+
+                            <CheckBox
+                                android:id="@+id/cbWmpPublic"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:checked="false"
+                                android:clickable="false" />
+                        </LinearLayout>
+
+                        <!-- Hint text -->
+                        <TextView
+                            android:id="@+id/tvHint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="💡 Task: Allow 'File and Printer Sharing' through the firewall.\n\nCheck both the Private and Public boxes for that app, then click OK."
+                            android:textColor="@color/win_title_bar"
+                            android:textSize="12sp"
+                            android:lineSpacingMultiplier="1.4"
+                            android:fontFamily="sans-serif"
+                            android:padding="10dp"
+                            android:background="@color/win_hint_bg" />
+
+                    </LinearLayout>
+
+                    <!-- ──── BUTTON ROW ──── -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end|center_vertical"
+                        android:padding="10dp"
+                        android:background="#F0F0F0">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOk"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="OK"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            app:cornerRadius="3dp"
+                            android:minWidth="75dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCancel"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="6dp"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            app:cornerRadius="3dp"
+                            android:minWidth="75dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Instruction label below the window -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Self-Check: Configure Windows Firewall Allowed Apps"
+                android:textColor="#AACBEC"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ============================================================ -->
+    <!-- CELEBRATION OVERLAY (hidden by default)                       -->
+    <!-- ============================================================ -->
+
+    <FrameLayout
+        android:id="@+id/overlayContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieAnimation"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_fileName="firewall_shield.json" />
+
+            <TextView
+                android:id="@+id/tvWelcomeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Firewall Configured!"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvWelcomeMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="File and Printer Sharing is now\nallowed through the firewall"
+                android:textColor="#CCCCCC"
+                android:textSize="15sp"
+                android:lineSpacingMultiplier="1.3"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDismissOverlay"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Continue"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>

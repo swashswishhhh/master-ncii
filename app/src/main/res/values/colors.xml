@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Quiz answer-feedback colours -->
+    <color name="quiz_correct">#FF4CAF50</color>
+    <color name="quiz_wrong">#FFF44336</color>
+
+    <!-- Result screen — competency badge colours -->
+    <color name="status_competent">#FF2E7D32</color>
+    <color name="status_competent_bg">#1A4CAF50</color>
+    <color name="status_nyc">#FFF57F17</color>
+    <color name="status_nyc_bg">#1AFFC107</color>
+    <color name="gold_accent">#FFFFD600</color>
+
+    <!-- Workgroup Config — Windows theme colours -->
+    <color name="win_title_bar">#FF0078D4</color>
+    <color name="win_close_btn">#FFE81123</color>
+    <color name="win_hint_bg">#0D0078D4</color>
+
+    <!-- ═══ Cyber / Dark Mode Theme ═══ -->
+    <color name="cyber_bg_primary">#FF0A0A1A</color>
+    <color name="cyber_bg_surface">#FF1A1A2E</color>
+    <color name="cyber_bg_card">#FF16213E</color>
+    <color name="cyber_neon_green">#FF3DFF8F</color>
+    <color name="cyber_neon_green_dim">#1A3DFF8F</color>
+    <color name="cyber_text_primary">#FFEAEAEA</color>
+    <color name="cyber_text_secondary">#FF667788</color>
+    <color name="cyber_text_muted">#FF556677</color>
+    <color name="cyber_divider">#FF2A2A4A</color>
+
+    <!-- ═══ Saga Map — Expanded Cyberpunk Palette ═══ -->
+    <color name="cyber_bg_deepest">#FF0B0E11</color>
+    <color name="cyber_neon_green_bright">#FF39FF14</color>
+    <color name="cyber_neon_green_bright_dim">#2639FF14</color>
+    <color name="cyber_blue">#FF00CCFF</color>
+    <color name="cyber_blue_dim">#1A00CCFF</color>
+    <color name="cyber_gold">#FFFFD700</color>
+    <color name="cyber_gold_dim">#26FFD700</color>
+    <color name="bottom_nav_bg">#FF080B0E</color>
+    <color name="cyber_card_surface">#FF111620</color>
+    <color name="cyber_stroke_locked">#FF1A1F2E</color>
+</resources>

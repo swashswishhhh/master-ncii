@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.ServerMasterNCII" parent="Theme.Material3.DayNight.NoActionBar" tools:ignore="DuplicateDefinition">
+        <item name="colorPrimary">@color/cyber_neon_green</item>
+        <item name="colorOnPrimary">@color/cyber_bg_primary</item>
+        <item name="colorPrimaryContainer">@color/cyber_neon_green_dim</item>
+        <item name="colorOnPrimaryContainer">@color/cyber_neon_green</item>
+        <item name="android:colorBackground">@color/cyber_bg_deepest</item>
+        <item name="colorSurface">@color/cyber_bg_surface</item>
+        <item name="colorOnSurface">@color/cyber_text_primary</item>
+        <item name="colorSurfaceVariant">@color/cyber_bg_card</item>
+        <item name="colorOnSurfaceVariant">@color/cyber_text_secondary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:navigationBarColor">@color/cyber_bg_deepest</item>
+        <item name="android:statusBarColor">@color/cyber_bg_deepest</item>
+    </style>
+
+    <style name="Theme.ServerMasterNCII" parent="Base.Theme.ServerMasterNCII" />
+
+    <!-- ── Cyberpunk Nav Indicator (removes the Material3 pill) ── -->
+    <style name="CyberNavIndicator">
+        <item name="android:color">@android:color/transparent</item>
+        <item name="android:width">0dp</item>
+        <item name="android:height">0dp</item>
+    </style>
+
+    <style name="CyberNavIndicatorShape" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerSize">0dp</item>
+    </style>
+
+</resources>

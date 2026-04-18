@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/quizRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cyber_bg_deepest"
+    tools:context=".QuizActivity">
+
+    <!-- ═══════ TOP BAR ═══════ -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- ── Row 1: Learning Outcome label + Timer pill ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <View
+                android:layout_width="4dp"
+                android:layout_height="18dp"
+                android:background="@color/cyber_neon_green_bright"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/tvLearningOutcomeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.08"
+                android:textColor="@color/cyber_text_secondary"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:text="LEARNING OUTCOME: 1.1" />
+
+            <TextView
+                android:id="@+id/tvTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_timer_pill"
+                android:fontFamily="monospace"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:textColor="@color/cyber_neon_green_bright"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="00:30" />
+
+        </LinearLayout>
+
+        <!-- ── Row 2: Quiz progress bar ── -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progressQuiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="0"
+            app:indicatorColor="@color/cyber_neon_green_bright"
+            app:trackColor="#1A39FF7F"
+            app:trackCornerRadius="4dp"
+            app:trackThickness="6dp" />
+
+        <!-- ── Row 3: Score + Question counter ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tvScore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="monospace"
+                android:textColor="@color/cyber_neon_green"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="Score: 3 / 10" />
+
+            <TextView
+                android:id="@+id/tvQuestionNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="12sp"
+                tools:text="Q 5 of 10" />
+
+        </LinearLayout>
+
+        <!-- ── Row 4: INTEGRITY bar ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="8dp">
+
+            <!-- Label -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INTEGRITY"
+                android:fontFamily="monospace"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="@color/cyber_text_muted"
+                android:letterSpacing="0.1"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Bar -->
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressIntegrity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="100"
+                android:progress="100"
+                app:indicatorColor="@color/cyber_neon_green_bright"
+                app:trackColor="#1A1A1A"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="6dp" />
+
+            <!-- Status label -->
+            <TextView
+                android:id="@+id/tvIntegrityStatus"
+                android:layout_width="56dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="@color/cyber_neon_green_bright"
+                android:letterSpacing="0.08"
+                android:gravity="end"
+                tools:text="OPTIMAL" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ═══════ QUESTION CARD ═══════ -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardQuestion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        app:cardBackgroundColor="#0D1B2A"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:strokeColor="@color/cyber_neon_green"
+        app:strokeWidth="1dp"
+        app:layout_constraintBottom_toTopOf="@id/guidelineAnswers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/tvQuestionChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_category_chip"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.1"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="5dp"
+                android:textColor="@color/cyber_neon_green_bright"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:text="QUESTION 5 OF 10" />
+
+            <TextView
+                android:id="@+id/tvQuestionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.35"
+                android:textColor="#EAEAEA"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Which of the following best describes a peer-to-peer (P2P) network?" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Guideline: question card takes top 54% -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineAnswers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.54" />
+
+    <!-- ═══════ ANSWER GRID ═══════ -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/gridChoices"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/btnSkip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineAnswers">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <!-- Option A -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionA"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="6dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:maxLines="4"
+            android:padding="12dp"
+            android:textAllCaps="false"
+            android:textColor="#EAEAEA"
+            android:textSize="13sp"
+            app:backgroundTint="#0F2A1A"
+            app:cornerRadius="16dp"
+            app:strokeColor="@color/cyber_neon_green"
+            app:strokeWidth="1dp"
+            tools:text="A. Central server manages all resources"
+            app:layout_constraintBottom_toTopOf="@id/guideH"
+            app:layout_constraintEnd_toStartOf="@id/guideV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Option B -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionB"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="6dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:maxLines="4"
+            android:padding="12dp"
+            android:textAllCaps="false"
+            android:textColor="#EAEAEA"
+            android:textSize="13sp"
+            app:backgroundTint="#0F2A1A"
+            app:cornerRadius="16dp"
+            app:strokeColor="@color/cyber_neon_green"
+            app:strokeWidth="1dp"
+            tools:text="B. Each device acts as both client and server"
+            app:layout_constraintBottom_toTopOf="@id/guideH"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideV"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Option C -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionC"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="6dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:maxLines="4"
+            android:padding="12dp"
+            android:textAllCaps="false"
+            android:textColor="#EAEAEA"
+            android:textSize="13sp"
+            app:backgroundTint="#0F2A1A"
+            app:cornerRadius="16dp"
+            app:strokeColor="@color/cyber_neon_green"
+            app:strokeWidth="1dp"
+            tools:text="C. Limited to internet file sharing"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideH" />
+
+        <!-- Option D -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOptionD"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="6dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:maxLines="4"
+            android:padding="12dp"
+            android:textAllCaps="false"
+            android:textColor="#EAEAEA"
+            android:textSize="13sp"
+            app:backgroundTint="#0F2A1A"
+            app:cornerRadius="16dp"
+            app:strokeColor="@color/cyber_neon_green"
+            app:strokeWidth="1dp"
+            tools:text="D. Cannot share printers or files"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideV"
+            app:layout_constraintTop_toBottomOf="@id/guideH" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ═══════ SKIP BUTTON ═══════ -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSkip"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.1"
+        android:text="SKIP  ›"
+        android:textAllCaps="false"
+        android:textColor="@color/cyber_text_muted"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF1B5583"
+    tools:context=".IPConfigSimulatorActivity">
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT: Windows "IPv4 Properties" dialog               -->
+    <!-- ============================================================ -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <!-- ====== WINDOW CARD ====== -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardWindow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="8dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="#F0F0F0">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- ──── TITLE BAR ──── -->
+                    <LinearLayout
+                        android:id="@+id/titleBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:background="@color/win_title_bar"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🌐"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:text="Internet Protocol Version 4 (TCP/IPv4) Properties"
+                            android:textColor="@android:color/white"
+                            android:textSize="12sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:singleLine="true"
+                            android:ellipsize="end" />
+
+                        <!-- Window controls -->
+                        <TextView
+                            android:id="@+id/btnWinMinimize"
+                            android:layout_width="28dp"
+                            android:layout_height="24dp"
+                            android:gravity="center"
+                            android:text="—"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:background="?attr/selectableItemBackground" />
+
+                        <TextView
+                            android:id="@+id/btnWinMaximize"
+                            android:layout_width="28dp"
+                            android:layout_height="24dp"
+                            android:gravity="center"
+                            android:text="□"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:background="?attr/selectableItemBackground" />
+
+                        <TextView
+                            android:id="@+id/btnWinClose"
+                            android:layout_width="28dp"
+                            android:layout_height="24dp"
+                            android:gravity="center"
+                            android:text="✕"
+                            android:textColor="@android:color/white"
+                            android:textSize="11sp"
+                            android:background="@color/win_close_btn" />
+                    </LinearLayout>
+
+                    <!-- ──── TAB BAR ──── -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:paddingTop="6dp"
+                        android:background="#F0F0F0">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            android:text="General"
+                            android:textColor="#000000"
+                            android:textSize="12sp"
+                            android:fontFamily="sans-serif" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#E0E0E0"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="6dp"
+                            android:layout_marginStart="2dp"
+                            android:text="Alternate Configuration"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- ──── CONTENT PANEL ──── -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@android:color/white"
+                        android:layout_marginHorizontal="6dp"
+                        android:padding="14dp">
+
+                        <!-- ── Radio: Obtain automatically (disabled) ── -->
+                        <RadioButton
+                            android:id="@+id/rbObtainAuto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Obtain an IP address automatically"
+                            android:textColor="#333333"
+                            android:textSize="12sp"
+                            android:checked="false"
+                            android:clickable="false"
+                            android:layout_marginBottom="6dp" />
+
+                        <!-- ── Radio: Use the following IP (selected) ── -->
+                        <RadioButton
+                            android:id="@+id/rbUseFollowing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Use the following IP address:"
+                            android:textColor="#333333"
+                            android:textSize="12sp"
+                            android:checked="true"
+                            android:clickable="false"
+                            android:layout_marginBottom="10dp" />
+
+                        <!-- ═══════════ IP ADDRESS ROW ═══════════ -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="IP address:"
+                            android:textColor="#333333"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="24dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginBottom="10dp">
+
+                            <EditText
+                                android:id="@+id/etIp1"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#333333"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etIp2"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#333333"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etIp3"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#333333"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etIp4"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                        </LinearLayout>
+
+                        <!-- ═══════════ SUBNET MASK ROW ═══════════ -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Subnet mask:"
+                            android:textColor="#333333"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="24dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginBottom="10dp">
+
+                            <EditText
+                                android:id="@+id/etSub1"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#333333"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etSub2"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#333333"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etSub3"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#333333"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etSub4"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#000000"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                        </LinearLayout>
+
+                        <!-- ═══════════ DEFAULT GATEWAY ROW ═══════════ -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Default gateway:"
+                            android:textColor="#333333"
+                            android:textSize="12sp"
+                            android:layout_marginBottom="4dp"
+                            android:layout_marginStart="24dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginBottom="14dp">
+
+                            <EditText
+                                android:id="@+id/etGw1"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#999999"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:enabled="false"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#AAAAAA"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etGw2"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#999999"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:enabled="false"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#AAAAAA"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etGw3"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#999999"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:enabled="false"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=" . "
+                                android:textColor="#AAAAAA"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etGw4"
+                                android:layout_width="0dp"
+                                android:layout_height="38dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/white"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLength="3"
+                                android:textColor="#999999"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"
+                                android:enabled="false"
+                                android:importantForAutofill="no"
+                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#D4D4D4"
+                            android:layout_marginBottom="12dp" />
+
+                        <!-- ── DNS section (decorative) ── -->
+                        <RadioButton
+                            android:id="@+id/rbDnsAuto"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Obtain DNS server address automatically"
+                            android:textColor="#333333"
+                            android:textSize="12sp"
+                            android:checked="true"
+                            android:clickable="false"
+                            android:layout_marginBottom="6dp" />
+
+                        <RadioButton
+                            android:id="@+id/rbDnsManual"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Use the following DNS server addresses:"
+                            android:textColor="#999999"
+                            android:textSize="12sp"
+                            android:checked="false"
+                            android:clickable="false"
+                            android:layout_marginBottom="10dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#D4D4D4"
+                            android:layout_marginBottom="10dp" />
+
+                        <!-- Hint / Task Prompt -->
+                        <TextView
+                            android:id="@+id/tvHint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="💡 Task: Assign the first valid IP of the 192.168.1.0/24 network to this PC.\n\nFill in the correct IP Address and Subnet Mask, then click OK."
+                            android:textColor="@color/win_title_bar"
+                            android:textSize="12sp"
+                            android:lineSpacingMultiplier="1.4"
+                            android:fontFamily="sans-serif"
+                            android:padding="10dp"
+                            android:background="@color/win_hint_bg" />
+
+                    </LinearLayout>
+
+                    <!-- ──── BUTTON ROW ──── -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end|center_vertical"
+                        android:padding="10dp"
+                        android:background="#F0F0F0">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOk"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="OK"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            app:cornerRadius="3dp"
+                            android:minWidth="75dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCancel"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="6dp"
+                            android:text="Cancel"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            app:cornerRadius="3dp"
+                            android:minWidth="75dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Instruction label below the window -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:text="Self-Check: Configure IPv4 Address &amp; Subnet Mask"
+                android:textColor="#AACBEC"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ============================================================ -->
+    <!-- CELEBRATION OVERLAY (hidden by default)                       -->
+    <!-- ============================================================ -->
+
+    <FrameLayout
+        android:id="@+id/overlayContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieAnimation"
+                android:layout_width="260dp"
+                android:layout_height="200dp"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_fileName="ip_connection.json" />
+
+            <TextView
+                android:id="@+id/tvSuccessTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Connection Established!"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvSuccessMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="IP 192.168.1.1 configured with\nSubnet 255.255.255.0"
+                android:textColor="#CCCCCC"
+                android:textSize="15sp"
+                android:lineSpacingMultiplier="1.3"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDismissOverlay"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Continue"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </FrameLayout>
+
+</FrameLayout>

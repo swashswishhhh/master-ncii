@@ -1,0 +1,569 @@
+[
+  {
+    "id": "SC_1.1_Q1",
+    "type": "static",
+    "category": "P2P Fundamentals",
+    "question": "Which of the following best describes a peer-to-peer (P2P) network?",
+    "options": [
+      "A network where a central server manages all resources",
+      "A network where each device acts as both client and server",
+      "A network limited only to internet file sharing",
+      "A network that cannot share printers or files"
+    ],
+    "answer_index": 1,
+    "explanation": "In P2P, there is no boss. Every computer has equal authority and can both request and provide services."
+  },
+  {
+    "id": "SC_1.1_Q2",
+    "type": "static",
+    "category": "P2P Fundamentals",
+    "question": "One of the main characteristics of a P2P network is:",
+    "options": [
+      "Centralized control",
+      "Decentralized structure",
+      "Dedicated servers",
+      "Cloud-based storage"
+    ],
+    "answer_index": 1,
+    "explanation": "Decentralization means if one computer goes down, the rest of the network can still function."
+  },
+  {
+    "id": "SC_1.1_Q3",
+    "type": "static",
+    "category": "P2P Pros & Cons",
+    "question": "Which of the following is NOT an advantage of a P2P network?",
+    "options": [
+      "Easy to set up",
+      "Cost-effective",
+      "Provides direct communication",
+      "Strong centralized security"
+    ],
+    "answer_index": 3,
+    "explanation": "Security is actually a weakness in P2P because there is no central 'police' server to enforce rules."
+  },
+  {
+    "id": "SC_1.1_Q4",
+    "type": "static",
+    "category": "Scalability",
+    "question": "In terms of scalability, P2P networks are best suited for:",
+    "options": [
+      "Very large corporate networks",
+      "Small to medium networks",
+      "Data centers with thousands of users",
+      "Government-level secure systems"
+    ],
+    "answer_index": 1,
+    "explanation": "P2P becomes messy and hard to manage once you have more than 10-15 users."
+  },
+  {
+    "id": "SC_1.1_Q5",
+    "type": "static",
+    "category": "P2P Pros & Cons",
+    "question": "What is a disadvantage of peer-to-peer networking?",
+    "options": [
+      "Too expensive for small users",
+      "Security risks due to no central control",
+      "Requires advanced hardware",
+      "Inability to share resources"
+    ],
+    "answer_index": 1,
+    "explanation": "Since everyone manages their own security, the network is only as strong as its weakest user."
+  },
+  {
+    "id": "SC_1.1_Q6",
+    "type": "true_false",
+    "category": "P2P Fundamentals",
+    "question": "In a peer-to-peer network, every computer can function as both client and server.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "Correct! This 'dual role' is exactly what defines a peer."
+  },
+  {
+    "id": "SC_1.1_Q7",
+    "type": "true_false",
+    "category": "P2P Costs",
+    "question": "Peer-to-peer networking requires expensive dedicated servers to operate.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. P2P is popular because it uses the computers you already have, saving money on server hardware."
+  },
+  {
+    "id": "SC_1.1_Q8",
+    "type": "true_false",
+    "category": "P2P Fundamentals",
+    "question": "One advantage of P2P networking is reduced reliance on centralized servers.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. You don't need to buy a Windows Server license for a simple P2P setup."
+  },
+  {
+    "id": "SC_1.1_Q9",
+    "type": "true_false",
+    "category": "Scalability",
+    "question": "P2P networks are difficult to expand since adding new devices requires re-configuring the server.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. Adding a device is easy; the difficulty is in managing many devices without a central system."
+  },
+  {
+    "id": "SC_1.1_Q10",
+    "type": "true_false",
+    "category": "Security",
+    "question": "Lack of centralized control in P2P networks can lead to security issues.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Without a Domain Controller, files can be accidentally shared with the wrong people."
+  },
+  {
+    "id": "SC_1.2_Q1",
+    "type": "static",
+    "category": "Workgroup Purpose",
+    "question": "What is the main purpose of a workgroup in networking?",
+    "options": [
+      "To provide centralized management and security",
+      "To group computers for resource sharing without a central server",
+      "To replace domain-based networking in large enterprises",
+      "To manage thousands of users in a corporate network"
+    ],
+    "answer_index": 1,
+    "explanation": "A workgroup is for 'Peer-to-Peer' sharing. No central boss, just neighbors sharing files."
+  },
+  {
+    "id": "SC_1.2_Q2",
+    "type": "static",
+    "category": "Characteristics",
+    "question": "Which of the following best describes the characteristics of a workgroup?",
+    "options": [
+      "Requires a dedicated central server for management",
+      "Limited to 10–20 devices and decentralized structure",
+      "Uses domain controllers for centralized authentication",
+      "Best suited for multinational organizations"
+    ],
+    "answer_index": 1,
+    "explanation": "Workgroups are small. Once you hit 20+ computers, it becomes a headache to manage without a server."
+  },
+  {
+    "id": "SC_1.2_Q3",
+    "type": "static",
+    "category": "Workgroup Advantages",
+    "question": "A major advantage of a workgroup is:",
+    "options": [
+      "Centralized security management",
+      "Each computer retains control over its own resources",
+      "Supports thousands of users efficiently",
+      "Built-in backup and redundancy features"
+    ],
+    "answer_index": 1,
+    "explanation": "In a workgroup, you are the king of your own PC. You decide who sees your files."
+  },
+  {
+    "id": "SC_1.2_Q4",
+    "type": "static",
+    "category": "Workgroup Disadvantages",
+    "question": "What is one disadvantage of using workgroups?",
+    "options": [
+      "High cost due to expensive server hardware",
+      "Users must configure access permissions individually",
+      "Complex installation and setup requirements",
+      "Inability to share printers or files"
+    ],
+    "answer_index": 1,
+    "explanation": "Since there is no central server, you have to set up every user on every single PC. Very tedious!"
+  },
+  {
+    "id": "SC_1.2_Q5",
+    "type": "static",
+    "category": "Usage Scenarios",
+    "question": "Workgroups are most commonly used in:",
+    "options": [
+      "Data centers and enterprises",
+      "Small office or home networks",
+      "Cloud-based corporate networks",
+      "Government-level secure systems"
+    ],
+    "answer_index": 1,
+    "explanation": "Think 'SOHO' (Small Office Home Office). It's the cheapest way to network."
+  },
+  {
+    "id": "SC_1.2_Q6",
+    "type": "true_false",
+    "category": "Scalability",
+    "question": "Workgroups are best suited for small networks with about 10–20 devices.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. It’s perfect for a small computer shop or a home network."
+  },
+  {
+    "id": "SC_1.2_Q7",
+    "type": "true_false",
+    "category": "Management",
+    "question": "In a workgroup, user accounts and permissions are managed centrally by a server.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. That’s what a 'Domain' does. In a workgroup, management is local."
+  },
+  {
+    "id": "SC_1.2_Q8",
+    "type": "true_false",
+    "category": "Resource Sharing",
+    "question": "Workgroups allow easy file and printer sharing without dedicated servers.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Just right-click a folder and share it—simple!"
+  },
+  {
+    "id": "SC_1.2_Q9",
+    "type": "true_false",
+    "category": "Security",
+    "question": "One disadvantage of workgroups is the difficulty in enforcing consistent security policies.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Because there is no central policy, users can set weak passwords on their own."
+  },
+  {
+    "id": "SC_1.2_Q10",
+    "type": "true_false",
+    "category": "Comparison",
+    "question": "Workgroups are more scalable and efficient than domains in large networks.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. Domains are king for large networks; workgroups fall apart at scale."
+  },
+  {
+    "id": "SC_1.3_Q1",
+    "type": "true_false",
+    "category": "Firewall Basics",
+    "question": "Windows Firewall is an external device used to monitor internet activity.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. Windows Firewall is a software-based security feature built into the OS, not a hardware device."
+  },
+  {
+    "id": "SC_1.3_Q2",
+    "type": "true_false",
+    "category": "Security Functions",
+    "question": "Windows Firewall helps block unauthorized access to your computer.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. It acts as a barrier between your PC and the internet to keep hackers out."
+  },
+  {
+    "id": "SC_1.3_Q3",
+    "type": "true_false",
+    "category": "Network Profiles",
+    "question": "The Public Network setting allows trusted devices to connect freely.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. Public Network is the most restrictive setting to protect you in places like coffee shops."
+  },
+  {
+    "id": "SC_1.3_Q4",
+    "type": "true_false",
+    "category": "Application Control",
+    "question": "Windows Firewall can restrict or allow network access for specific programs.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. You can block specific apps (like games) from accessing the internet while allowing others (like browsers)."
+  },
+  {
+    "id": "SC_1.3_Q5",
+    "type": "true_false",
+    "category": "Firewall vs Antivirus",
+    "question": "Windows Firewall completely replaces antivirus software.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. A firewall blocks unauthorized traffic, but an antivirus scans for malicious files already on your system. You need both!"
+  },
+  {
+    "id": "SC_1.3_Q6",
+    "type": "static",
+    "category": "Firewall Basics",
+    "question": "Which of the following best describes Windows Firewall?",
+    "options": [
+      "A hardware device that filters internet connections",
+      "A security feature built into Windows OS",
+      "A web browser for secure browsing",
+      "A type of server used in large networks"
+    ],
+    "answer_index": 1,
+    "explanation": "It is a built-in software security tool included in Microsoft Windows."
+  },
+  {
+    "id": "SC_1.3_Q7",
+    "type": "static",
+    "category": "Network Profiles",
+    "question": "Which firewall setting is best when connected to public Wi-Fi?",
+    "options": [
+      "Domain Network",
+      "Private Network",
+      "Public Network",
+      "None of the above"
+    ],
+    "answer_index": 2,
+    "explanation": "Public Network hides your computer from other devices on the same Wi-Fi, making it the safest choice."
+  },
+  {
+    "id": "SC_1.3_Q8",
+    "type": "static",
+    "category": "Functionality",
+    "question": "Which is NOT a function of Windows Firewall?",
+    "options": [
+      "Traffic Filtering",
+      "Application Control",
+      "Network Protection",
+      "Data Encryption"
+    ],
+    "answer_index": 3,
+    "explanation": "Encryption (making data unreadable) is handled by tools like BitLocker or VPNs, not the firewall."
+  },
+  {
+    "id": "SC_1.3_Q9",
+    "type": "static",
+    "category": "Advantages",
+    "question": "Which is an advantage of Windows Firewall?",
+    "options": [
+      "Requires separate purchase and installation",
+      "Provides built-in protection without extra software",
+      "Automatically manages all advanced security settings",
+      "Works only in private networks"
+    ],
+    "answer_index": 1,
+    "explanation": "It's free and already there! It protects your PC from the moment you install Windows."
+  },
+  {
+    "id": "SC_1.3_Q10",
+    "type": "static",
+    "category": "Limitations",
+    "question": "One limitation of Windows Firewall is:",
+    "options": [
+      "It provides customizable settings.",
+      "It may block legitimate applications if not configured properly.",
+      "It protects against unauthorized access.",
+      "It notifies users of suspicious connections."
+    ],
+    "answer_index": 1,
+    "explanation": "Sometimes it's 'too' safe and blocks programs you actually need (like Minecraft or a web server)."
+  },
+  {
+    "id": "SC_1.4_Q1",
+    "type": "static",
+    "category": "IP Formats",
+    "question": "Which of the following is a valid IPv4 address?",
+    "options": [
+      "192.168.1.1",
+      "2001:0db8:85a3::8a2e:0370:7334",
+      "255.255.255.255.255",
+      "192.168.1.256"
+    ],
+    "answer_index": 0,
+    "explanation": "IPv4 consists of four octets (0-255). Option B is IPv6, and D is invalid because 256 is out of range."
+  },
+  {
+    "id": "SC_1.4_Q2",
+    "type": "static",
+    "category": "IPv6 Basics",
+    "question": "IPv6 uses how many bits for its address format?",
+    "options": [
+      "32",
+      "64",
+      "128",
+      "256"
+    ],
+    "answer_index": 2,
+    "explanation": "IPv4 uses 32 bits, but IPv6 uses 128 bits, allowing for trillions of unique addresses."
+  },
+  {
+    "id": "SC_1.4_Q3",
+    "type": "static",
+    "category": "IP Classes",
+    "question": "Which class of IPv4 addresses is reserved for multicasting?",
+    "options": [
+      "Class A",
+      "Class B",
+      "Class C",
+      "Class D"
+    ],
+    "answer_index": 3,
+    "explanation": "Class D addresses (224.0.0.0 to 239.255.255.255) are used for sending data to a group of devices."
+  },
+  {
+    "id": "SC_1.4_Q4",
+    "type": "static",
+    "category": "DHCP",
+    "question": "What type of IP address is automatically assigned by a DHCP server?",
+    "options": [
+      "Static IP Address",
+      "Dynamic IP Address",
+      "Public IP Address",
+      "Private IP Address"
+    ],
+    "answer_index": 1,
+    "explanation": "Dynamic means 'changing.' DHCP automatically gives you an IP from a pool so you don't have to type it manually."
+  },
+  {
+    "id": "SC_1.4_Q5",
+    "type": "static",
+    "category": "Subnetting",
+    "question": "The default subnet mask for Class C is:",
+    "options": [
+      "255.0.0.0",
+      "255.255.0.0",
+      "255.255.255.0",
+      "255.255.255.255"
+    ],
+    "answer_index": 2,
+    "explanation": "Class C uses 24 bits for the network, leaving 8 bits for hosts. This is represented as 255.255.255.0."
+  },
+  {
+    "id": "SC_1.4_Q6",
+    "type": "static",
+    "category": "Terminology",
+    "question": "What do you call the unique numerical identifier assigned to each device in a network?",
+    "options": [
+      "MAC Address",
+      "IP Address",
+      "Subnet Mask",
+      "Default Gateway"
+    ],
+    "answer_index": 1,
+    "explanation": "The IP Address is like a mailing address for your computer on a network."
+  },
+  {
+    "id": "SC_1.4_Q7",
+    "type": "static",
+    "category": "IPv4 Capacity",
+    "question": "IPv4 supports approximately how many billion unique addresses?",
+    "options": [
+      "2.3 Billion",
+      "4.3 Billion",
+      "128 Billion",
+      "Unlimited"
+    ],
+    "answer_index": 1,
+    "explanation": "There are roughly 4.3 billion IPv4 addresses. This is why we are moving to IPv6—we've run out of space!"
+  },
+  {
+    "id": "SC_1.4_Q8",
+    "type": "static",
+    "category": "Local Networking",
+    "question": "An address used within local networks only is called a:",
+    "options": [
+      "Public IP Address",
+      "Virtual IP Address",
+      "Private IP Address",
+      "External IP"
+    ],
+    "answer_index": 2,
+    "explanation": "Private IPs (like 192.168.x.x) are used for internal communication and are not reachable directly from the internet."
+  },
+  {
+    "id": "SC_1.4_Q9",
+    "type": "static",
+    "category": "Notation",
+    "question": "Which notation uses a suffix (e.g., /24) to define subnet size?",
+    "options": [
+      "Binary Notation",
+      "Hexadecimal",
+      "CIDR",
+      "Decimal"
+    ],
+    "answer_index": 2,
+    "explanation": "CIDR (Classless Inter-Domain Routing) is a faster way to write subnet masks."
+  },
+  {
+    "id": "SC_1.4_Q10",
+    "type": "static",
+    "category": "IP Classes",
+    "question": "Which IPv4 address class is intended for experimental use?",
+    "options": [
+      "Class C",
+      "Class D",
+      "Class E",
+      "Class F"
+    ],
+    "answer_index": 2,
+    "explanation": "Class E (240.0.0.0 to 255.255.255.255) is reserved for research and development."
+  },
+
+  {
+    "id": "MISSION_2",
+    "type": "interactive_ui",
+    "category": "Workgroup Config",
+    "question": "🖥️ HANDS-ON MISSION: Open the System Properties dialog and change the Workgroup name to 'WORKGROUP_B'. Click Apply when done.",
+    "options": [],
+    "answer_index": 0,
+    "explanation": "Changing the workgroup name tells all PCs on the network which 'team' they belong to."
+  },
+  {
+    "id": "MISSION_3",
+    "type": "interactive_ui",
+    "category": "Firewall Config",
+    "question": "🛡️ HANDS-ON MISSION: Open Windows Firewall and allow 'File and Printer Sharing' through both Private and Public networks.",
+    "options": [],
+    "answer_index": 0,
+    "explanation": "Allowing File and Printer Sharing through the firewall lets other computers on the network access your shared files."
+  },
+  {
+    "id": "MISSION_4",
+    "type": "interactive_ui",
+    "category": "IP Config",
+    "question": "🌐 HANDS-ON MISSION: Open the IPv4 Properties dialog and assign the first usable IP address on the 192.168.1.0/24 network with the correct subnet mask.",
+    "options": [],
+    "answer_index": 0,
+    "explanation": "The first usable host on 192.168.1.0/24 is 192.168.1.1 with a subnet mask of 255.255.255.0."
+  },
+  {
+    "id": "MISSION_5",
+    "type": "interactive_cmd",
+    "category": "Terminal Commands",
+    "question": "💻 HANDS-ON MISSION: Open the Command Prompt and verify your network configuration using 'ipconfig' and 'ping 192.168.1.1'.",
+    "options": [],
+    "answer_index": 0,
+    "explanation": "The ipconfig command displays your IP settings, and ping verifies connectivity with another host."
+  }
+]
