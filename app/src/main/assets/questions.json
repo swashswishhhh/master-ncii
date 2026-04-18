@@ -565,5 +565,2003 @@
     "options": [],
     "answer_index": 0,
     "explanation": "The ipconfig command displays your IP settings, and ping verifies connectivity with another host."
+  },
+  {
+    "id": "SC_2.1_Q1",
+    "type": "static",
+    "category": "Server Basics",
+    "question": "What is the primary purpose of a local server in a private network?",
+    "options": [
+      "To browse the internet faster",
+      "To provide centralized services and resource management",
+      "To act as a personal computer for one user only",
+      "To replace all routers in a network"
+    ],
+    "answer_index": 1,
+    "explanation": "A local server exists to centralize resources and services so all devices on the network can access them efficiently."
+  },
+  {
+    "id": "SC_2.1_Q2",
+    "type": "static",
+    "category": "Server Hardware",
+    "question": "Which component ensures that the server continues to function during a power outage?",
+    "options": [
+      "NIC",
+      "RAM",
+      "UPS",
+      "HDD"
+    ],
+    "answer_index": 2,
+    "explanation": "A UPS (Uninterruptible Power Supply) provides backup power so the server stays online during outages."
+  },
+  {
+    "id": "SC_2.1_Q3",
+    "type": "static",
+    "category": "Server Hardware",
+    "question": "What is the minimum RAM requirement for a basic local server setup?",
+    "options": [
+      "2GB",
+      "4GB",
+      "8GB",
+      "16GB"
+    ],
+    "answer_index": 2,
+    "explanation": "8GB is the minimum recommended RAM for a basic server to handle multiple services without performance issues."
+  },
+  {
+    "id": "SC_2.1_Q4",
+    "type": "static",
+    "category": "Server OS",
+    "question": "Which Windows Server version is mentioned as the required operating system?",
+    "options": [
+      "Windows 7",
+      "Windows Server 2008",
+      "Windows Server 2012 R2",
+      "Windows 10 Pro"
+    ],
+    "answer_index": 2,
+    "explanation": "Windows Server 2012 R2 is the specified OS for this CSS NC II server setup module."
+  },
+  {
+    "id": "SC_2.1_Q5",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which of the following is an essential server role?",
+    "options": [
+      "Microsoft Word",
+      "Active Directory",
+      "Google Chrome",
+      "Adobe Photoshop"
+    ],
+    "answer_index": 1,
+    "explanation": "Active Directory is a core server role that manages user authentication and network resources."
+  },
+  {
+    "id": "SC_2.1_Q6",
+    "type": "static",
+    "category": "Server Hardware",
+    "question": "Which hardware component connects the server to the network?",
+    "options": [
+      "UPS",
+      "GPU",
+      "Network Interface Card (NIC)",
+      "Sound Card"
+    ],
+    "answer_index": 2,
+    "explanation": "The NIC (Network Interface Card) is the hardware that physically connects the server to the network."
+  },
+  {
+    "id": "SC_2.1_Q7",
+    "type": "static",
+    "category": "Server Hardware",
+    "question": "Which type of storage is recommended for faster performance than HDD?",
+    "options": [
+      "DVD-ROM",
+      "SSD (Solid State Drive)",
+      "Tape Drive",
+      "Floppy Disk"
+    ],
+    "answer_index": 1,
+    "explanation": "SSDs have no moving parts and provide significantly faster read/write speeds compared to traditional HDDs."
+  },
+  {
+    "id": "SC_2.1_Q8",
+    "type": "static",
+    "category": "Network Config",
+    "question": "What type of IP configuration is recommended for servers to ensure stable connectivity?",
+    "options": [
+      "Dynamic IP address",
+      "APIPA address",
+      "Static IP address",
+      "Public IP address"
+    ],
+    "answer_index": 2,
+    "explanation": "Servers must use a Static IP so clients always know where to find them on the network."
+  },
+  {
+    "id": "SC_2.1_Q9",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which server role provides IP addresses automatically within a network?",
+    "options": [
+      "DNS Server",
+      "Active Directory",
+      "DHCP Server",
+      "File Server"
+    ],
+    "answer_index": 2,
+    "explanation": "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses to devices on the network."
+  },
+  {
+    "id": "SC_2.1_Q10",
+    "type": "static",
+    "category": "Server Hardware",
+    "question": "What is the minimum recommended storage capacity for a local server?",
+    "options": [
+      "120GB",
+      "250GB",
+      "500GB",
+      "1TB"
+    ],
+    "answer_index": 2,
+    "explanation": "500GB is the minimum recommended storage to accommodate the OS, server roles, and user data."
+  },
+  {
+    "id": "SC_2.2_Q1",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which server role is responsible for managing user authentication and authorization in a domain network?",
+    "options": [
+      "DHCP Server",
+      "Active Directory Domain Services (AD DS)",
+      "DNS Server",
+      "File and Storage Services"
+    ],
+    "answer_index": 1,
+    "explanation": "AD DS is the backbone of a Windows domain — it controls who can log in and what they can access."
+  },
+  {
+    "id": "SC_2.2_Q2",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "What is the main function of a DHCP server?",
+    "options": [
+      "Translate domain names to IP addresses",
+      "Provide centralized storage",
+      "Automatically assign IP addresses",
+      "Manage printers and printing tasks"
+    ],
+    "answer_index": 2,
+    "explanation": "DHCP saves administrators from manually assigning IP addresses to every device on the network."
+  },
+  {
+    "id": "SC_2.2_Q3",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which server role translates domain names into IP addresses?",
+    "options": [
+      "DNS Server",
+      "File and Storage Services",
+      "Print and Document Services",
+      "Remote Desktop Services"
+    ],
+    "answer_index": 0,
+    "explanation": "DNS (Domain Name System) converts human-readable domain names like 'server.local' into IP addresses."
+  },
+  {
+    "id": "SC_2.2_Q4",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "A company wants employees to access their work files securely from any device. Which server role provides this?",
+    "options": [
+      "Active Directory",
+      "Remote Desktop Services",
+      "File and Storage Services (Work Folders)",
+      "DHCP"
+    ],
+    "answer_index": 2,
+    "explanation": "Work Folders in File and Storage Services syncs user files across multiple devices securely."
+  },
+  {
+    "id": "SC_2.2_Q5",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which server role allows users to remotely access desktops and applications hosted on a server?",
+    "options": [
+      "Remote Desktop Services (RDS)",
+      "Active Directory",
+      "DNS Server",
+      "File Server"
+    ],
+    "answer_index": 0,
+    "explanation": "RDS lets multiple users connect to and use applications running on the server from their own devices."
+  },
+  {
+    "id": "SC_2.2_Q6",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which server role manages shared printers and centralized print queues?",
+    "options": [
+      "DNS Server",
+      "Remote Desktop Services",
+      "Print and Document Services",
+      "Active Directory"
+    ],
+    "answer_index": 2,
+    "explanation": "Print and Document Services centralizes printer management so all users on the network can access shared printers."
+  },
+  {
+    "id": "SC_2.2_Q7",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which feature in File and Storage Services synchronizes user files across devices?",
+    "options": [
+      "Shadow Copy",
+      "Work Folders",
+      "Distributed File System",
+      "iSCSI Target"
+    ],
+    "answer_index": 1,
+    "explanation": "Work Folders keeps user files in sync across all devices automatically without a VPN."
+  },
+  {
+    "id": "SC_2.2_Q8",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which server role reduces manual IP configuration and prevents address conflicts?",
+    "options": [
+      "DNS Server",
+      "Active Directory",
+      "Remote Desktop Services",
+      "DHCP Server"
+    ],
+    "answer_index": 3,
+    "explanation": "DHCP automatically handles IP assignment, eliminating human error and duplicate IP conflicts."
+  },
+  {
+    "id": "SC_2.2_Q9",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which protocol does AD DS use to apply centralized user and security settings?",
+    "options": [
+      "DHCP",
+      "DNS",
+      "Group Policy",
+      "RDP"
+    ],
+    "answer_index": 2,
+    "explanation": "Group Policy Objects (GPOs) allow administrators to enforce security settings across all computers in the domain."
+  },
+  {
+    "id": "SC_2.2_Q10",
+    "type": "static",
+    "category": "Server Roles",
+    "question": "Which server role supports Virtual Desktop Infrastructure (VDI)?",
+    "options": [
+      "DNS Server",
+      "DHCP Server",
+      "Active Directory",
+      "Remote Desktop Services (RDS)"
+    ],
+    "answer_index": 3,
+    "explanation": "RDS enables VDI by hosting virtual desktops on the server that users connect to remotely."
+  },
+  {
+    "id": "SC_2.3_Q1",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "After installing AD DS, what is the next essential step to make the server fully functional?",
+    "options": [
+      "Create a DHCP scope",
+      "Promote the server to a Domain Controller",
+      "Install additional RAM",
+      "Activate the DHCP lease"
+    ],
+    "answer_index": 1,
+    "explanation": "Installing AD DS only adds the role. The server must be promoted to Domain Controller to actually function as one."
+  },
+  {
+    "id": "SC_2.3_Q2",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "What is the purpose of the Directory Services Restore Mode (DSRM) password?",
+    "options": [
+      "To log in to the server daily",
+      "To configure DHCP",
+      "For disaster recovery purposes",
+      "To connect to the internet"
+    ],
+    "answer_index": 2,
+    "explanation": "The DSRM password is used to access the Domain Controller in recovery mode when AD DS fails."
+  },
+  {
+    "id": "SC_2.3_Q3",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "When configuring DHCP, which action prevents unauthorized servers from distributing IP addresses?",
+    "options": [
+      "Promoting to Domain Controller",
+      "Authorizing the DHCP server",
+      "Creating a DHCP scope",
+      "Configuring DNS settings"
+    ],
+    "answer_index": 1,
+    "explanation": "Authorizing the DHCP server in AD DS ensures only approved servers can hand out IP addresses on the domain."
+  },
+  {
+    "id": "SC_2.3_Q4",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "Which of the following is required to begin distributing IP addresses to clients?",
+    "options": [
+      "Activate the DHCP scope",
+      "Define the forest functional level",
+      "Restart the server",
+      "Set the DSRM password"
+    ],
+    "answer_index": 0,
+    "explanation": "A DHCP scope must be created AND activated before the server starts assigning IP addresses."
+  },
+  {
+    "id": "SC_2.3_Q5",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "If DNS was not installed earlier, what happens during AD DS configuration?",
+    "options": [
+      "The installation fails",
+      "The system ignores DNS",
+      "DNS will be installed automatically",
+      "DHCP replaces DNS"
+    ],
+    "answer_index": 2,
+    "explanation": "The AD DS configuration wizard detects missing DNS and offers to install it automatically since AD requires DNS."
+  },
+  {
+    "id": "SC_2.3_Q6",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "Which Server Manager feature shows pending post-deployment tasks?",
+    "options": [
+      "Event Viewer",
+      "Notification flag",
+      "Task Scheduler",
+      "Device Manager"
+    ],
+    "answer_index": 1,
+    "explanation": "The notification flag (yellow triangle) in Server Manager alerts you to pending configuration tasks after role installation."
+  },
+  {
+    "id": "SC_2.3_Q7",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "Which step in AD DS setup involves specifying the domain name and functional level?",
+    "options": [
+      "Authorizing DHCP",
+      "Installing the NIC driver",
+      "Promote the Server to a Domain Controller",
+      "Creating a DHCP scope"
+    ],
+    "answer_index": 2,
+    "explanation": "During the Domain Controller promotion wizard, you define the domain name and set the forest/domain functional level."
+  },
+  {
+    "id": "SC_2.3_Q8",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "What is the defined range of IP addresses given to network clients by DHCP called?",
+    "options": [
+      "IP Pool",
+      "Address Range",
+      "DHCP Scope",
+      "Subnet Mask"
+    ],
+    "answer_index": 2,
+    "explanation": "A DHCP Scope defines the start and end IP addresses the server can assign to clients on the network."
+  },
+  {
+    "id": "SC_2.3_Q9",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "What are additional parameters like default gateway and DNS servers configured in DHCP called?",
+    "options": [
+      "DHCP Reservations",
+      "Additional DHCP options",
+      "Scope Exclusions",
+      "Lease Duration"
+    ],
+    "answer_index": 1,
+    "explanation": "Additional DHCP options push extra network settings like gateway and DNS server addresses to clients automatically."
+  },
+  {
+    "id": "SC_2.3_Q10",
+    "type": "static",
+    "category": "Post-Deployment",
+    "question": "What is the final step in AD DS configuration that applies settings and restarts the system?",
+    "options": [
+      "Authorizing the DHCP server",
+      "Activating the DHCP scope",
+      "Creating a new user account",
+      "Complete Domain Controller Installation"
+    ],
+    "answer_index": 3,
+    "explanation": "The final step applies all configuration changes and automatically restarts the server to complete the Domain Controller setup."
+  },
+  {
+    "id": "SC_2.4_Q1",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "Which Active Directory component is responsible for storing user accounts, groups, and computers?",
+    "options": [
+      "Group Policy Objects (GPOs)",
+      "Organizational Units (OUs)",
+      "Active Directory Domain Services (AD DS)",
+      "Authentication and Authorization"
+    ],
+    "answer_index": 2,
+    "explanation": "AD DS is the core service that stores and manages all directory objects like users and computers."
+  },
+  {
+    "id": "SC_2.4_Q2",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "What is the primary role of a Domain Controller (DC)?",
+    "options": [
+      "Provides internet connection to clients",
+      "Stores and manages the Active Directory database",
+      "Translates domain names into IP addresses",
+      "Assigns IP addresses to devices"
+    ],
+    "answer_index": 1,
+    "explanation": "The DC is the physical or virtual server that hosts the Active Directory database and handles authentication."
+  },
+  {
+    "id": "SC_2.4_Q3",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "Which of the following best describes Organizational Units (OUs)?",
+    "options": [
+      "Physical servers that run AD DS",
+      "Logical containers for users, groups, and computers",
+      "A set of rules applied to enforce security",
+      "Authentication protocols for login security"
+    ],
+    "answer_index": 1,
+    "explanation": "OUs are logical containers used to organize objects within a domain and facilitate the delegation of administrative tasks."
+  },
+  {
+    "id": "SC_2.4_Q4",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "What do Group Policy Objects (GPOs) control?",
+    "options": [
+      "Internet browsing speed",
+      "Security settings, software installations, and user access",
+      "The physical storage capacity of servers",
+      "DNS resolution within the network"
+    ],
+    "answer_index": 1,
+    "explanation": "GPOs are used by administrators to define specific configurations and security policies for users and computers."
+  },
+  {
+    "id": "SC_2.4_Q5",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "Which authentication protocol is primarily used by Active Directory for secure logins?",
+    "options": [
+      "DHCP",
+      "Kerberos",
+      "HTTP",
+      "FTP"
+    ],
+    "answer_index": 1,
+    "explanation": "Kerberos is the default computer network authentication protocol used by Windows domains."
+  },
+  {
+    "id": "SC_2.4_Q6",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "Which server handles authentication requests and enforces AD policies?",
+    "options": [
+      "DHCP Server",
+      "File Server",
+      "Domain Controller (DC)",
+      "Print Server"
+    ],
+    "answer_index": 2,
+    "explanation": "Domain Controllers are the specific servers in an AD environment that manage security and policy enforcement."
+  },
+  {
+    "id": "SC_2.4_Q7",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "What feature in AD allows centralized rules to control user and computer settings?",
+    "options": [
+      "Organizational Units",
+      "Group Policy Objects (GPOs)",
+      "Subnetting",
+      "Network Interface Card"
+    ],
+    "answer_index": 1,
+    "explanation": "GPOs provide the mechanism for centralized configuration management within Active Directory."
+  },
+  {
+    "id": "SC_2.4_Q8",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "What is the process of verifying a user’s identity in a network?",
+    "options": [
+      "Authentication",
+      "Authorization",
+      "Configuration",
+      "Documentation"
+    ],
+    "answer_index": 0,
+    "explanation": "Authentication is the act of proving that a user is who they say they are (e.g., via password)."
+  },
+  {
+    "id": "SC_2.4_Q9",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "What is the process of determining what resources a user is allowed to access?",
+    "options": [
+      "Authentication",
+      "Authorization",
+      "Decommissioning",
+      "Identification"
+    ],
+    "answer_index": 1,
+    "explanation": "Authorization determines the permissions and resources a user has access to after they are authenticated."
+  },
+  {
+    "id": "SC_2.4_Q10",
+    "type": "static",
+    "category": "Active Directory",
+    "question": "What major benefit of AD allows administrators to manage users and policies from a single console?",
+    "options": [
+      "Distributed Storage",
+      "Remote Power Control",
+      "Centralized Management",
+      "Network Redundancy"
+    ],
+    "answer_index": 2,
+    "explanation": "Centralized management is the core advantage of AD, allowing all users and policies to be controlled from one place."
+  },
+  {
+    "id": "SC_2.5_Q1",
+    "type": "static",
+    "category": "DHCP",
+    "question": "What is the main purpose of DHCP in a network?",
+    "options": [
+      "To translate domain names into IP addresses",
+      "To automatically assign IP addresses to devices",
+      "To authenticate users in a domain",
+      "To provide file sharing services"
+    ],
+    "answer_index": 1,
+    "explanation": "Dynamic Host Configuration Protocol (DHCP) eliminates the need for manual IP addressing by automating the assignment process."
+  },
+  {
+    "id": "SC_2.5_Q2",
+    "type": "static",
+    "category": "DHCP",
+    "question": "In DHCP, what is a 'scope'?",
+    "options": [
+      "A set of rules for password policies",
+      "A range of IP addresses available for assignment",
+      "A backup file of all leases",
+      "The length of time an IP address is used"
+    ],
+    "answer_index": 1,
+    "explanation": "A scope is a consecutive range of possible IP addresses that the DHCP server can lease to clients on a subnet."
+  },
+  {
+    "id": "SC_2.5_Q3",
+    "type": "static",
+    "category": "DHCP",
+    "question": "Which DHCP feature permanently assigns a fixed IP to a specific device based on its MAC address?",
+    "options": [
+      "Lease duration",
+      "Options",
+      "Reservations",
+      "Exclusions"
+    ],
+    "answer_index": 2,
+    "explanation": "Reservations ensure that specific devices (like printers or servers) always receive the same IP address from the DHCP server."
+  },
+  {
+    "id": "SC_2.5_Q4",
+    "type": "static",
+    "category": "DHCP",
+    "question": "What is the final step in the DHCP lease process (DORA)?",
+    "options": [
+      "Client requests an IP address",
+      "DHCP server offers an IP address",
+      "Client accepts the offer",
+      "DHCP server sends acknowledgment (ACK)"
+    ],
+    "answer_index": 3,
+    "explanation": "The DHCP process follows DORA: Discover, Offer, Request, and finally Acknowledgment (ACK)."
+  },
+  {
+    "id": "SC_2.5_Q5",
+    "type": "static",
+    "category": "DHCP",
+    "question": "Which of the following is a key benefit of DHCP scope configuration?",
+    "options": [
+      "Increases manual configuration tasks",
+      "Prevents IP conflicts",
+      "Removes the need for DNS servers",
+      "Elimilates domain controllers"
+    ],
+    "answer_index": 1,
+    "explanation": "By managing addresses centrally, DHCP prevents two devices from being assigned the same IP, which would cause a network conflict."
+  },
+  {
+    "id": "SC_2.5_Q6",
+    "type": "static",
+    "category": "DHCP",
+    "question": "Which DHCP option provides the default network path for client communication?",
+    "options": [
+      "Subnet Mask",
+      "DNS Server",
+      "Default Gateway",
+      "Lease Duration"
+    ],
+    "answer_index": 2,
+    "explanation": "The Default Gateway is the IP address of the router that allows the client to communicate with other networks or the internet."
+  },
+  {
+    "id": "SC_2.5_Q7",
+    "type": "static",
+    "category": "DHCP",
+    "question": "What term describes the length of time an IP address is assigned to a device before it expires?",
+    "options": [
+      "Scope Range",
+      "Lease Duration",
+      "Exclusion Period",
+      "Reservation Time"
+    ],
+    "answer_index": 1,
+    "explanation": "Lease duration determines how long a client can keep an IP address before it has to renew it with the server."
+  },
+  {
+    "id": "SC_2.5_Q8",
+    "type": "static",
+    "category": "DHCP",
+    "question": "Which message is sent by a client at the beginning of the lease process to find a DHCP server?",
+    "options": [
+      "DHCP Acknowledgment",
+      "DHCP Offer",
+      "DHCP Discovery",
+      "DHCP Request"
+    ],
+    "answer_index": 2,
+    "explanation": "DHCP Discovery is a broadcast message sent by a client to locate any available DHCP servers on the network."
+  },
+  {
+    "id": "SC_2.5_Q9",
+    "type": "static",
+    "category": "DHCP",
+    "question": "What do you call IP addresses within a scope that are specifically prevented from being assigned automatically?",
+    "options": [
+      "Reservations",
+      "Exclusions",
+      "Leases",
+      "Acknowledgments"
+    ],
+    "answer_index": 1,
+    "explanation": "Exclusions are used to protect IP addresses that are already manually assigned to other devices from being given out by the DHCP server."
+  },
+  {
+    "id": "SC_2.5_Q10",
+    "type": "static",
+    "category": "DHCP",
+    "question": "Which operating system version is typically used in this training for server setup?",
+    "options": [
+      "Windows 10 Home",
+      "Windows Server 2008",
+      "Windows Server 2012 R2",
+      "Windows XP Professional"
+    ],
+    "answer_index": 2,
+    "explanation": "Windows Server 2012 R2 is a standard OS used for NC II Computer Systems Servicing training."
+  },
+  {
+    "id": "SC_2.6_Q1",
+    "type": "static",
+    "category": "Group Policy",
+    "question": "What is the main purpose of Group Policies in a domain?",
+    "options": [
+      "To provide internet access",
+      "To control user and computer environments centrally",
+      "To install operating systems",
+      "To replace Active Directory"
+    ],
+    "answer_index": 1,
+    "explanation": "Group Policy allows administrators to manage and configure operating systems, applications, and users' settings from a central location (the Domain Controller)."
+  },
+  {
+    "id": "SC_2.6_Q2",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "Which of the following is NOT a benefit of Folder Redirection?",
+    "options": [
+      "Faster user profile loading",
+      "Centralized file access",
+      "Automatic operating system updates",
+      "Easier backup and recovery"
+    ],
+    "answer_index": 2,
+    "explanation": "Folder Redirection handles data storage, not OS updates. It improves login speed by keeping large folders (like Pictures) on the server rather than downloading them during login."
+  },
+  {
+    "id": "SC_2.6_Q3",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "What does it mean to redirect the Desktop folder?",
+    "options": [
+      "Desktop files are stored locally only",
+      "Desktop items are stored on the server",
+      "Desktop items are deleted after logoff",
+      "Desktop is locked for editing"
+    ],
+    "answer_index": 1,
+    "explanation": "Redirecting the Desktop ensures that the files a user saves on their desktop are actually stored on the server, making them available from any computer they log into."
+  },
+  {
+    "id": "SC_2.6_Q4",
+    "type": "static",
+    "category": "Group Policy",
+    "question": "A Group Policy Object (GPO) is typically linked to which of the following?",
+    "options": [
+      "Internet browsers only",
+      "Active Directory containers (Sites, Domains, OUs)",
+      "File servers only",
+      "DHCP Scopes"
+    ],
+    "answer_index": 1,
+    "explanation": "GPOs are linked to AD containers. This determines which users or computers receive the specific settings defined in that policy."
+  },
+  {
+    "id": "SC_2.6_Q5",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "Which folder is commonly redirected to ensure application settings follow the user across the domain?",
+    "options": [
+      "Documents",
+      "AppData (Roaming)",
+      "Videos",
+      "Music"
+    ],
+    "answer_index": 1,
+    "explanation": "The AppData (Roaming) folder contains customized application settings. Redirecting it ensures a user's app preferences stay the same on different workstations."
+  },
+  {
+    "id": "SC_2.6_Q6",
+    "type": "static",
+    "category": "Group Policy",
+    "question": "True or False: Group Policies can enforce password rules (complexity, length) across all domain users.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "Security policies within a GPO are the primary way administrators enforce strong password requirements for all network accounts."
+  },
+  {
+    "id": "SC_2.6_Q7",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "True or False: Folder Redirection reduces profile size, making the user login process faster.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "Because the server doesn't have to sync large folders to the local machine during login, the 'Loading Profile' stage finishes much quicker."
+  },
+  {
+    "id": "SC_2.6_Q8",
+    "type": "static",
+    "category": "Group Policy",
+    "question": "True or False: Group Policies cannot control software restrictions or block specific applications.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. Software Restriction Policies (SRP) or AppLocker are key features of GPOs used to block or allow specific programs."
+  },
+  {
+    "id": "SC_2.6_Q9",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "True or False: Advanced redirection allows you to direct folders to different server locations based on a user's Group membership.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "Advanced redirection allows for granular control, such as sending the 'Finance' group's files to one server and 'Marketing' to another."
+  },
+  {
+    "id": "SC_2.6_Q10",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "True or False: Folder Redirection makes user data available from any domain-joined device.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "Since the data is stored on the central server, the user can see their files regardless of which workstation they use to log in."
+  },
+  {
+    "id": "SC_2.7_Q1",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "What is the primary purpose of using Group Policy to configure Remote Desktop?",
+    "options": [
+      "To install new operating systems",
+      "To enable centralized and secure remote access",
+      "To block external internet access",
+      "To delete unused user accounts"
+    ],
+    "answer_index": 1,
+    "explanation": "Using GPO for Remote Desktop allows an administrator to enable access across hundreds of computers at once from a central console, ensuring consistent security settings."
+  },
+  {
+    "id": "SC_2.7_Q2",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "Which port must be allowed through the Windows Firewall for Remote Desktop (RDP) to function?",
+    "options": [
+      "80",
+      "443",
+      "3389",
+      "25"
+    ],
+    "answer_index": 2,
+    "explanation": "Port 3389 is the default port for the Remote Desktop Protocol (RDP). If this port is blocked by a firewall, remote connections will fail."
+  },
+  {
+    "id": "SC_2.7_Q3",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "What does Network Level Authentication (NLA) provide for remote connections?",
+    "options": [
+      "Faster internet browsing",
+      "Improved security for Remote Desktop connections",
+      "File sharing across the network",
+      "Automatic updates for all users"
+    ],
+    "answer_index": 1,
+    "explanation": "NLA is a security feature that requires the connecting user to authenticate themselves before a full Remote Desktop session is established, protecting the server from certain attacks."
+  },
+  {
+    "id": "SC_2.7_Q4",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "Which of the following is a direct benefit of enabling Remote Desktop via Group Policy?",
+    "options": [
+      "Automatic backup of all files",
+      "Reduced need for physical visits to computers",
+      "Unlimited storage capacity",
+      "Free antivirus installation"
+    ],
+    "answer_index": 1,
+    "explanation": "Remote Desktop allows IT staff to troubleshoot and manage computers from their own desk, significantly reducing the time spent walking to different physical locations."
+  },
+  {
+    "id": "SC_2.7_Q5",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "In a domain environment, Remote Desktop access can be restricted to:",
+    "options": [
+      "Any random user",
+      "Only administrators and specified users",
+      "Guests by default",
+      "Everyone with a computer"
+    ],
+    "answer_index": 1,
+    "explanation": "For security reasons, only members of the 'Remote Desktop Users' group or the 'Administrators' group are typically granted permission to connect remotely."
+  },
+  {
+    "id": "SC_2.7_Q6",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "True or False: Group Policy can enable Remote Desktop on multiple machines simultaneously.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. By linking a GPO to an OU containing multiple computers, you can enable RDP for all of them in one step."
+  },
+  {
+    "id": "SC_2.7_Q7",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "True or False: Firewall configuration is not required for Remote Desktop if the GPO is active.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. Even if RDP is enabled, the Windows Firewall must also be configured (often via the same GPO) to allow traffic through port 3389."
+  },
+  {
+    "id": "SC_2.7_Q8",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "True or False: Remote Desktop can be used for troubleshooting user issues without being physically present at the workstation.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. It is a primary tool for remote support, allowing an admin to see the user's desktop and fix issues from a different location."
+  },
+  {
+    "id": "SC_2.7_Q9",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "True or False: Remote Desktop via Group Policy supports centralized management of access settings.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. Centralized management ensures that security standards for remote access are applied uniformly across the entire network."
+  },
+  {
+    "id": "SC_2.7_Q10",
+    "type": "static",
+    "category": "Remote Desktop",
+    "question": "True or False: Network Level Authentication (NLA) must be disabled to ensure maximum security.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. NLA should be **enabled** to improve security, as it requires authentication before the server allocates resources for a connection."
+  },
+  {
+    "id": "SC_2.8_Q1",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "What is the main benefit of file and folder sharing in a network?",
+    "options": [
+      "It automatically installs software on all computers",
+      "It allows collaborative access and centralized storage of files",
+      "It increases internet browsing speed",
+      "It encrypts all files automatically"
+    ],
+    "answer_index": 1,
+    "explanation": "File sharing allows multiple users to work on the same documents and keeps data organized in a central location for easier management and backup."
+  },
+  {
+    "id": "SC_2.8_Q2",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "Which type of sharing provides the most detailed control over permissions, such as limiting the number of simultaneous users?",
+    "options": [
+      "Basic Sharing",
+      "Advanced Sharing",
+      "Homegroup Sharing",
+      "Network Sharing"
+    ],
+    "answer_index": 1,
+    "explanation": "Advanced Sharing allows for more granular settings, including custom share names, user limits, and detailed permission configurations."
+  },
+  {
+    "id": "SC_2.8_Q3",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "If a user only needs to view and copy files but not edit or delete them, which permission should be assigned?",
+    "options": [
+      "Full Control",
+      "Change",
+      "Read",
+      "Modify"
+    ],
+    "answer_index": 2,
+    "explanation": "The 'Read' permission is the most restrictive; it allows users to see the contents of a folder and open files but prevents any changes to the data."
+  },
+  {
+    "id": "SC_2.8_Q4",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "Which of the following is considered a 'best practice' for secure file and folder sharing?",
+    "options": [
+      "Share the system root directory (C:) for easier access",
+      "Provide all users with Full Control by default",
+      "Regularly audit shared folders for security and access",
+      "Disable NTFS permissions to simplify access"
+    ],
+    "answer_index": 2,
+    "explanation": "Regular auditing ensures that only authorized personnel have access to sensitive data and helps identify potential security risks."
+  },
+  {
+    "id": "SC_2.8_Q5",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "Access Control Lists (ACLs) are primarily used to:",
+    "options": [
+      "Automatically back up shared folders",
+      "Define specific permissions for users and groups",
+      "Restrict internet access for users",
+      "Monitor printing tasks"
+    ],
+    "answer_index": 1,
+    "explanation": "An ACL is a list of permissions attached to an object (like a folder) that specifies which users or system processes are granted access."
+  },
+  {
+    "id": "SC_2.8_Q6",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "True or False: Network sharing allows files to be accessed across different devices within the same local network.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. As long as devices are on the same network and have the correct permissions, they can access shared resources on the server."
+  },
+  {
+    "id": "SC_2.8_Q7",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "True or False: Homegroup sharing is the most secure and recommended method for business networks in modern Windows versions.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. Homegroup has been deprecated in newer Windows versions. Domain-based sharing with NTFS permissions is the professional standard."
+  },
+  {
+    "id": "SC_2.8_Q8",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "True or False: The 'Change' permission allows users to edit and delete files within a shared folder.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. 'Change' allows adding, modifying, and deleting files, but does not allow the user to change permissions on the folder itself."
+  },
+  {
+    "id": "SC_2.8_Q9",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "True or False: Using NTFS permissions in addition to Share permissions provides more secure and granular access control.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. When both are used, the most restrictive permission applies, providing a double layer of security."
+  },
+  {
+    "id": "SC_2.8_Q10",
+    "type": "static",
+    "category": "File Sharing",
+    "question": "True or False: Limiting shared access only to necessary users (Principle of Least Privilege) is a recommended best practice.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. Users should only have the minimum level of access required to perform their job functions to reduce the risk of data loss or theft."
+  },
+  {
+    "id": "SC_2.9_Q1",
+    "type": "static",
+    "category": "RDS",
+    "question": "What is the primary purpose of Remote Desktop Services (RDS)?",
+    "options": [
+      "To install software updates automatically",
+      "To allow remote access and management of servers or computers",
+      "To back up all files on the server",
+      "To increase internet speed"
+    ],
+    "answer_index": 1,
+    "explanation": "RDS allows users to take control of a remote computer or virtual machine over a network connection, making centralized management easier."
+  },
+  {
+    "id": "SC_2.9_Q2",
+    "type": "static",
+    "category": "RDS",
+    "question": "Which protocol is used by RDS for communication between the client and the server?",
+    "options": [
+      "FTP",
+      "HTTP",
+      "RDP",
+      "SMTP"
+    ],
+    "answer_index": 2,
+    "explanation": "RDP (Remote Desktop Protocol) is the specific language used by Windows to transmit the screen, mouse, and keyboard data between devices."
+  },
+  {
+    "id": "SC_2.9_Q3",
+    "type": "static",
+    "category": "RDS",
+    "question": "What feature allows publishing specific applications to users without giving them full desktop access?",
+    "options": [
+      "RemoteApp Programs",
+      "Multi-Session Support",
+      "Session Virtualization",
+      "Active Directory"
+    ],
+    "answer_index": 0,
+    "explanation": "RemoteApp makes a specific program (like Excel) appear as if it is running locally on the user's PC, even though it is actually running on the server."
+  },
+  {
+    "id": "SC_2.9_Q4",
+    "type": "static",
+    "category": "RDS",
+    "question": "Which security feature should always be enabled to ensure secure RDS connections?",
+    "options": [
+      "DHCP Authorization",
+      "Network Level Authentication (NLA)",
+      "File and Folder Sharing",
+      "Homegroup Sharing"
+    ],
+    "answer_index": 1,
+    "explanation": "NLA forces the user to authenticate before the server even starts a session, which significantly reduces the risk of denial-of-service attacks."
+  },
+  {
+    "id": "SC_2.9_Q5",
+    "type": "static",
+    "category": "RDS",
+    "question": "Allowing multiple users to connect simultaneously to different virtual desktops or sessions is called:",
+    "options": [
+      "Remote Desktop Protocol",
+      "Multi-Session Support",
+      "RemoteApp",
+      "Domain Services"
+    ],
+    "answer_index": 1,
+    "explanation": "Multi-session support allows a single server to host multiple independent user environments at the same time."
+  },
+  {
+    "id": "SC_2.9_Q6",
+    "type": "static",
+    "category": "RDS",
+    "question": "True or False: RDS allows administrators to manage multiple systems from a single point.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. RDS is essential for centralized administration, allowing IT staff to manage servers without being physically in the server room."
+  },
+  {
+    "id": "SC_2.9_Q7",
+    "type": "static",
+    "category": "RDS",
+    "question": "True or False: Remote Desktop Protocol (RDP) is the same as HTTP.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. HTTP is for web browsing; RDP is a specialized protocol for remote graphical interface control."
+  },
+  {
+    "id": "SC_2.9_Q8",
+    "type": "static",
+    "category": "RDS",
+    "question": "True or False: Strong passwords and multi-factor authentication (MFA) significantly improve RDS security.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. Because RDS exposes the server to the network, strong authentication is the first line of defense against hackers."
+  },
+  {
+    "id": "SC_2.9_Q9",
+    "type": "static",
+    "category": "RDS",
+    "question": "True or False: RDS can be used for troubleshooting user issues without needing physical access to the machine.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. It allows support staff to 'shadow' or take control of a session to fix problems remotely."
+  },
+  {
+    "id": "SC_2.9_Q10",
+    "type": "static",
+    "category": "RDS",
+    "question": "True or False: Firewalls should be configured to block RDP traffic to ensure accessibility.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. To ensure accessibility, the firewall must be configured to **allow** RDP traffic (typically on port 3389)."
+  },
+  {
+    "id": "SC_2.10_Q1",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "Which component is responsible for authenticating users in a domain-based network?",
+    "options": [
+      "File Server",
+      "Domain Controller",
+      "Print Server",
+      "DHCP Server"
+    ],
+    "answer_index": 1,
+    "explanation": "The Domain Controller (DC) is the brain of the network; it verifies the username and password of every user trying to log in."
+  },
+  {
+    "id": "SC_2.10_Q2",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "What database stores user accounts, groups, computers, and policies in a Windows Domain?",
+    "options": [
+      "DNS",
+      "DHCP",
+      "Active Directory",
+      "RDP"
+    ],
+    "answer_index": 2,
+    "explanation": "Active Directory (AD) is the central database that keeps track of all 'objects' in the network, including people and hardware."
+  },
+  {
+    "id": "SC_2.10_Q3",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "Which protocol resolves domain names into IP addresses in a domain environment?",
+    "options": [
+      "FTP",
+      "DNS",
+      "HTTP",
+      "SNMP"
+    ],
+    "answer_index": 1,
+    "explanation": "DNS is the 'phonebook' of the network. It allows a computer to find the IP address of the Domain Controller by its name."
+  },
+  {
+    "id": "SC_2.10_Q4",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "What is considered the primary benefit of moving from a Workgroup to a Domain-based network?",
+    "options": [
+      "Manual user management",
+      "Decentralized control",
+      "Centralized administration",
+      "Isolated resources"
+    ],
+    "answer_index": 2,
+    "explanation": "Centralized administration means an IT professional can change a password or update a security policy for 1,000 users from one single screen."
+  },
+  {
+    "id": "SC_2.10_Q5",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "What security feature is highly recommended to strengthen user authentication in a modern domain?",
+    "options": [
+      "Homegroup sharing",
+      "Multi-Factor Authentication (MFA)",
+      "Static IP addressing",
+      "Default passwords"
+    ],
+    "answer_index": 1,
+    "explanation": "MFA adds an extra layer of security beyond just a password, such as a code sent to a mobile phone or a fingerprint."
+  },
+  {
+    "id": "SC_2.10_Q6",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "True or False: Domain members include only servers, not client computers (workstations).",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. A domain includes the Domain Controller (Server) and all the client PCs (Workstations) that have been 'joined' to it."
+  },
+  {
+    "id": "SC_2.10_Q7",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "True or False: Group Policies (GPOs) are applied to users and computers specifically during the logon process.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. When a user logs in, the computer checks the DC for any new policies to apply to that user's desktop environment."
+  },
+  {
+    "id": "SC_2.10_Q8",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "True or False: Administrators can centrally manage all users and security policies through the Domain Controller.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. The DC provides the tools (like AD Users and Computers) to manage the entire network infrastructure from one spot."
+  },
+  {
+    "id": "SC_2.10_Q9",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "True or False: Domain-based networking is limited and cannot scale to support large organizations.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "This is False. Domain-based networking is designed for massive scale, from 10 users to hundreds of thousands in global enterprises."
+  },
+  {
+    "id": "SC_2.10_Q10",
+    "type": "static",
+    "category": "Domain Networking",
+    "question": "True or False: Monitoring domain activity and logs is crucial for detecting unauthorized access attempts.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "This is True. Regular audits and log reviews help administrators spot if someone is trying to guess passwords or access forbidden files."
+  },
+  {
+    "id": "SC_2.11_Q1",
+    "type": "static",
+    "category": "Authentication",
+    "question": "Which server is responsible for verifying domain authentication requests?",
+    "options": [
+      "DHCP Server",
+      "Domain Controller",
+      "File Server",
+      "Print Server"
+    ],
+    "answer_index": 1,
+    "explanation": "The Domain Controller validates user credentials against the Active Directory database to grant access to the network."
+  },
+  {
+    "id": "SC_2.11_Q2",
+    "type": "static",
+    "category": "Authentication",
+    "question": "What is generated after successful credential verification in domain authentication?",
+    "options": [
+      "Firewall Rule",
+      "Authentication Token",
+      "User Profile",
+      "Group Policy Object"
+    ],
+    "answer_index": 1,
+    "explanation": "An authentication token is a digital 'key' that allows the user to access resources without re-entering their password constantly."
+  },
+  {
+    "id": "SC_2.11_Q3",
+    "type": "static",
+    "category": "Authentication",
+    "question": "Which authentication protocol is the modern standard in Windows domain environments?",
+    "options": [
+      "NTLM",
+      "Kerberos",
+      "RDP",
+      "FTP"
+    ],
+    "answer_index": 1,
+    "explanation": "Kerberos is the default, highly secure protocol used for cross-platform authentication in Active Directory."
+  },
+  {
+    "id": "SC_2.11_Q4",
+    "type": "static",
+    "category": "Authentication",
+    "question": "What does Multi-Factor Authentication (MFA) combine to verify identity?",
+    "options": [
+      "Passwords with weak encryption",
+      "Something the user knows with something they have",
+      "Usernames with default passwords",
+      "Static IPs with DNS records"
+    ],
+    "answer_index": 1,
+    "explanation": "MFA requires two or more forms of evidence: Knowledge (password) and Possession (security token or phone app)."
+  },
+  {
+    "id": "SC_2.11_Q5",
+    "type": "static",
+    "category": "Authentication",
+    "question": "Which of the following is an older authentication protocol still used for backward compatibility?",
+    "options": [
+      "Kerberos",
+      "NTLM",
+      "Smart Card",
+      "MFA"
+    ],
+    "answer_index": 1,
+    "explanation": "NTLM (New Technology LAN Manager) is an older challenge-response protocol still present for legacy systems but less secure than Kerberos."
+  },
+  {
+    "id": "SC_2.11_Q6",
+    "type": "static",
+    "category": "Authentication",
+    "question": "True or False: Domain authentication allows administrators to manage all users and devices from a single location.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Centralized authentication is the core benefit, allowing a single account to work across the entire domain."
+  },
+  {
+    "id": "SC_2.11_Q7",
+    "type": "static",
+    "category": "Authentication",
+    "question": "True or False: Group Policies (GPOs) are unrelated to the authentication process.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. GPOs are often triggered specifically by a successful authentication and login event to apply settings."
+  },
+  {
+    "id": "SC_2.11_Q8",
+    "type": "static",
+    "category": "Authentication",
+    "question": "True or False: Smart card authentication is a valid example of two-factor authentication.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. It requires the physical card (what you have) and the PIN (what you know)."
+  },
+  {
+    "id": "SC_2.11_Q9",
+    "type": "static",
+    "category": "Authentication",
+    "question": "True or False: Regular auditing of authentication logs helps improve security by spotting failed login attempts.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Monitoring logs is a primary way to detect 'Brute Force' attacks where hackers try many passwords."
+  },
+  {
+    "id": "SC_2.11_Q10",
+    "type": "static",
+    "category": "Authentication",
+    "question": "True or False: Without domain authentication, users still receive tokens to access network resources.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. Successful authentication is the requirement for receiving a token; without it, access is denied."
+  },
+  {
+    "id": "SC_2.12_Q1",
+    "type": "static",
+    "category": "Review",
+    "question": "What is the primary function of Active Directory Domain Services (AD DS)?",
+    "options": [
+      "To manage user accounts and resources in a domain",
+      "To assign IP addresses to client devices",
+      "To print documents on the network",
+      "To host web applications"
+    ],
+    "answer_index": 0,
+    "explanation": "AD DS is the core directory service that provides the foundation for Windows domain networks, storing information about users, computers, and other resources."
+  },
+  {
+    "id": "SC_2.12_Q2",
+    "type": "static",
+    "category": "Review",
+    "question": "Which of the following is a primary role of a DHCP server?",
+    "options": [
+      "To assign IP addresses automatically to client devices",
+      "To manage print jobs on the network",
+      "To redirect network folders",
+      "To provide remote desktop access"
+    ],
+    "answer_index": 0,
+    "explanation": "DHCP automates the network configuration process by dynamically assigning IP addresses and other parameters to devices on the network."
+  },
+  {
+    "id": "SC_2.12_Q3",
+    "type": "static",
+    "category": "Review",
+    "question": "What is the purpose of folder redirection in a domain environment?",
+    "options": [
+      "To restrict file access",
+      "To store user data on a centralized network location",
+      "To share printers within the network",
+      "To enhance internet connectivity"
+    ],
+    "answer_index": 1,
+    "explanation": "Folder redirection ensures that user folders (like Documents) are stored on the server, making data secure, easy to back up, and accessible from any machine."
+  },
+  {
+    "id": "SC_2.12_Q4",
+    "type": "static",
+    "category": "Review",
+    "question": "Which policy is commonly used to enable Remote Desktop Services on multiple computers simultaneously?",
+    "options": [
+      "DHCP Policy",
+      "Group Policy",
+      "Firewall Policy",
+      "Sharing Policy"
+    ],
+    "answer_index": 1,
+    "explanation": "Group Policy Objects (GPOs) allow administrators to deploy settings, such as enabling Remote Desktop, to an entire Organizational Unit (OU) at once."
+  },
+  {
+    "id": "SC_3.1_Q1",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "What is the main purpose of folder redirection?",
+    "options": [
+      "To increase internet speed",
+      "To store user files on a network location instead of locally",
+      "To delete unnecessary files automatically",
+      "To encrypt all documents"
+    ],
+    "answer_index": 1,
+    "explanation": "Folder redirection ensures that personal folders like Documents or Desktop are saved directly to the server, protecting them from local hardware failure."
+  },
+  {
+    "id": "SC_3.1_Q2",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "Which of the following is a direct benefit of folder redirection?",
+    "options": [
+      "Files are scattered across multiple devices",
+      "Local storage consumption increases",
+      "Centralized data management and backup",
+      "Users must manually transfer files between devices"
+    ],
+    "answer_index": 2,
+    "explanation": "Because files are central, administrators can back up everyone's data from one place on the server instead of visiting every PC."
+  },
+  {
+    "id": "SC_3.1_Q3",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "What is a likely consequence if folder redirection is not properly verified after setup?",
+    "options": [
+      "Improved performance",
+      "Reduced storage usage",
+      "Data loss or access issues",
+      "Automatic software updates"
+    ],
+    "answer_index": 2,
+    "explanation": "Verification ensures the connection is live; without it, users might save files they think are safe, only to lose them because they weren't actually syncing."
+  },
+  {
+    "id": "SC_3.1_Q4",
+    "type": "static",
+    "category": "Verification Tools",
+    "question": "Which tool or command can be used to check if Group Policy is applied correctly for folder redirection?",
+    "options": [
+      "ipconfig /all",
+      "gpresult /h",
+      "netstat -an",
+      "ping"
+    ],
+    "answer_index": 1,
+    "explanation": "'gpresult /h' generates an HTML report showing exactly which policies are winning and if the Folder Redirection GPO is active."
+  },
+  {
+    "id": "SC_3.1_Q5",
+    "type": "static",
+    "category": "Verification Tools",
+    "question": "Which of the following is NOT a standard step in the folder redirection verification process?",
+    "options": [
+      "Policy check",
+      "User access testing",
+      "Event log monitoring",
+      "Installing antivirus software"
+    ],
+    "answer_index": 3,
+    "explanation": "While antivirus is important, it is not a part of verifying that the network path for folder redirection is functioning correctly."
+  },
+  {
+    "id": "SC_3.1_Q6",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "True or False: Folder redirection allows roaming profile support so users can log in from different devices with the same file access.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. It provides a consistent experience; no matter which computer you use in the domain, your 'Documents' folder is always there."
+  },
+  {
+    "id": "SC_3.1_Q7",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "True or False: Verification of folder redirection is unnecessary once the policy is applied in Server Manager.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. You must always verify on the client side to ensure permissions and network paths are actually working."
+  },
+  {
+    "id": "SC_3.1_Q8",
+    "type": "static",
+    "category": "Troubleshooting",
+    "question": "True or False: Misconfigured permissions on the network share can prevent users from accessing their redirected folders.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Even if the policy is correct, if the user doesn't have 'Modify' permissions on the server folder, redirection will fail."
+  },
+  {
+    "id": "SC_3.1_Q9",
+    "type": "static",
+    "category": "Troubleshooting",
+    "question": "True or False: Event logs can help administrators detect and diagnose folder redirection errors.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. The Windows Event Viewer records 'Folder Redirection' events that specify exactly why a sync might have failed."
+  },
+  {
+    "id": "SC_3.1_Q10",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "True or False: Folder redirection helps reduce local storage use on client devices.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Since files are stored on the server's hard drives, the local disk space on the workstation is preserved."
+  },
+  {
+    "id": "SC_3.2_Q1",
+    "type": "static",
+    "category": "RDP Configuration",
+    "question": "Which TCP port must be enabled on the firewall for Remote Desktop connections to work?",
+    "options": [
+      "21",
+      "80",
+      "443",
+      "3389"
+    ],
+    "answer_index": 3,
+    "explanation": "Port 3389 is the standard port for RDP. If this is closed in the Windows Firewall, all remote connection attempts will be blocked."
+  },
+  {
+    "id": "SC_3.2_Q2",
+    "type": "static",
+    "category": "Security",
+    "question": "What is the primary purpose of Network Level Authentication (NLA)?",
+    "options": [
+      "To improve network speed",
+      "To authenticate users before establishing a connection",
+      "To allow file sharing across devices",
+      "To increase storage space on servers"
+    ],
+    "answer_index": 1,
+    "explanation": "NLA adds a layer of security by requiring the user to prove their identity before the server starts a full remote session, protecting against DoS attacks."
+  },
+  {
+    "id": "SC_3.2_Q3",
+    "type": "static",
+    "category": "RDP Features",
+    "question": "Which feature allows redirection of local devices (like printers or drives) to the remote session?",
+    "options": [
+      "Resource Redirection",
+      "Multi-Session Support",
+      "Session Monitoring",
+      "Audit and Logging"
+    ],
+    "answer_index": 0,
+    "explanation": "Resource Redirection allows you to use your local hardware (like a printer connected to your home PC) inside the remote server session."
+  },
+  {
+    "id": "SC_3.2_Q4",
+    "type": "static",
+    "category": "RDS Roles",
+    "question": "What enables multiple users to connect simultaneously to a Remote Desktop Session Host (RDSH) server?",
+    "options": [
+      "Firewall Configuration",
+      "Multi-Session Support",
+      "Session Monitoring",
+      "Group Policy Objects"
+    ],
+    "answer_index": 1,
+    "explanation": "Multi-Session Support is a feature of RDS that allows the server to handle many independent user sessions at the same time."
+  },
+  {
+    "id": "SC_3.2_Q5",
+    "type": "static",
+    "category": "Best Practices",
+    "question": "Which of the following is a security best practice for Remote Desktop Server Configuration?",
+    "options": [
+      "Disable logging to improve performance",
+      "Use the same administrator account for all users",
+      "Enable NLA and implement Role-Based Access Control",
+      "Keep servers unpatched to avoid downtime"
+    ],
+    "answer_index": 2,
+    "explanation": "Combining NLA with Role-Based Access Control (RBAC) ensures only authorized users can connect and they only have the permissions they truly need."
+  },
+  {
+    "id": "SC_3.2_Q6",
+    "type": "static",
+    "category": "RDS Benefits",
+    "question": "True or False: Remote Desktop Server Configuration allows administrators to manage servers without being physically present.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. This is the core utility of RDP—remote management from anywhere on the network."
+  },
+  {
+    "id": "SC_3.2_Q7",
+    "type": "static",
+    "category": "Security",
+    "question": "True or False: A valid administrator credential is not necessary for Remote Desktop access.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. You must have an authorized account (either an Admin or a member of the Remote Desktop Users group) to log in."
+  },
+  {
+    "id": "SC_3.2_Q8",
+    "type": "static",
+    "category": "Monitoring",
+    "question": "True or False: Monitoring Remote Desktop sessions helps detect and prevent unauthorized access attempts.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Reviewing connection logs allows you to see failed login attempts and identify potential hackers."
+  },
+  {
+    "id": "SC_3.2_Q9",
+    "type": "static",
+    "category": "Group Policy",
+    "question": "True or False: Group Policy Objects (GPOs) can be used to enforce security settings for Remote Desktop Services.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. GPOs can be used to force NLA, set session time limits, and restrict which users can connect."
+  },
+  {
+    "id": "SC_3.2_Q10",
+    "type": "static",
+    "category": "Client Support",
+    "question": "True or False: Remote Desktop Services can only be accessed from desktop computers, not mobile devices.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. RDP clients are available for Android, iOS, and macOS, allowing you to manage your server from a phone or tablet."
+  },
+  {
+    "id": "SC_3.3_Q1",
+    "type": "static",
+    "category": "Network Printing",
+    "question": "What is the main advantage of network printing in office environments?",
+    "options": [
+      "Each user has a personal printer",
+      "Reduces costs by sharing one printer among multiple users",
+      "Increases the number of devices to maintain",
+      "Eliminates the need for printer drivers"
+    ],
+    "answer_index": 1,
+    "explanation": "Network printing allows for centralized resource management, which significantly lowers hardware costs and maintenance efforts for an organization."
+  },
+  {
+    "id": "SC_3.3_Q2",
+    "type": "static",
+    "category": "Printing Methods",
+    "question": "Which network printing method connects directly to a printer’s IP address?",
+    "options": [
+      "Shared Printer Configuration",
+      "Print Server Configuration",
+      "Direct IP Printing",
+      "Wireless Printing"
+    ],
+    "answer_index": 2,
+    "explanation": "Direct IP printing allows a workstation to send print jobs directly to the printer's network interface without going through a central print server."
+  },
+  {
+    "id": "SC_3.3_Q3",
+    "type": "static",
+    "category": "Protocols",
+    "question": "Which protocol is commonly used for printer sharing in Windows environments?",
+    "options": [
+      "IPP",
+      "SMB",
+      "LPD",
+      "FTP"
+    ],
+    "answer_index": 1,
+    "explanation": "Server Message Block (SMB) is the standard protocol used by Windows for sharing files and printers over a local network."
+  },
+  {
+    "id": "SC_3.3_Q4",
+    "type": "static",
+    "category": "Configuration",
+    "question": "What should be assigned to a network printer to ensure consistent connectivity?",
+    "options": [
+      "Dynamic IP address",
+      "Proxy server",
+      "Static IP address",
+      "Subnet mask"
+    ],
+    "answer_index": 2,
+    "explanation": "A static IP ensures the printer's address never changes. If it were dynamic, the computers would lose the connection whenever the printer gets a new IP from DHCP."
+  },
+  {
+    "id": "SC_3.3_Q5",
+    "type": "static",
+    "category": "Best Practices",
+    "question": "Which of the following is a best practice for network printing?",
+    "options": [
+      "Disable authentication for easier access",
+      "Regularly update printer firmware and drivers",
+      "Allow all users unrestricted access to print jobs",
+      "Use only wireless connections for stability"
+    ],
+    "answer_index": 1,
+    "explanation": "Keeping firmware and drivers updated ensures the printer remains secure and compatible with modern operating systems and software."
+  },
+  {
+    "id": "SC_3.3_Q6",
+    "type": "static",
+    "category": "Print Servers",
+    "question": "True or False: Print servers manage print jobs and queues for better efficiency and control.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. A print server acts as a buffer, holding print jobs in a queue so that the user's computer can finish its task quickly while the printer works."
+  },
+  {
+    "id": "SC_3.3_Q7",
+    "type": "static",
+    "category": "Protocols",
+    "question": "True or False: IPP (Internet Printing Protocol) enables printing over HTTP, allowing for remote printing over the internet.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. IPP is highly versatile because it can communicate through web ports, making it easier to print from outside the local network."
+  },
+  {
+    "id": "SC_3.3_Q8",
+    "type": "static",
+    "category": "Configuration",
+    "question": "True or False: Assigning a dynamic IP address to a printer guarantees stable connectivity.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 1,
+    "explanation": "False. Dynamic IPs change periodically. To guarantee stability for a shared resource like a printer, a Static IP must be used."
+  },
+  {
+    "id": "SC_3.3_Q9",
+    "type": "static",
+    "category": "Monitoring",
+    "question": "True or False: Monitoring print jobs can help administrators detect abuse or unnecessary printing.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Logged data shows who is printing what, which helps in managing paper/ink costs and identifying unauthorized use."
+  },
+  {
+    "id": "SC_3.3_Q10",
+    "type": "static",
+    "category": "Troubleshooting",
+    "question": "True or False: Slow printing may sometimes be caused by low network bandwidth or high network traffic.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer_index": 0,
+    "explanation": "True. Large print files (like high-res images) can saturate a slow network, causing delays in sending the data to the printer."
+  },
+  {
+    "id": "SC_3.4_Q1",
+    "type": "static",
+    "category": "Folder Redirection",
+    "question": "What is the primary purpose of folder redirection?",
+    "options": [
+      "To prevent users from creating folders",
+      "To allow administrators to share their folders",
+      "To store user data in a centralized network location",
+      "To increase login time of users"
+    ],
+    "answer_index": 2,
+    "explanation": "Folder redirection centralizes user data on the server, ensuring that files are backed up and accessible from any workstation in the domain."
+  },
+  {
+    "id": "SC_3.4_Q2",
+    "type": "static",
+    "category": "RDP",
+    "question": "Which port does Remote Desktop Protocol (RDP) use by default?",
+    "options": [
+      "21",
+      "80",
+      "3389",
+      "443"
+    ],
+    "answer_index": 2,
+    "explanation": "Port 3389 must be open in the firewall settings for the server to accept incoming Remote Desktop connection requests."
+  },
+  {
+    "id": "SC_3.4_Q3",
+    "type": "static",
+    "category": "Network Printing",
+    "question": "Which of the following is a benefit of deploying network printers via a server?",
+    "options": [
+      "Users install printers manually",
+      "Printers are accessible only to administrators",
+      "Centralized control and driver management",
+      "Printing is limited to one user only"
+    ],
+    "answer_index": 2,
+    "explanation": "Deploying via server allows the administrator to push printer settings and drivers to all clients automatically, ensuring consistency."
+  },
+  {
+    "id": "SC_3.4_Q4",
+    "type": "static",
+    "category": "Security",
+    "question": "What is one effective way to secure Remote Desktop access?",
+    "options": [
+      "Use default passwords",
+      "Enable guest accounts",
+      "Use Network Level Authentication (NLA)",
+      "Allow all users remote access"
+    ],
+    "answer_index": 2,
+    "explanation": "NLA requires users to authenticate before a session is fully established, preventing unauthorized users from even reaching the login screen."
+  },
+  {
+    "id": "SC_3.4_Q5",
+    "type": "static",
+    "category": "Data Security",
+    "question": "What does data blocking aim to prevent in a server environment?",
+    "options": [
+      "System updates",
+      "Internet access",
+      "Unauthorized access to sensitive data",
+      "Software installation"
+    ],
+    "answer_index": 2,
+    "explanation": "Data blocking involves setting permissions and restrictions to ensure that sensitive files are only accessible to individuals with the proper authorization."
   }
+
+
 ]
