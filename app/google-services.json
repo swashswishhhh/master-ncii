@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "97665851127",
+    "project_id": "server-master-ncii",
+    "storage_bucket": "server-master-ncii.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97665851127:android:73d4d17d139a17973d3df2",
+        "android_client_info": {
+          "package_name": "com.example.servermasterncii"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97665851127-c2nl15eegkhjmuc203iiql1pfod8f8qd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.servermasterncii",
+            "certificate_hash": "196c0c54f5b53b6344a6118052197e6fffc4ffb2"
+          }
+        },
+        {
+          "client_id": "97665851127-0gnqoton7j6aeiqoiof0ebbltgsvh9jj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpHv2_Rjx7Ugi4npiX_7S2LlVAuWqMa3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97665851127-0gnqoton7j6aeiqoiof0ebbltgsvh9jj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

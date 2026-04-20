@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "472056696479",
+    "project_id": "master-ncii-quest",
+    "storage_bucket": "master-ncii-quest.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472056696479:android:ec092fcebe410b68271caa",
+        "android_client_info": {
+          "package_name": "com.cott.masternciiquest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHyZUNoOCPLYDZaXTXlN5KkTfaVLILUS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

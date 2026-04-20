@@ -9,6 +9,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.example.servermasterncii.admin.db.AdminMissionDao;
+import com.example.servermasterncii.admin.db.AdminQuestionDao;
+import com.example.servermasterncii.admin.model.AdminMission;
+import com.example.servermasterncii.admin.model.AdminQuestion;
 import com.example.servermasterncii.model.Question;
 
 import org.json.JSONArray;
@@ -21,10 +25,12 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Question.class}, version = 3, exportSchema = false)
+@Database(entities = {Question.class, AdminMission.class, AdminQuestion.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public abstract QuestionDao questionDao();
+    public abstract AdminMissionDao adminMissionDao();
+    public abstract AdminQuestionDao adminQuestionDao();
 
     private static volatile AppDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;

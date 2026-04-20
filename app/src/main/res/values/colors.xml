@@ -41,4 +41,11 @@
     <color name="bottom_nav_bg">#FF080B0E</color>
     <color name="cyber_card_surface">#FF111620</color>
     <color name="cyber_stroke_locked">#FF1A1F2E</color>
+
+    <!-- ═══ Server Monitor ═══ -->
+    <color name="monitor_critical_red">#FFFF3B3B</color>
+    <color name="monitor_critical_red_dim">#33FF3B3B</color>
+    <color name="monitor_ok_green">#FF39FF7F</color>
+    <color name="monitor_card_critical_bg">#FF140808</color>
+    <color name="monitor_card_normal_bg">#FF0A1410</color>
 </resources>

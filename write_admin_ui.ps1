@@ -1,0 +1,138 @@
+$enc = [System.Text.UTF8Encoding]::new($false)
+$base = $PSScriptRoot
+
+# ── Dashboard layout ────────────────────────────────────────────────────────
+$dashLayout = @'
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF0D1117"
+    tools:context=".admin.AdminDashboardActivity">
+
+    <!-- AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF161B22"
+        app:elevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.1"
+                    android:text="ADMIN CONSOLE"
+                    android:textColor="#FF58A6FF"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:text="Mission Dashboard"
+                    android:textColor="#FFC9D1D9"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Publish All button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPublishAll"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:fontFamily="monospace"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="PUBLISH ALL"
+                android:textAllCaps="false"
+                android:textColor="#FF0D1117"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:backgroundTint="#FF58A6FF"
+                app:cornerRadius="6dp" />
+        </LinearLayout>
+
+        <!-- Neon blue divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.3"
+            android:background="#FF58A6FF" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Mission list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMissions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="80dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <!-- Empty state -->
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="NO MISSIONS"
+            android:textColor="#FF30363D"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:text="Tap + to create your first mission"
+            android:textColor="#FF30363D"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- FAB -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddMission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:contentDescription="Add Mission"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="#FF58A6FF"
+        app:tint="#FF0D1117" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+'@
+[System.IO.File]::WriteAllText("$base\app\src\main\res\layout\activity_admin_dashboard.xml", $dashLayout, $enc)
+Write-Host "Dashboard layout written"

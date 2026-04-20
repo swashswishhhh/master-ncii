@@ -2,4 +2,18 @@
     <string name="app_name">ServerMasterNCII</string>
     <string name="timer_default">⏱ 00:00</string>
     <string name="timer_format">⏱ 00:%02d</string>
+
+    <!--
+        Web Client ID from Firebase Console → Authentication → Sign-in method → Google
+        This is the OAuth 2.0 client ID (client_type: 3) from google-services.json
+    -->
+    <string name="default_web_client_id">97665851127-0gnqoton7j6aeiqoiof0ebbltgsvh9jj.apps.googleusercontent.com</string>
+
+    <!--
+        REPLACE THIS with your Facebook App ID from:
+        developers.facebook.com → Your App → Settings → Basic
+    -->
+    <string name="facebook_app_id">3599678083515365</string>
+    <string name="fb_login_protocol_scheme">fb3599678083515365</string>
+    <string name="facebook_client_token">4f8084b0c2e608dc862be19ee8f59668</string>
 </resources>

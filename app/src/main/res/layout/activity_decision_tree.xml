@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF0A0F0A"
+    tools:context=".DecisionTreeActivity">
+
+    <!-- ══ HEADER ══ -->
+    <LinearLayout
+        android:id="@+id/headerBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FF0D1A0D"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Back + mission label row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:fontFamily="monospace"
+                android:padding="4dp"
+                android:text="&#9664; BACK"
+                android:textColor="@color/cyber_neon_green"
+                android:textSize="12sp" />
+
+            <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvLevelLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="LEVEL 1 / 3"
+                android:textColor="@color/cyber_gold"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Mission title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.1"
+            android:text="[ MISSION: SERVER DECOMMISSION PROTOCOL ]"
+            android:textColor="@color/cyber_neon_green"
+            android:textSize="10sp" />
+
+        <!-- Level progress pips -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="PROGRESS"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="10sp"
+                android:layout_marginEnd="10dp" />
+
+            <View
+                android:id="@+id/pip1"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/bg_level_pip_active"
+                android:layout_marginEnd="6dp" />
+
+            <View
+                android:id="@+id/pip2"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/bg_level_pip_idle"
+                android:layout_marginEnd="6dp" />
+
+            <View
+                android:id="@+id/pip3"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:background="@drawable/bg_level_pip_idle" />
+
+            <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressLevel"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:max="3"
+                android:progress="1"
+                app:indicatorColor="@color/cyber_neon_green"
+                app:trackColor="#1A39FF7F"
+                app:trackCornerRadius="4dp"
+                app:trackThickness="6dp" />
+        </LinearLayout>
+
+        <!-- Neon divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:alpha="0.4"
+            android:background="@color/cyber_neon_green" />
+    </LinearLayout>
+
+    <!-- ══ CONTENT FRAME — scenario card + consequence card live here ══ -->
+    <FrameLayout
+        android:id="@+id/contentFrame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBar">
+
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- SCENARIO CARD (question + two option buttons)          -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <ScrollView
+            android:id="@+id/scrollScenario"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="24dp">
+
+                <!-- Scenario card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardScenario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#FF0D1A0D"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    app:strokeColor="@color/cyber_neon_green"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <!-- Scenario label chip -->
+                        <TextView
+                            android:id="@+id/tvScenarioChip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:background="@drawable/bg_category_chip"
+                            android:fontFamily="monospace"
+                            android:letterSpacing="0.1"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="4dp"
+                            android:text="SCENARIO — LEVEL 1"
+                            android:textColor="@color/cyber_neon_green_bright"
+                            android:textSize="10sp"
+                            android:textStyle="bold" />
+
+                        <!-- Scenario text -->
+                        <TextView
+                            android:id="@+id/tvScenarioText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:lineSpacingMultiplier="1.5"
+                            android:text=""
+                            android:textColor="@color/cyber_text_primary"
+                            android:textSize="14sp" />
+
+                        <!-- Question -->
+                        <TextView
+                            android:id="@+id/tvQuestion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="monospace"
+                            android:lineSpacingMultiplier="1.4"
+                            android:text=""
+                            android:textColor="@color/cyber_gold"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Option A button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOptionA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="monospace"
+                    android:gravity="start|center_vertical"
+                    android:lineSpacingMultiplier="1.3"
+                    android:minHeight="56dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="@color/cyber_text_primary"
+                    android:textSize="13sp"
+                    app:backgroundTint="#FF0A1A0A"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="@color/cyber_neon_green"
+                    app:strokeWidth="1dp" />
+
+                <!-- Option B button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOptionB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="monospace"
+                    android:gravity="start|center_vertical"
+                    android:lineSpacingMultiplier="1.3"
+                    android:minHeight="56dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+                    android:text=""
+                    android:textAllCaps="false"
+                    android:textColor="@color/cyber_text_primary"
+                    android:textSize="13sp"
+                    app:backgroundTint="#FF0A1A0A"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="@color/cyber_neon_green"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- CONSEQUENCE CARD (shown on wrong answer)               -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <ScrollView
+            android:id="@+id/scrollConsequence"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="24dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardConsequence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#FF140808"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="6dp"
+                    app:strokeColor="@color/monitor_critical_red"
+                    app:strokeWidth="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:padding="24dp">
+
+                        <!-- Skull icon -->
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_marginBottom="12dp"
+                            android:src="@drawable/ic_skull"
+                            android:contentDescription="Critical error" />
+
+                        <!-- WRONG CHOICE label -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:fontFamily="monospace"
+                            android:letterSpacing="0.15"
+                            android:text="&#9888; WRONG CHOICE"
+                            android:textColor="@color/monitor_critical_red"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <!-- Consequence explanation -->
+                        <TextView
+                            android:id="@+id/tvConsequenceText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="monospace"
+                            android:gravity="center"
+                            android:lineSpacingMultiplier="1.5"
+                            android:text=""
+                            android:textColor="@color/cyber_text_primary"
+                            android:textSize="13sp" />
+
+                        <!-- Neon divider -->
+                        <View
+                            android:layout_width="80dp"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:background="@color/monitor_critical_red" />
+
+                        <!-- RETRY LEVEL button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRetry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:fontFamily="monospace"
+                            android:letterSpacing="0.12"
+                            android:minWidth="200dp"
+                            android:text="&#9654;  RETRY LEVEL"
+                            android:textColor="#FF0A0F0A"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/monitor_critical_red"
+                            app:cornerRadius="6dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- SUCCESS OVERLAY                                        -->
+        <!-- ══════════════════════════════════════════════════════ -->
+        <FrameLayout
+            android:id="@+id/overlaySuccess"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EE0A0F0A"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp">
+
+                <TextView
+                    android:id="@+id/tvSuccessIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:text="&#10004;"
+                    android:textColor="@color/cyber_neon_green"
+                    android:textSize="72sp" />
+
+                <TextView
+                    android:id="@+id/tvSuccessTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.15"
+                    android:text="DECOMMISSION PROTOCOL"
+                    android:textColor="@color/cyber_neon_green"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSuccessTitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.15"
+                    android:text="COMPLETE"
+                    android:textColor="@color/cyber_neon_green"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSuccessSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="monospace"
+                    android:gravity="center"
+                    android:text="ALL 3 LEVELS PASSED\nSERVER-07 SAFELY RETIRED"
+                    android:textColor="@color/cyber_text_secondary"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="120dp"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@color/cyber_neon_green" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnContinue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.12"
+                    android:minWidth="200dp"
+                    android:text="&#9654;  CONTINUE"
+                    android:textColor="#FF0A0F0A"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/cyber_neon_green"
+                    app:cornerRadius="6dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

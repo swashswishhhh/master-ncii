@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF0A0F0A"
+    tools:context=".StepSequencerActivity">
+
+    <!-- ── Scanline overlay (decorative) ── -->
+    <View
+        android:id="@+id/scanlineOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.04"
+        android:background="#FF39FF7F"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ── Header bar ── -->
+    <LinearLayout
+        android:id="@+id/headerBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FF0D1A0D"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Top row: back + attempt counter -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:fontFamily="monospace"
+                android:padding="4dp"
+                android:text="◀ BACK"
+                android:textColor="@color/cyber_neon_green"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvAttempts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="ATTEMPTS: 0"
+                android:textColor="@color/cyber_text_secondary"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Mission label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.12"
+            android:text="[ MISSION: RDP CONFIGURATION ]"
+            android:textColor="@color/cyber_neon_green"
+            android:textSize="10sp" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="monospace"
+            android:lineSpacingMultiplier="1.3"
+            android:text="ARRANGE THE RDP CONFIGURATION STEPS IN THE CORRECT ORDER"
+            android:textColor="@color/cyber_text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <!-- Instruction hint -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="monospace"
+            android:text="▸ LONG-PRESS a card to pick it up · DRAG to reorder"
+            android:textColor="@color/cyber_text_secondary"
+            android:textSize="11sp" />
+
+        <!-- Neon divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/cyber_neon_green"
+            android:alpha="0.4" />
+    </LinearLayout>
+
+    <!-- ── Status message (wrong order feedback) ── -->
+    <TextView
+        android:id="@+id/tvStatusMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text=""
+        android:textColor="#FFF44336"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBar" />
+
+    <!-- ── Draggable step list ── -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSteps"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvStatusMessage" />
+
+    <!-- ── Bottom bar with VERIFY button ── -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#FF0D1A0D"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Top neon divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="12dp"
+            android:alpha="0.4"
+            android:background="@color/cyber_neon_green" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVerify"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.15"
+            android:text="▶  VERIFY SEQUENCE"
+            android:textColor="#FF0A0F0A"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/cyber_neon_green"
+            app:cornerRadius="6dp"
+            app:rippleColor="#4D000000" />
+    </LinearLayout>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SUCCESS OVERLAY — shown on correct submission             -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <FrameLayout
+        android:id="@+id/overlaySuccess"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#EE0A0F0A"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <!-- Glowing checkmark -->
+            <TextView
+                android:id="@+id/tvSuccessIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="✔"
+                android:textColor="@color/cyber_neon_green"
+                android:textSize="72sp" />
+
+            <TextView
+                android:id="@+id/tvSuccessTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.2"
+                android:text="SEQUENCE CONFIRMED"
+                android:textColor="@color/cyber_neon_green"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSuccessSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:text="RDP CONFIGURATION PROTOCOL\nSUCCESSFULLY VALIDATED"
+                android:textColor="@color/cyber_text_secondary"
+                android:textSize="13sp" />
+
+            <!-- Neon separator -->
+            <View
+                android:layout_width="120dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@color/cyber_neon_green" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.12"
+                android:minWidth="200dp"
+                android:text="▶  CONTINUE"
+                android:textColor="#FF0A0F0A"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/cyber_neon_green"
+                app:cornerRadius="6dp" />
+        </LinearLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
