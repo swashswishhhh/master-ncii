@@ -12,270 +12,253 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * QuestionLoader — Hybrid question loading system for students.
- * 
- * Merges questions from two sources:
- * 1. Local JSON (assets/questions.json) — existing read-only questions
- * 2. Firestore (questions collection) — admin-created published questions
- * 
- * Mission ID mapping:
- * - mission_1_1 → SC_1.1_* (local JSON pattern)
- * - mission_1_2 → SC_1.2_* (local JSON pattern)
- * - etc.
- * 
- * Students only see published questions from Firestore (published == true).
+ * QuestionLoader - Loads questions from both local JSON assets and Firestore.
+ * Combines questions from both sources for a complete quiz experience.
  */
 public class QuestionLoader {
 
     private static final String TAG = "QuestionLoader";
 
-    /**
-     * Loads questions for a specific mission from both local JSON and Firestore.
-     * Results are merged, shuffled, and returned via callback.
-     * 
-     * @param ctx Application context
-     * @param chapterId Chapter ID (e.g., "chapter_1")
-     * @param missionId Mission ID (e.g., "mission_1_1")
-     * @param listener Callback for results
-     */
-    public static void loadForMission(Context ctx, String chapterId, String missionId, 
-                                     OnQuestionsLoadedListener listener) {
-        if (listener == null) {
-            Log.e(TAG, "Listener is null");
-            return;
+    public interface OnQuestionsLoadedListener {
+        void onLoaded(List<Question> questions);
+        void onError(String errorMessage);
+    }
+
+    public static class Question {
+        public String questionText;
+        public List<String> choices;
+        public String correctAnswer;
+        public String explanation;
+        public String chapterId;
+        public String missionId;
+        public String difficulty;
+        public boolean published;
+        public String source; // "json" or "firestore"
+
+        public Question() {
+            choices = new ArrayList<>();
         }
-        
-        List<Question> allQuestions = new ArrayList<>();
-        
-        // Step 1: Load local JSON questions
-        try {
-            List<Question> localQuestions = loadLocalQuestionsForMission(ctx, missionId);
-            allQuestions.addAll(localQuestions);
-            Log.d(TAG, "Loaded " + localQuestions.size() + " local questions for " + missionId);
-        } catch (Exception e) {
-            Log.e(TAG, "Error loading local questions", e);
-            listener.onError("Failed to load local questions: " + e.getMessage());
-            return;
-        }
-        
-        // Step 2: Load Firestore questions
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("questions")
-                .whereEqualTo("chapterId", chapterId)
-                .whereEqualTo("missionId", missionId)
-                .whereEqualTo("published", true)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<Question> firestoreQuestions = new ArrayList<>();
-                    
-                    for (QueryDocumentSnapshot doc : querySnapshot) {
-                        try {
-                            Question q = convertFirestoreToQuestion(doc);
-                            if (q != null) {
-                                firestoreQuestions.add(q);
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "Error parsing Firestore question: " + doc.getId(), e);
-                        }
-                    }
-                    
-                    Log.d(TAG, "Loaded " + firestoreQuestions.size() + " Firestore questions for " + missionId);
-                    allQuestions.addAll(firestoreQuestions);
-                    
-                    // Step 3: Shuffle and return
-                    Collections.shuffle(allQuestions);
-                    listener.onLoaded(allQuestions);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Error loading Firestore questions", e);
-                    
-                    // Return local questions only if Firestore fails
-                    if (!allQuestions.isEmpty()) {
-                        Collections.shuffle(allQuestions);
-                        listener.onLoaded(allQuestions);
-                    } else {
-                        listener.onError("Failed to load questions: " + e.getMessage());
-                    }
-                });
     }
 
     /**
-     * Loads questions from local JSON for a specific mission.
-     * Maps mission IDs to JSON ID prefixes:
-     * - mission_1_1 → SC_1.1_*
-     * - mission_1_2 → SC_1.2_*
-     * - mission_2_1 → SC_2.1_*
-     * 
-     * @param ctx Application context
-     * @param missionId Mission ID (e.g., "mission_1_1")
-     * @return List of Question objects from local JSON
+     * Load questions for a specific mission from both JSON and Firestore.
+     * Combines results and returns them sorted by difficulty or creation order.
      */
-    private static List<Question> loadLocalQuestionsForMission(Context ctx, String missionId) {
-        List<Question> result = new ArrayList<>();
-        
-        // Extract level ID from mission ID (e.g., "mission_1_1" → "1.1")
-        String levelId = extractLevelId(missionId);
-        if (levelId == null) {
-            Log.w(TAG, "Could not extract level ID from mission: " + missionId);
-            return result;
+    public static void loadForMission(Context context, String chapterId, String missionId,
+                                      OnQuestionsLoadedListener listener) {
+        List<Question> allQuestions = new ArrayList<>();
+
+        // Track loading completion
+        final int[] pendingSources = {2}; // JSON + Firestore
+
+        // Load from JSON
+        loadFromJson(context, chapterId, missionId, new OnQuestionsLoadedListener() {
+            @Override
+            public void onLoaded(List<Question> jsonQuestions) {
+                synchronized (allQuestions) {
+                    allQuestions.addAll(jsonQuestions);
+                }
+                checkComplete();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG, "JSON load error: " + errorMessage);
+                checkComplete();
+            }
+
+            private void checkComplete() {
+                pendingSources[0]--;
+                if (pendingSources[0] == 0 && listener != null) {
+                    // Sort questions: Firestore first, then JSON (or by difficulty)
+                    sortAndDeliver(allQuestions, listener);
+                }
+            }
+        });
+
+        // Load from Firestore
+        loadFromFirestore(missionId, new OnQuestionsLoadedListener() {
+            @Override
+            public void onLoaded(List<Question> firestoreQuestions) {
+                synchronized (allQuestions) {
+                    allQuestions.addAll(firestoreQuestions);
+                }
+                checkComplete();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG, "Firestore load error: " + errorMessage);
+                checkComplete();
+            }
+
+            private void checkComplete() {
+                pendingSources[0]--;
+                if (pendingSources[0] == 0 && listener != null) {
+                    sortAndDeliver(allQuestions, listener);
+                }
+            }
+        });
+    }
+
+    private static void sortAndDeliver(List<Question> questions, OnQuestionsLoadedListener listener) {
+        // Sort: Firestore questions first, then JSON (or by difficulty order)
+        questions.sort((a, b) -> {
+            // Firestore questions (admin created) come first
+            if ("firestore".equals(a.source) && !"firestore".equals(b.source)) return -1;
+            if (!"firestore".equals(a.source) && "firestore".equals(b.source)) return 1;
+
+            // Then sort by difficulty: easy, medium, hard
+            String[] difficultyOrder = {"easy", "medium", "hard"};
+            int aDiffIndex = getDifficultyIndex(a.difficulty, difficultyOrder);
+            int bDiffIndex = getDifficultyIndex(b.difficulty, difficultyOrder);
+            return Integer.compare(aDiffIndex, bDiffIndex);
+        });
+
+        listener.onLoaded(questions);
+    }
+
+    private static int getDifficultyIndex(String difficulty, String[] order) {
+        for (int i = 0; i < order.length; i++) {
+            if (order[i].equalsIgnoreCase(difficulty)) return i;
         }
-        
-        String prefix = "SC_" + levelId + "_";
+        return 1; // default medium
+    }
+
+    /**
+     * Load questions from local chapters.json asset
+     */
+    private static void loadFromJson(Context context, String chapterId, String missionId,
+                                     OnQuestionsLoadedListener listener) {
+        List<Question> questions = new ArrayList<>();
 
         try {
-            InputStream is = ctx.getAssets().open("questions.json");
+            String jsonString = loadJsonFromAsset(context, "chapters.json");
+            JSONObject root = new JSONObject(jsonString);
+            JSONArray chapters = root.getJSONArray("chapters");
+
+            for (int i = 0; i < chapters.length(); i++) {
+                JSONObject chapter = chapters.getJSONObject(i);
+                String chapterIdFromJson = chapter.getString("id");
+
+                if (chapterIdFromJson.equals(chapterId)) {
+                    JSONArray missions = chapter.getJSONArray("missions");
+
+                    for (int j = 0; j < missions.length(); j++) {
+                        JSONObject mission = missions.getJSONObject(j);
+                        String missionIdFromJson = mission.getString("id");
+
+                        if (missionIdFromJson.equals(missionId)) {
+                            JSONArray missionQuestions = mission.getJSONArray("questions");
+
+                            for (int k = 0; k < missionQuestions.length(); k++) {
+                                JSONObject qJson = missionQuestions.getJSONObject(k);
+                                Question q = new Question();
+                                q.questionText = qJson.getString("question");
+                                q.source = "json";
+
+                                JSONArray choices = qJson.getJSONArray("choices");
+                                q.choices = new ArrayList<>();
+                                for (int c = 0; c < choices.length(); c++) {
+                                    q.choices.add(choices.getString(c));
+                                }
+
+                                q.correctAnswer = qJson.getString("correct");
+                                q.explanation = qJson.optString("explanation", "");
+                                q.chapterId = chapterId;
+                                q.missionId = missionId;
+                                q.difficulty = qJson.optString("difficulty", "medium");
+                                q.published = true;
+
+                                questions.add(q);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            listener.onLoaded(questions);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading JSON questions", e);
+            listener.onError(e.getMessage());
+        }
+    }
+
+    /**
+     * Load admin-created questions from Firestore for a specific mission
+     */
+    private static void loadFromFirestore(String missionId, OnQuestionsLoadedListener listener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<Question> questions = new ArrayList<>();
+
+        // Query questions collection where missionId matches and published = true
+        db.collection("questions")
+                .whereEqualTo("missionId", missionId)
+                .whereEqualTo("published", true)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        Question q = new Question();
+                        q.questionText = doc.getString("questionText");
+                        q.source = "firestore";
+
+                        // Get choices list
+                        List<String> choicesList = (List<String>) doc.get("choices");
+                        if (choicesList != null) {
+                            q.choices = new ArrayList<>(choicesList);
+                        } else {
+                            // Fallback for older data structure
+                            q.choices = new ArrayList<>();
+                            q.choices.add(doc.getString("choiceA"));
+                            q.choices.add(doc.getString("choiceB"));
+                            q.choices.add(doc.getString("choiceC"));
+                            q.choices.add(doc.getString("choiceD"));
+                        }
+
+                        q.correctAnswer = doc.getString("correctAnswer");
+                        q.explanation = doc.getString("explanation");
+                        q.chapterId = doc.getString("chapterId");
+                        q.missionId = doc.getString("missionId");
+                        q.difficulty = doc.getString("difficulty");
+                        Boolean published = doc.getBoolean("published");
+                        q.published = published != null && published;
+
+                        // Only add if all required fields exist
+                        if (q.questionText != null && !q.questionText.isEmpty() &&
+                                q.choices != null && !q.choices.isEmpty() &&
+                                q.correctAnswer != null && !q.correctAnswer.isEmpty()) {
+                            questions.add(q);
+                        }
+                    }
+
+                    Log.d(TAG, "Loaded " + questions.size() + " questions from Firestore for mission " + missionId);
+                    listener.onLoaded(questions);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Firestore query FAILED: " + e.getMessage()); // ← check this in Logcat
+                    listener.onError(e.getMessage());
+                });
+    }
+
+    private static String loadJsonFromAsset(Context context, String filename) {
+        try {
+            InputStream is = context.getAssets().open(filename);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-
-            String json = new String(buffer, StandardCharsets.UTF_8);
-            JSONArray array = new JSONArray(json);
-
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject obj = array.getJSONObject(i);
-                String id = obj.optString("id", "");
-
-                // Only load questions belonging to this mission
-                if (!id.startsWith(prefix)) continue;
-
-                Question q = new Question();
-                q.questionText = obj.optString("question", "");
-                q.explanation = obj.optString("explanation", "");
-                q.source = "local";
-
-                // Get options array
-                JSONArray options = obj.optJSONArray("options");
-                if (options != null && options.length() >= 4) {
-                    List<String> choicesList = new ArrayList<>();
-                    for (int j = 0; j < options.length(); j++) {
-                        choicesList.add(options.optString(j, ""));
-                    }
-                    q.choices = choicesList;
-                    
-                    // Convert answer_index (0-based) to correctAnswer (string)
-                    int answerIndex = obj.optInt("answer_index", 0);
-                    if (answerIndex >= 0 && answerIndex < choicesList.size()) {
-                        q.correctAnswer = choicesList.get(answerIndex);
-                    }
-                }
-
-                result.add(q);
-            }
-
+            return new String(buffer, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            Log.e(TAG, "Error loading local questions", e);
-        }
-
-        return result;
-    }
-
-    /**
-     * Converts a Firestore document to a Question object.
-     * 
-     * @param doc Firestore QueryDocumentSnapshot
-     * @return Question object or null if conversion fails
-     */
-    private static Question convertFirestoreToQuestion(QueryDocumentSnapshot doc) {
-        try {
-            Question q = new Question();
-            
-            q.questionText = doc.getString("questionText");
-            q.explanation = doc.getString("explanation");
-            q.source = "firestore";
-            
-            // Get choices array
-            List<String> choices = (List<String>) doc.get("choices");
-            if (choices != null && choices.size() >= 4) {
-                q.choices = choices;
-            }
-            
-            // Get correct answer (already a string in Firestore)
-            q.correctAnswer = doc.getString("correctAnswer");
-            
-            return q;
-            
-        } catch (Exception e) {
-            Log.e(TAG, "Error converting Firestore document to Question", e);
-            return null;
-        }
-    }
-
-    /**
-     * Extracts level ID from mission ID.
-     * Examples:
-     * - "mission_1_1" → "1.1"
-     * - "mission_2_3" → "2.3"
-     * 
-     * @param missionId Mission ID
-     * @return Level ID or null if invalid format
-     */
-    private static String extractLevelId(String missionId) {
-        if (missionId == null || !missionId.startsWith("mission_")) {
-            return null;
-        }
-        
-        // Remove "mission_" prefix
-        String remainder = missionId.substring(8); // "1_1"
-        
-        // Replace first underscore with dot
-        return remainder.replace("_", ".");
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // Callback Interface
-    // ═══════════════════════════════════════════════════════════════
-
-    /**
-     * Callback interface for async question loading.
-     */
-    public interface OnQuestionsLoadedListener {
-        /**
-         * Called when questions are successfully loaded.
-         * 
-         * @param questions List of merged and shuffled questions
-         */
-        void onLoaded(List<Question> questions);
-        
-        /**
-         * Called when an error occurs during loading.
-         * 
-         * @param errorMessage Error description
-         */
-        void onError(String errorMessage);
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // Question Model (Student-side)
-    // ═══════════════════════════════════════════════════════════════
-
-    /**
-     * Question — Simple model for student quiz questions.
-     * 
-     * This is a lightweight model used by QuizActivity.
-     * It represents questions from both local JSON and Firestore.
-     */
-    public static class Question {
-        public String questionText;
-        public List<String> choices;       // 4 choices
-        public String correctAnswer;       // The correct answer string
-        public String explanation;         // Optional explanation
-        public String source;              // "local" or "firestore"
-
-        public Question() {
-        }
-
-        public Question(String questionText, List<String> choices, String correctAnswer, 
-                       String explanation, String source) {
-            this.questionText = questionText;
-            this.choices = choices;
-            this.correctAnswer = correctAnswer;
-            this.explanation = explanation;
-            this.source = source;
+            Log.e(TAG, "Error loading JSON from assets", e);
+            return "{}";
         }
     }
 }

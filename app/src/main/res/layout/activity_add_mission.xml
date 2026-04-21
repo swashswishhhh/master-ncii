@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     android:background="#0A0A0F">
 
+    <!-- ══════════════════════════════════════════════════════════
+         TOOLBAR
+    ══════════════════════════════════════════════════════════ -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,236 +26,879 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <!-- ══════════════════════════════════════════════════════════
+         SCROLLABLE CONTENT
+    ══════════════════════════════════════════════════════════ -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="16dp"
-        android:clipToPadding="false">
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            <!-- // TARGET CHAPTER -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="// TARGET CHAPTER"
-                android:textColor="#6B6B99"
-                android:textSize="11sp"
-                android:fontFamily="monospace"
-                android:layout_marginBottom="8dp"/>
-
-            <androidx.cardview.widget.CardView
+            <!-- ─── STEP INDICATOR PILLS ─────────────────────── -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#12121F"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="0dp">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="20dp">
 
-                <LinearLayout
+                <View
+                    android:id="@+id/pill1"
+                    android:layout_width="0dp"
+                    android:layout_height="6dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
+                    android:background="#FFE600"
+                    android:backgroundTint="#FFE600"/>
+
+                <View
+                    android:id="@+id/pill2"
+                    android:layout_width="0dp"
+                    android:layout_height="6dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="#1E1E3A"/>
+
+                <View
+                    android:id="@+id/pill3"
+                    android:layout_width="0dp"
+                    android:layout_height="6dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="4dp"
+                    android:background="#1E1E3A"/>
+
+            </LinearLayout>
+
+            <!-- ══════════════════════════════════════════════════
+                 STEP 1 — MISSION INFO
+            ══════════════════════════════════════════════════ -->
+            <LinearLayout
+                android:id="@+id/sectionMissionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="// TARGET CHAPTER"
+                    android:textColor="#6B6B99"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:layout_marginBottom="8dp"/>
+
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="#12121F"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="CHAPTER"
-                        android:textColor="#6B6B99"
-                        android:textSize="10sp"
-                        android:fontFamily="monospace"
-                        android:layout_marginBottom="4dp"/>
-
-                    <Spinner
-                        android:id="@+id/spinnerChapter"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="#1E1E3A"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"/>
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="CHAPTER"
+                            android:textColor="#6B6B99"
+                            android:textSize="10sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
 
-            </androidx.cardview.widget.CardView>
+                        <Spinner
+                            android:id="@+id/spinnerChapter"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="#1E1E3A"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"/>
 
-            <!-- // MISSION DATA -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="// MISSION DATA"
-                android:textColor="#6B6B99"
-                android:textSize="11sp"
-                android:fontFamily="monospace"
-                android:layout_marginBottom="8dp"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#12121F"
-                app:cardCornerRadius="4dp"
-                app:cardElevation="0dp">
+                <!-- // MISSION DATA -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="// MISSION DATA"
+                    android:textColor="#6B6B99"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:layout_marginBottom="8dp"/>
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="#12121F"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp">
 
-                    <!-- Mission Title -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MISSION TITLE"
-                        android:textColor="#6B6B99"
-                        android:textSize="10sp"
-                        android:fontFamily="monospace"
-                        android:layout_marginBottom="4dp"/>
-
-                    <com.google.android.material.textfield.TextInputLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="#1E1E3A"
-                        app:hintTextColor="#6B6B99">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etMissionTitle"
+                        <!-- Mission Title -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="MISSION TITLE"
+                            android:textColor="#6B6B99"
+                            android:textSize="10sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="e.g. VPN Basics"
-                            android:textColor="#E8E8FF"
-                            android:fontFamily="monospace"
-                            android:inputType="text"/>
+                            android:layout_marginBottom="12dp"
+                            app:boxStrokeColor="#1E1E3A"
+                            app:hintTextColor="#6B6B99">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etMissionTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="e.g. VPN Basics"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:inputType="text"/>
 
-                    <!-- Mission ID -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MISSION ID"
-                        android:textColor="#6B6B99"
-                        android:textSize="10sp"
-                        android:fontFamily="monospace"
-                        android:layout_marginBottom="4dp"/>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="#1E1E3A"
-                        app:hintTextColor="#6B6B99">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etMissionId"
+                        <!-- Mission ID (Manual entry with format hint) -->
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="e.g. mission_1_6"
-                            android:textColor="#E8E8FF"
-                            android:fontFamily="monospace"
-                            android:inputType="text"/>
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="4dp">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="MISSION ID"
+                                android:textColor="#6B6B99"
+                                android:textSize="10sp"
+                                android:fontFamily="monospace"/>
 
-                    <!-- Description -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DESCRIPTION (OPTIONAL)"
-                        android:textColor="#6B6B99"
-                        android:textSize="10sp"
-                        android:fontFamily="monospace"
-                        android:layout_marginBottom="4dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="MANUAL ENTRY"
+                                android:textColor="#FFE600"
+                                android:textSize="9sp"
+                                android:fontFamily="monospace"/>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:boxStrokeColor="#1E1E3A"
-                        app:hintTextColor="#6B6B99">
+                        </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDescription"
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Brief description of this mission"
-                            android:textColor="#E8E8FF"
+                            android:layout_marginBottom="12dp"
+                            app:boxStrokeColor="#FFE600"
+                            app:hintTextColor="#6B6B99">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etMissionId"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="MISSION 1.6"
+                                android:textColor="#FFE600"
+                                android:fontFamily="monospace"
+                                android:inputType="text"
+                                android:text="MISSION "/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Description -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DESCRIPTION (OPTIONAL)"
+                            android:textColor="#6B6B99"
+                            android:textSize="10sp"
                             android:fontFamily="monospace"
-                            android:inputType="textMultiLine"
-                            android:minLines="2"/>
+                            android:layout_marginBottom="4dp"/>
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            app:boxStrokeColor="#1E1E3A"
+                            app:hintTextColor="#6B6B99">
 
-                    <!-- Difficulty -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DIFFICULTY"
-                        android:textColor="#6B6B99"
-                        android:textSize="10sp"
-                        android:fontFamily="monospace"
-                        android:layout_marginBottom="4dp"/>
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Brief description of this mission"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:inputType="textMultiLine"
+                                android:minLines="2"/>
 
-                    <Spinner
-                        android:id="@+id/spinnerDifficulty"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:background="#1E1E3A"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"/>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
+                        <!-- Difficulty -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="DIFFICULTY"
+                            android:textColor="#6B6B99"
+                            android:textSize="10sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
 
-            </androidx.cardview.widget.CardView>
+                        <Spinner
+                            android:id="@+id/spinnerDifficulty"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="#1E1E3A"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"/>
 
-            <!-- Buttons -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPublishMission"
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Step 1 → Next -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="NEXT — ADD QUESTIONS  →"
+                    android:fontFamily="monospace"
+                    android:textColor="#0A0A0F"
+                    android:textSize="13sp"
+                    app:backgroundTint="#FFE600"
+                    app:cornerRadius="4dp"/>
+
+            </LinearLayout>
+
+            <!-- ══════════════════════════════════════════════════
+                 STEP 2 — ADD QUESTIONS INLINE
+            ══════════════════════════════════════════════════ -->
+            <LinearLayout
+                android:id="@+id/sectionAddQuestions"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="12dp"
-                android:text="⬡  PUBLISH MISSION"
-                android:fontFamily="monospace"
-                android:textColor="#0A0A0F"
-                android:textSize="13sp"
-                app:backgroundTint="#FFE600"
-                app:cornerRadius="4dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSaveDraft"
+                <!-- Context bar: chapter › mission + count -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="#0F1A2A"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#00F5FF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/tvContextBar"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Chapter 1 › Mission"
+                            android:textColor="#00F5FF"
+                            android:textSize="12sp"
+                            android:fontFamily="monospace"
+                            android:ellipsize="end"
+                            android:maxLines="1"/>
+
+                        <TextView
+                            android:id="@+id/tvQuestionCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 questions added"
+                            android:textColor="#6B6B99"
+                            android:textSize="11sp"
+                            android:fontFamily="monospace"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Question chips (progress tracker) -->
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupQuestions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:chipSpacingHorizontal="8dp"/>
+
+                <!-- // QUESTION DATA -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="// QUESTION DATA"
+                    android:textColor="#6B6B99"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="#12121F"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#00F5FF"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Question text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Question Text"
+                            android:textColor="#00F5FF"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            app:boxBackgroundColor="#0F0F1A"
+                            app:boxStrokeColor="#00F5FF"
+                            app:hintTextColor="#6B6B99">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etQText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="72dp"
+                                android:gravity="top|start"
+                                android:inputType="textMultiLine"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:textSize="14sp"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Choice A -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Choice A"
+                            android:textColor="#00F5FF"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            app:boxBackgroundColor="#0F0F1A"
+                            app:boxStrokeColor="#00F5FF">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etQChoiceA"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:textSize="14sp"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Choice B -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Choice B"
+                            android:textColor="#00F5FF"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            app:boxBackgroundColor="#0F0F1A"
+                            app:boxStrokeColor="#00F5FF">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etQChoiceB"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:textSize="14sp"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Choice C -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Choice C"
+                            android:textColor="#00F5FF"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            app:boxBackgroundColor="#0F0F1A"
+                            app:boxStrokeColor="#00F5FF">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etQChoiceC"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:textSize="14sp"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Choice D -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Choice D"
+                            android:textColor="#00F5FF"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:boxBackgroundColor="#0F0F1A"
+                            app:boxStrokeColor="#00F5FF">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etQChoiceD"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:textSize="14sp"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- // ANSWER CONFIG -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="// ANSWER CONFIG"
+                    android:textColor="#6B6B99"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    app:cardBackgroundColor="#12121F"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#FFE600"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Correct Answer — Radio group replaces spinner -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Correct Answer"
+                            android:textColor="#FFE600"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="8dp"/>
+
+                        <RadioGroup
+                            android:id="@+id/rgCorrectAnswer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="16dp">
+
+                            <RadioButton
+                                android:id="@+id/rbAnswerA"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="A"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:buttonTint="#FFE600"/>
+
+                            <RadioButton
+                                android:id="@+id/rbAnswerB"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="B"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:buttonTint="#FFE600"/>
+
+                            <RadioButton
+                                android:id="@+id/rbAnswerC"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="C"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:buttonTint="#FFE600"/>
+
+                            <RadioButton
+                                android:id="@+id/rbAnswerD"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="D"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:buttonTint="#FFE600"/>
+
+                        </RadioGroup>
+
+                        <!-- Difficulty -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Difficulty"
+                            android:textColor="#FFE600"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <Spinner
+                            android:id="@+id/spinnerQDifficulty"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:background="#1E1E3A"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:layout_marginBottom="16dp"/>
+
+                        <!-- Explanation -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Explanation (Optional)"
+                            android:textColor="#FFE600"
+                            android:textSize="13sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="4dp"/>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:boxBackgroundColor="#0F0F1A"
+                            app:boxStrokeColor="#FFE600">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etQExplanation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minHeight="56dp"
+                                android:gravity="top|start"
+                                android:inputType="textMultiLine"
+                                android:textColor="#E8E8FF"
+                                android:fontFamily="monospace"
+                                android:textSize="14sp"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Add question button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="+ SAVE &amp; ADD ANOTHER"
+                    android:fontFamily="monospace"
+                    android:textColor="#0A0A0F"
+                    android:textSize="13sp"
+                    app:backgroundTint="#00F5FF"
+                    app:cornerRadius="4dp"/>
+
+                <!-- Done adding questions -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDoneQuestions"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="DONE — REVIEW MISSION  →"
+                    android:fontFamily="monospace"
+                    android:textColor="#FFE600"
+                    android:textSize="13sp"
+                    android:enabled="false"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:strokeColor="#FFE600"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="4dp"/>
+
+            </LinearLayout>
+
+            <!-- ══════════════════════════════════════════════════
+                 STEP 3 — REVIEW & PUBLISH
+            ══════════════════════════════════════════════════ -->
+            <LinearLayout
+                android:id="@+id/sectionReview"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="24dp"
-                android:text="SAVE AS DRAFT"
-                android:fontFamily="monospace"
-                android:textColor="#6B6B99"
-                android:textSize="13sp"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                app:strokeColor="#6B6B99"
-                app:strokeWidth="1dp"
-                app:cornerRadius="4dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="// MISSION SUMMARY"
+                    android:textColor="#6B6B99"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    app:cardBackgroundColor="#12121F"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#FFE600"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Chapter row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="CHAPTER"
+                                android:textColor="#6B6B99"
+                                android:textSize="10sp"
+                                android:fontFamily="monospace"/>
+
+                            <TextView
+                                android:id="@+id/tvReviewChapter"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="—"
+                                android:textColor="#E8E8FF"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"/>
+
+                        </LinearLayout>
+
+                        <!-- Mission title row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="TITLE"
+                                android:textColor="#6B6B99"
+                                android:textSize="10sp"
+                                android:fontFamily="monospace"/>
+
+                            <TextView
+                                android:id="@+id/tvReviewTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="—"
+                                android:textColor="#FFE600"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"/>
+
+                        </LinearLayout>
+
+                        <!-- Mission ID row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="ID"
+                                android:textColor="#6B6B99"
+                                android:textSize="10sp"
+                                android:fontFamily="monospace"/>
+
+                            <TextView
+                                android:id="@+id/tvReviewMissionId"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="—"
+                                android:textColor="#E8E8FF"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"/>
+
+                        </LinearLayout>
+
+                        <!-- Difficulty row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:text="DIFFICULTY"
+                                android:textColor="#6B6B99"
+                                android:textSize="10sp"
+                                android:fontFamily="monospace"/>
+
+                            <TextView
+                                android:id="@+id/tvReviewDifficulty"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="—"
+                                android:textColor="#E8E8FF"
+                                android:textSize="13sp"
+                                android:fontFamily="monospace"/>
+
+                        </LinearLayout>
+
+                        <!-- Divider -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#1E1E3A"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="12dp"/>
+
+                        <!-- Question count — highlighted -->
+                        <TextView
+                            android:id="@+id/tvReviewQuestionCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 questions ready"
+                            android:textColor="#00F5FF"
+                            android:textSize="15sp"
+                            android:fontFamily="monospace"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Publish -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPublishMission"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="⬡  PUBLISH MISSION"
+                    android:fontFamily="monospace"
+                    android:textColor="#0A0A0F"
+                    android:textSize="13sp"
+                    app:backgroundTint="#FFE600"
+                    app:cornerRadius="4dp"/>
+
+                <!-- Save draft -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveDraft"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="SAVE AS DRAFT"
+                    android:fontFamily="monospace"
+                    android:textColor="#6B6B99"
+                    android:textSize="13sp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    app:strokeColor="#6B6B99"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="4dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
-
-    <!-- Loading Overlay -->
+    <!-- ══════════════════════════════════════════════════════════
+         LOADING OVERLAY
+    ══════════════════════════════════════════════════════════ -->
     <FrameLayout
         android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80000000"
+        android:background="#CC0A0A0F"
         android:visibility="gone"
-        android:clickable="true">
+        android:clickable="true"
+        android:focusable="true">
 
         <ProgressBar
             android:layout_width="wrap_content"

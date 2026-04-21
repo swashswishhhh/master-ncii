@@ -28,6 +28,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * AddQuestionActivity — Admin interface for creating new questions.
@@ -141,13 +142,18 @@ public class AddQuestionActivity extends AppCompatActivity {
                                         String mTitle = missionDoc.getString("title");
                                         Boolean isLocal = missionDoc.getBoolean("isLocal");
 
+                                        // AFTER
                                         if (mId != null && mTitle != null) {
-                                            // Add ⬡ prefix for Firestore-only missions
+                                            // Normalize legacy "MISSION 1.6" → "mission_1_6"
+                                            String normalizedId = mId.toLowerCase(Locale.ROOT)
+                                                    .replace(" ", "_")
+                                                    .replace(".", "_");
+
                                             String displayTitle = Boolean.TRUE.equals(isLocal)
                                                     ? mTitle
                                                     : "⬡ " + mTitle;
                                             chapter.missions.add(
-                                                    new Mission(mId, displayTitle,
+                                                    new Mission(normalizedId, displayTitle,
                                                             !Boolean.TRUE.equals(isLocal)));
                                         }
                                     }
