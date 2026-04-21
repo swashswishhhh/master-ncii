@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ═══ LIGHT GRID Theme Colors ═══ -->
+    <color name="light_bg_deepest">#FFF5F5F5</color>
+    <color name="light_bg_primary">#FFFFFFFF</color>
+    <color name="light_bg_surface">#FFFAFAFA</color>
+    <color name="light_bg_card">#FFFFFFFF</color>
+    <color name="light_accent">#FF00BCD4</color>
+    <color name="light_accent_dim">#1A00BCD4</color>
+    <color name="light_text_primary">#FF0A0F2A</color>
+    <color name="light_text_secondary">#FF5A6B8C</color>
+    <color name="light_text_muted">#FF8A9AB0</color>
+    <color name="light_divider">#FFE0E0E0</color>
+</resources>

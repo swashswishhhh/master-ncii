@@ -47,14 +47,28 @@
             android:name=".DecisionTreeActivity"
             android:exported="false" />
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:theme="@style/Theme.ServerMasterNCII" />
+        <activity
             android:name=".admin.AdminDashboardActivity"
             android:exported="false"
             android:label="Admin Console"
             android:theme="@style/Theme.ServerMasterNCII" />
         <activity
-            android:name=".admin.AdminMissionEditorActivity"
+            android:name=".admin.AddMissionActivity"
+            android:label="Add Mission"
+            android:exported="false" />
+        <activity
+            android:name=".admin.QuestionManagerActivity"
             android:exported="false"
-            android:label="Mission Editor"
+            android:label="Question Manager"
+            android:theme="@style/Theme.ServerMasterNCII" />
+        <activity
+            android:name=".admin.AddQuestionActivity"
+            android:exported="false"
+            android:label="Add Question"
             android:theme="@style/Theme.ServerMasterNCII" />
         <activity
             android:name=".LoginActivity"

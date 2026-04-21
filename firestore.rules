@@ -1,0 +1,95 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ═══════════════════════════════════════════════════════════════
+    // Helper Functions
+    // ═══════════════════════════════════════════════════════════════
+    
+    /**
+     * Checks if the current user is an admin.
+     * Reads the user's role from the users collection.
+     */
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    /**
+     * Checks if the user is authenticated.
+     */
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // Users Collection
+    // ═══════════════════════════════════════════════════════════════
+    
+    match /users/{userId} {
+      // Users can read and write their own document only
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Admins can read all user documents (for user management)
+      allow read: if isAdmin();
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // Questions Collection (Admin-created questions)
+    // ═══════════════════════════════════════════════════════════════
+    
+    match /questions/{questionId} {
+      // Students can only read published questions
+      allow read: if isAuthenticated() && 
+                     resource.data.published == true;
+      
+      // Admins can read ALL questions (including drafts)
+      allow read: if isAdmin();
+      
+      // Only admins can write (create, update, delete) questions
+      allow write: if isAdmin();
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // Missions Collection (Optional - for admin-created missions)
+    // ═══════════════════════════════════════════════════════════════
+    
+    match /missions/{missionId} {
+      // Anyone authenticated can read missions
+      allow read: if isAuthenticated();
+      
+      // Only admins can write missions
+      allow write: if isAdmin();
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // Progress Collection (User progress tracking)
+    // ═══════════════════════════════════════════════════════════════
+    
+    match /progress/{progressId} {
+      // Users can read and write their own progress
+      allow read, write: if isAuthenticated() && 
+                           resource.data.userId == request.auth.uid;
+      
+      // Admins can read all progress (for analytics)
+      allow read: if isAdmin();
+    }
+    
+    // ═══════════════════════════════════════════════════════════════
+    // Leaderboard Collection
+    // ═══════════════════════════════════════════════════════════════
+    
+    match /leaderboard/{entryId} {
+      // Everyone can read leaderboard
+      allow read: if isAuthenticated();
+      
+      // Users can write their own entries
+      allow write: if isAuthenticated() && 
+                      request.resource.data.userId == request.auth.uid;
+      
+      // Admins have full access
+      allow write: if isAdmin();
+    }
+  }
+}

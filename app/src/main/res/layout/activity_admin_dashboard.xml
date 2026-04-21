@@ -2,129 +2,293 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF0D1117"
-    tools:context=".admin.AdminDashboardActivity">
+    android:background="#0A0A0F">
 
-    <!-- AppBar -->
+    <!-- Top Bar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FF161B22"
+        android:background="#0F0F1A"
         app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#0F0F1A"
+            app:title="⬡ ADMIN TERMINAL"
+            app:titleTextColor="#00F5FF"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="16dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="12dp">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <!-- ── Admin Identity Card ─────────────────────────── -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#12121F"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="0dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:letterSpacing="0.1"
-                    android:text="ADMIN CONSOLE"
-                    android:textColor="#FF58A6FF"
-                    android:textSize="11sp" />
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvAdminName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ADMIN"
+                            android:textColor="#E8E8FF"
+                            android:textSize="16sp"
+                            android:fontFamily="monospace"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="● SYSTEM ONLINE"
+                            android:textColor="#00FF9F"
+                            android:textSize="11sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginTop="4dp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[ADMIN]"
+                        android:textColor="#FF2D78"
+                        android:textSize="11sp"
+                        android:fontFamily="monospace"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- ── Stats Label ────────────────────────────────── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="// SYSTEM STATUS"
+                android:textColor="#6B6B99"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- ── Stats Row ──────────────────────────────────── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <!-- Total Questions -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardQuestions"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:text="Mission Dashboard"
-                    android:textColor="#FFC9D1D9"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    app:cardBackgroundColor="#12121F"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvTotalQuestions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="#00F5FF"
+                            android:textSize="28sp"
+                            android:fontFamily="monospace"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="QUESTIONS"
+                            android:textColor="#6B6B99"
+                            android:textSize="10sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginTop="4dp"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Total Users -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardUsers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:cardBackgroundColor="#12121F"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvTotalUsers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="—"
+                            android:textColor="#FF2D78"
+                            android:textSize="28sp"
+                            android:fontFamily="monospace"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="USERS"
+                            android:textColor="#6B6B99"
+                            android:textSize="10sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginTop="4dp"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
             </LinearLayout>
 
-            <!-- Publish All button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPublishAll"
+            <!-- ── Operations Label ───────────────────────────── -->
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="wrap_content"
+                android:text="// OPERATIONS"
+                android:textColor="#6B6B99"
+                android:textSize="11sp"
                 android:fontFamily="monospace"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="PUBLISH ALL"
-                android:textAllCaps="false"
-                android:textColor="#FF0D1117"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Manage Questions -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnManageQuestions"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:text="⬡  MANAGE QUESTIONS"
+                android:fontFamily="monospace"
+                android:textColor="#0A0A0F"
+                android:textSize="13sp"
+                app:backgroundTint="#00F5FF"
+                app:cornerRadius="4dp"/>
+
+            <!-- Add Mission -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddMission"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:text="⬡  ADD NEW MISSION"
+                android:fontFamily="monospace"
+                android:textColor="#FFE600"
+                android:textSize="13sp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="#FFE600"
+                app:strokeWidth="1dp"
+                app:cornerRadius="4dp"/>
+
+            <!-- Add Question -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="24dp"
+                android:text="＋  ADD NEW QUESTION"
+                android:fontFamily="monospace"
+                android:textColor="#FF2D78"
+                android:textSize="13sp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="#FF2D78"
+                app:strokeWidth="1dp"
+                app:cornerRadius="4dp"/>
+
+
+
+            <!-- ── Session Label ──────────────────────────────── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="// SESSION"
+                android:textColor="#6B6B99"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Sign Out -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSignOut"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="24dp"
+                android:text="TERMINATE SESSION"
+                android:fontFamily="monospace"
+                android:textColor="#6B6B99"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                app:backgroundTint="#FF58A6FF"
-                app:cornerRadius="6dp" />
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                app:cornerRadius="4dp"/>
+
         </LinearLayout>
 
-        <!-- Neon blue divider -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:alpha="0.3"
-            android:background="#FF58A6FF" />
-    </com.google.android.material.appbar.AppBarLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    <!-- Mission list -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerMissions"
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="80dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <!-- Empty state -->
-    <LinearLayout
-        android:id="@+id/emptyState"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:background="#80000000"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:clickable="true">
 
-        <TextView
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:text="NO MISSIONS"
-            android:textColor="#FF30363D"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:indeterminateTint="#00F5FF"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="monospace"
-            android:text="Tap + to create your first mission"
-            android:textColor="#FF30363D"
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <!-- FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddMission"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:contentDescription="Add Mission"
-        android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#FF58A6FF"
-        app:tint="#FF0D1117" />
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ═══ TERMINAL GREEN Theme Colors ═══ -->
+    <color name="terminal_bg_deepest">#FF0D1F00</color>
+    <color name="terminal_bg_primary">#FF0F2400</color>
+    <color name="terminal_bg_surface">#FF152D00</color>
+    <color name="terminal_bg_card">#FF1A3600</color>
+    <color name="terminal_accent">#FF7FFF00</color>
+    <color name="terminal_accent_dim">#1A7FFF00</color>
+    <color name="terminal_text_primary">#FFD0FFB0</color>
+    <color name="terminal_text_secondary">#FF88AA66</color>
+    <color name="terminal_text_muted">#FF667744</color>
+    <color name="terminal_divider">#FF2A4400</color>
+</resources>

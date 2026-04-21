@@ -24,6 +24,8 @@ public class TerminalEmulatorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply theme BEFORE super.onCreate()
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_terminal_emulator);

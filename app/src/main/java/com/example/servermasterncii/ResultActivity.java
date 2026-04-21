@@ -66,6 +66,8 @@ public class ResultActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply theme BEFORE super.onCreate()
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
@@ -119,15 +121,17 @@ public class ResultActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int previousBest = prefs.getInt("score_" + learningOutcome, 0);
 
-        // Only save if this attempt is the new personal best
         if (score > previousBest) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("score_" + learningOutcome, score);
             editor.putInt("total_" + learningOutcome, total);
 
-            // Auto-unlock the next level if score ≥ 70%
             double pct = score / (double) total;
             if (pct >= 0.70) {
+                // Mark this level as completed
+                editor.putBoolean("completed_" + learningOutcome, true);
+
+                // Unlock next level (works for both "1.1" and "mission_1_1" formats)
                 String nextLevel = getNextLevelId(learningOutcome);
                 if (nextLevel != null) {
                     editor.putBoolean("unlocked_" + nextLevel, true);
@@ -138,20 +142,17 @@ public class ResultActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Maps a learning outcome to the next one in sequence.
-     * Covers all 21 levels across 3 chapters, including cross-chapter gateways.
-     */
     private String getNextLevelId(String currentLevelId) {
+        // Handle Firestore mission format "mission_1_1" — no sequential next level
+        // Just mark it completed; it doesn't gate anything
+        if (currentLevelId.startsWith("mission_")) return null;
+
         switch (currentLevelId) {
-            // Chapter 1
             case "1.1":  return "1.2";
             case "1.2":  return "1.3";
             case "1.3":  return "1.4";
             case "1.4":  return "1.5";
-            case "1.5":  return "2.1";   // cross-chapter gate
-
-            // Chapter 2
+            case "1.5":  return "2.1";
             case "2.1":  return "2.2";
             case "2.2":  return "2.3";
             case "2.3":  return "2.4";
@@ -163,14 +164,11 @@ public class ResultActivity extends AppCompatActivity {
             case "2.9":  return "2.10";
             case "2.10": return "2.11";
             case "2.11": return "2.12";
-            case "2.12": return "3.1";   // cross-chapter gate
-
-            // Chapter 3
+            case "2.12": return "3.1";
             case "3.1":  return "3.2";
             case "3.2":  return "3.3";
             case "3.3":  return "3.4";
-            case "3.4":  return null;    // final level
-
+            case "3.4":  return null;
             default:     return null;
         }
     }

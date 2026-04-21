@@ -9,6 +9,25 @@
     android:background="@color/cyber_bg_deepest"
     tools:context=".MainActivity">
 
+    <!-- ═══════ Settings Button (Fixed at Top-End Corner) ═══════ -->
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:elevation="12dp"
+        android:translationZ="12dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_settings"
+        android:contentDescription="Settings"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="?colorPrimary" />
+
     <!-- ═══════ Bottom Navigation (pinned first so scroll can constrain to it) ═══════ -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
@@ -61,7 +80,8 @@
                     android:textStyle="bold"
                     android:fontFamily="monospace"
                     android:letterSpacing="0.15"
-                    android:layout_gravity="start" />
+                    android:layout_gravity="start"
+                    android:layout_marginEnd="56dp" />
 
                 <TextView
                     android:id="@+id/tvAppSubtitle"

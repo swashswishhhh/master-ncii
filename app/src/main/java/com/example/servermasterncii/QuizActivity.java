@@ -113,6 +113,8 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply theme BEFORE super.onCreate()
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
@@ -174,37 +176,72 @@ public class QuizActivity extends AppCompatActivity {
     // =====================================================================
 
     private void loadQuestions() {
-        AppDatabase.databaseWriteExecutor.execute(() -> {
+        // If learningOutcome is already "mission_1_1" format, use it directly.
+        // Otherwise convert "1.1" → "mission_1_1"
+        String missionId = learningOutcome.startsWith("mission_")
+                ? learningOutcome
+                : "mission_" + learningOutcome.replace(".", "_");
 
-            List<Question> all = QuestionLoader.loadForLevel(
-                    getApplicationContext(), learningOutcome);
+        // Extract chapter number from missionId → "mission_1_1" → "chapter_1"
+        String chapterNum = missionId.replace("mission_", "").split("_")[0];
+        String chapterId = "chapter_" + chapterNum;
 
-            List<Question> staticQs = all.stream()
-                    .filter(Question::isStaticQuestion)
-                    .collect(Collectors.toList());
-            List<Question> interactiveQs = all.stream()
-                    .filter(Question::isInteractive)
-                    .collect(Collectors.toList());
+        QuestionLoader.loadForMission(getApplicationContext(), chapterId, missionId,
+                new QuestionLoader.OnQuestionsLoadedListener() {
+                    @Override
+                    public void onLoaded(List<QuestionLoader.Question> questions) {
+                        runOnUiThread(() -> {
+                            if (questions.isEmpty()) {
+                                showNoQuestionsDialog();
+                                return;
+                            }
+                            questionList = convertQuestions(questions);
+                            currentIntegrity = MAX_INTEGRITY;
+                            updateIntegrityBar();
+                            routeCurrentQuestion();
+                        });
+                    }
 
-            java.util.Collections.shuffle(staticQs);
+                    @Override
+                    public void onError(String errorMessage) {
+                        runOnUiThread(() -> showNoQuestionsDialog());
+                    }
+                });
+    }
 
-            List<Question> combined = new ArrayList<>(
-                    staticQs.size() + interactiveQs.size());
-            combined.addAll(staticQs);
-            combined.addAll(interactiveQs);
+    private List<Question> convertQuestions(List<QuestionLoader.Question> raw) {
+        List<Question> result = new ArrayList<>();
+        int idCounter = 1;
 
-            runOnUiThread(() -> {
-                if (combined.isEmpty()) {
-                    showNoQuestionsDialog();
-                    return;
+        for (QuestionLoader.Question q : raw) {
+            if (q.choices == null || q.choices.size() < 2) continue;
+
+            Question mapped = new Question();
+            mapped.setId(idCounter++);
+            mapped.setQuestionText(q.questionText);
+            mapped.setType(Question.TYPE_STATIC);
+            mapped.setLearningOutcome(learningOutcome);
+            mapped.setExplanation(q.explanation);
+
+            mapped.setOptionA(q.choices.size() > 0 ? q.choices.get(0) : "");
+            mapped.setOptionB(q.choices.size() > 1 ? q.choices.get(1) : "");
+            mapped.setOptionC(q.choices.size() > 2 ? q.choices.get(2) : "");
+            mapped.setOptionD(q.choices.size() > 3 ? q.choices.get(3) : "");
+
+            // Match correctAnswer string → correctOption (1-based)
+            int correctOption = 1;
+            for (int i = 0; i < q.choices.size(); i++) {
+                if (q.choices.get(i).equals(q.correctAnswer)) {
+                    correctOption = i + 1;
+                    break;
                 }
-                questionList = combined;
-                // Initialise integrity bar once we know questions loaded
-                currentIntegrity = MAX_INTEGRITY;
-                updateIntegrityBar();
-                routeCurrentQuestion();
-            });
-        });
+            }
+            mapped.setCorrectOption(correctOption);
+
+            result.add(mapped);
+        }
+
+        return result;
     }
 
     // =====================================================================

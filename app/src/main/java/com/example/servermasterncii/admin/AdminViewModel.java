@@ -1,277 +1,303 @@
 package com.example.servermasterncii.admin;
 
-import android.app.Application;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.example.servermasterncii.admin.model.AdminMission;
-import com.example.servermasterncii.admin.model.AdminQuestion;
-import com.example.servermasterncii.db.AppDatabase;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-/**
- * AdminViewModel â€” manages the admin mission dashboard and publish workflow.
- *
- * <h3>Local draft flow</h3>
- * <ol>
- *   <li>Admin creates a mission (Step 1 metadata form) â†’ saved to Room as DRAFT</li>
- *   <li>Admin adds questions (Step 2 question builder) â†’ saved to Room</li>
- *   <li>Publish button enabled only when every question passes {@link AdminQuestion#isValid()}</li>
- * </ol>
- *
- * <h3>Publish flow</h3>
- * <ol>
- *   <li>Read all questions for the mission from Room</li>
- *   <li>Write mission + questions to Firestore under {@code missions/{docId}}</li>
- *   <li>Increment {@code meta/global_version} document's {@code version_id} field</li>
- *   <li>Update Room record: syncStatus = SYNCED, firestoreDocId = docId</li>
- * </ol>
- */
-public class AdminViewModel extends AndroidViewModel {
+public class AdminViewModel extends ViewModel {
 
     private static final String TAG = "AdminViewModel";
+    private static final String COLLECTION_QUESTIONS = "questions";
+    private static final String COLLECTION_USERS = "users";
 
-    // â”€â”€ Publish state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    public enum PublishState { IDLE, LOADING, SUCCESS, ERROR }
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public static final class PublishResult {
-        public final PublishState state;
-        public final String message;
-        PublishResult(PublishState s, String m) { state = s; message = m; }
-        static PublishResult idle()             { return new PublishResult(PublishState.IDLE, null); }
-        static PublishResult loading()          { return new PublishResult(PublishState.LOADING, null); }
-        static PublishResult success(String m)  { return new PublishResult(PublishState.SUCCESS, m); }
-        static PublishResult error(String m)    { return new PublishResult(PublishState.ERROR, m); }
-    }
+    // ── LiveData fields ────────────────────────────────────────────────────
+    private final MutableLiveData<List<AdminQuestion>> questions      = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<Boolean>             isLoading      = new MutableLiveData<>(false);
+    private final MutableLiveData<String>              error          = new MutableLiveData<>("");
+    private final MutableLiveData<String>              successMessage = new MutableLiveData<>("");
+    private final MutableLiveData<Integer>             totalQuestions = new MutableLiveData<>(0);
+    private final MutableLiveData<Integer>             totalUsers     = new MutableLiveData<>(0);
 
-    // â”€â”€ Fields â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    private final AppDatabase db;
-    private final FirebaseFirestore firestore;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    // ═══════════════════════════════════════════════════════════════
+    // Getters
+    // ═══════════════════════════════════════════════════════════════
 
-    private final MutableLiveData<PublishResult> publishResult =
-            new MutableLiveData<>(PublishResult.idle());
+    public LiveData<List<AdminQuestion>> getQuestions()     { return questions; }
+    public LiveData<Boolean>            getIsLoading()      { return isLoading; }
+    public LiveData<String>             getError()          { return error; }
+    public LiveData<String>             getSuccessMessage() { return successMessage; }
+    public LiveData<Integer>            getTotalQuestions() { return totalQuestions; }
+    public LiveData<Integer>            getTotalUsers()     { return totalUsers; }
 
-    /** Validation state for the currently open mission editor. */
-    private final MutableLiveData<Boolean> canPublish = new MutableLiveData<>(false);
+    public void clearError()          { error.setValue(""); }
+    public void clearSuccessMessage() { successMessage.setValue(""); }
 
-    // â”€â”€ Constructor â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    public AdminViewModel(@NonNull Application app) {
-        super(app);
-        db        = AppDatabase.getDatabase(app);
-        firestore = FirebaseFirestore.getInstance();
-    }
-
-    // â”€â”€ Exposed LiveData â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-    public LiveData<List<AdminMission>> getAllMissions() {
-        return db.adminMissionDao().getAllLive();
-    }
-
-    public LiveData<List<AdminQuestion>> getQuestionsForMission(int missionId) {
-        return db.adminMissionDao().getById(missionId) != null
-                ? db.adminQuestionDao().getByMissionLive(missionId)
-                : new MutableLiveData<>(new ArrayList<>());
-    }
-
-    public LiveData<PublishResult> getPublishResult() { return publishResult; }
-    public LiveData<Boolean>       getCanPublish()    { return canPublish; }
-
-    // â”€â”€ Mission CRUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-    /** Creates a new mission draft and returns its Room-generated ID via callback. */
-    public void createMission(String title, String difficulty, String mechanicType,
-                              OnMissionCreated callback) {
-        executor.execute(() -> {
-            AdminMission m = new AdminMission(title, difficulty, mechanicType);
-            long newId = db.adminMissionDao().insert(m);
-            if (callback != null) callback.onCreated((int) newId);
-        });
-    }
-
-    public void updateMission(AdminMission mission) {
-        executor.execute(() -> {
-            mission.syncStatus     = AdminMission.STATUS_DRAFT;
-            mission.lastModifiedMs = System.currentTimeMillis();
-            db.adminMissionDao().update(mission);
-        });
-    }
-
-    public void deleteMission(AdminMission mission) {
-        executor.execute(() -> db.adminMissionDao().delete(mission));
-    }
-
-    // â”€â”€ Question CRUD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-    public void addQuestion(int missionId, OnQuestionCreated callback) {
-        executor.execute(() -> {
-            int count = db.adminQuestionDao().countForMission(missionId);
-            AdminQuestion q = new AdminQuestion(missionId, count);
-            long newId = db.adminQuestionDao().insert(q);
-            if (callback != null) callback.onCreated((int) newId);
-            revalidate(missionId);
-        });
-    }
-
-    public void saveQuestion(AdminQuestion question, int missionId) {
-        executor.execute(() -> {
-            db.adminQuestionDao().update(question);
-            // Mark parent mission as DRAFT again
-            AdminMission m = db.adminMissionDao().getById(missionId);
-            if (m != null) {
-                m.syncStatus     = AdminMission.STATUS_DRAFT;
-                m.lastModifiedMs = System.currentTimeMillis();
-                db.adminMissionDao().update(m);
-            }
-            revalidate(missionId);
-        });
-    }
-
-    public void deleteQuestion(AdminQuestion question, int missionId) {
-        executor.execute(() -> {
-            db.adminQuestionDao().delete(question);
-            revalidate(missionId);
-        });
-    }
-
-    // â”€â”€ Validation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ═══════════════════════════════════════════════════════════════
+    // Dashboard Stats
+    // ═══════════════════════════════════════════════════════════════
 
     /**
-     * Re-evaluates whether all questions in the mission are valid.
-     * Posts result to {@link #canPublish} LiveData.
+     * Loads total question count and total user count.
+     * Called by AdminDashboardActivity on create and resume.
      */
-    private void revalidate(int missionId) {
-        List<AdminQuestion> questions = db.adminQuestionDao().getByMission(missionId);
-        boolean valid = !questions.isEmpty();
-        for (AdminQuestion q : questions) {
-            if (!q.isValid()) { valid = false; break; }
+    public void loadStats() {
+        isLoading.setValue(true);
+
+        // Total questions
+        db.collection(COLLECTION_QUESTIONS)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    totalQuestions.setValue(snapshot.size());
+                    isLoading.setValue(false);
+                    Log.d(TAG, "Total questions: " + snapshot.size());
+                })
+                .addOnFailureListener(e -> {
+                    error.setValue("Failed to load question stats: " + e.getMessage());
+                    isLoading.setValue(false);
+                });
+
+        // Total users
+        db.collection(COLLECTION_USERS)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    totalUsers.setValue(snapshot.size());
+                    Log.d(TAG, "Total users: " + snapshot.size());
+                })
+                .addOnFailureListener(e ->
+                        error.setValue("Failed to load user stats: " + e.getMessage()));
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Question CRUD
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Publishes a new question to Firestore.
+     * Called by AddQuestionActivity when creating a new question.
+     */
+    public void publishQuestion(AdminQuestion q) {
+        isLoading.setValue(true);
+        error.setValue("");
+        successMessage.setValue("");
+
+        db.collection(COLLECTION_QUESTIONS)
+                .add(toMap(q))
+                .addOnSuccessListener(ref -> {
+                    Log.d(TAG, "Question published: " + ref.getId());
+                    successMessage.setValue(q.isPublished()
+                            ? "✅ Question published successfully!"
+                            : "📝 Draft saved successfully!");
+                    isLoading.setValue(false);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error publishing question", e);
+                    error.setValue("❌ Failed to save question: " + e.getMessage());
+                    isLoading.setValue(false);
+                });
+    }
+
+    /**
+     * Updates an existing question in Firestore.
+     * Called by AddQuestionActivity when editing an existing question.
+     */
+    public void updateQuestion(AdminQuestion q) {
+        if (q.getId() == null || q.getId().isEmpty()) {
+            error.setValue("❌ Cannot update: question ID is missing");
+            return;
         }
-        canPublish.postValue(valid);
-    }
 
-    public void revalidateMission(int missionId) {
-        executor.execute(() -> revalidate(missionId));
-    }
+        isLoading.setValue(true);
+        error.setValue("");
+        successMessage.setValue("");
 
-    // â”€â”€ Publish workflow â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        Map<String, Object> data = toMap(q);
+        data.put("updatedAt", Timestamp.now());
+
+        db.collection(COLLECTION_QUESTIONS)
+                .document(q.getId())
+                .set(data)
+                .addOnSuccessListener(v -> {
+                    Log.d(TAG, "Question updated: " + q.getId());
+                    successMessage.setValue("✅ Question updated successfully!");
+                    isLoading.setValue(false);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error updating question", e);
+                    error.setValue("❌ Failed to update: " + e.getMessage());
+                    isLoading.setValue(false);
+                });
+    }
 
     /**
-     * Publishes a mission and all its questions to Firestore.
-     *
-     * <ol>
-     *   <li>Reads questions from Room</li>
-     *   <li>Validates all questions â€” aborts with ERROR if any are invalid</li>
-     *   <li>Writes to {@code missions/{missionId}} in Firestore</li>
-     *   <li>Increments {@code meta/global_version.version_id} atomically</li>
-     *   <li>Updates Room record to SYNCED</li>
-     * </ol>
+     * Loads all questions from Firestore ordered by chapterId.
+     * Called by QuestionManagerActivity.
      */
-    public void publishMission(int missionId) {
-        publishResult.postValue(PublishResult.loading());
+    public void loadQuestions() {
+        isLoading.setValue(true);
+        error.setValue("");
 
-        executor.execute(() -> {
-            AdminMission mission = db.adminMissionDao().getById(missionId);
-            if (mission == null) {
-                publishResult.postValue(PublishResult.error("Mission not found."));
-                return;
-            }
-
-            List<AdminQuestion> questions = db.adminQuestionDao().getByMission(missionId);
-            if (questions.isEmpty()) {
-                publishResult.postValue(PublishResult.error("Add at least one question before publishing."));
-                return;
-            }
-            for (AdminQuestion q : questions) {
-                if (!q.isValid()) {
-                    publishResult.postValue(PublishResult.error(
-                            "All questions must have text, 4 options, and a correct answer selected."));
-                    return;
-                }
-            }
-
-            // Build Firestore document
-            String docId = mission.firestoreDocId != null
-                    ? mission.firestoreDocId
-                    : "mission_" + missionId;
-
-            Map<String, Object> missionDoc = new HashMap<>();
-            missionDoc.put("title",        mission.title);
-            missionDoc.put("difficulty",   mission.difficulty);
-            missionDoc.put("mechanicType", mission.mechanicType);
-            missionDoc.put("questionCount", questions.size());
-            missionDoc.put("publishedAt",  System.currentTimeMillis());
-
-            List<Map<String, Object>> questionDocs = new ArrayList<>();
-            for (AdminQuestion q : questions) {
-                Map<String, Object> qMap = new HashMap<>();
-                qMap.put("questionText",   q.questionText);
-                qMap.put("optionA",        q.optionA);
-                qMap.put("optionB",        q.optionB);
-                qMap.put("optionC",        q.optionC);
-                qMap.put("optionD",        q.optionD);
-                qMap.put("correctOption",  q.correctOption);
-                qMap.put("sortOrder",      q.sortOrder);
-                questionDocs.add(qMap);
-            }
-            missionDoc.put("questions", questionDocs);
-
-            // Write to Firestore
-            firestore.collection("missions")
-                    .document(docId)
-                    .set(missionDoc, SetOptions.merge())
-                    .addOnSuccessListener(unused -> {
-                        // Increment global_version_id
-                        Map<String, Object> versionUpdate = new HashMap<>();
-                        versionUpdate.put("version_id",
-                                com.google.firebase.firestore.FieldValue.increment(1));
-                        versionUpdate.put("last_updated", System.currentTimeMillis());
-
-                        firestore.collection("meta")
-                                .document("global_version")
-                                .set(versionUpdate, SetOptions.merge())
-                                .addOnSuccessListener(v2 -> {
-                                    // Update Room to SYNCED
-                                    db.adminMissionDao().updateSyncStatus(
-                                            missionId,
-                                            AdminMission.STATUS_SYNCED,
-                                            docId,
-                                            System.currentTimeMillis());
-                                    canPublish.postValue(true);
-                                    publishResult.postValue(
-                                            PublishResult.success("Mission published successfully."));
-                                })
-                                .addOnFailureListener(e -> {
-                                    Log.e(TAG, "Version increment failed", e);
-                                    publishResult.postValue(PublishResult.error(
-                                            "Published but version update failed: " + e.getMessage()));
-                                });
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e(TAG, "Firestore write failed", e);
-                        publishResult.postValue(PublishResult.error(
-                                "Publish failed: " + e.getMessage()));
-                    });
-        });
+        db.collection(COLLECTION_QUESTIONS)
+                .orderBy("chapterId")
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    List<AdminQuestion> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        AdminQuestion q = fromDoc(doc);
+                        if (q != null) list.add(q);
+                    }
+                    questions.setValue(list);
+                    isLoading.setValue(false);
+                    Log.d(TAG, "Loaded " + list.size() + " questions");
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error loading questions", e);
+                    error.setValue("❌ Failed to load questions: " + e.getMessage());
+                    isLoading.setValue(false);
+                });
     }
 
-    public void resetPublishState() {
-        publishResult.postValue(PublishResult.idle());
+    /**
+     * Loads questions filtered by chapter and mission.
+     * Called by AdminMissionEditorActivity.
+     */
+    public void loadQuestionsByMission(String chapterId, String missionId) {
+        isLoading.setValue(true);
+        error.setValue("");
+
+        db.collection(COLLECTION_QUESTIONS)
+                .whereEqualTo("chapterId", chapterId)
+                .whereEqualTo("missionId", missionId)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    List<AdminQuestion> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        AdminQuestion q = fromDoc(doc);
+                        if (q != null) list.add(q);
+                    }
+                    questions.setValue(list);
+                    isLoading.setValue(false);
+                    Log.d(TAG, "Loaded " + list.size() + " questions for " + missionId);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error loading by mission", e);
+                    error.setValue("❌ Failed to load mission questions: " + e.getMessage());
+                    isLoading.setValue(false);
+                });
     }
 
-    // â”€â”€ Callbacks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    /**
+     * Deletes a question from Firestore and refreshes the list.
+     * Called by QuestionManagerActivity.
+     */
+    public void deleteQuestion(String questionId) {
+        if (questionId == null || questionId.isEmpty()) {
+            error.setValue("❌ Cannot delete: question ID is missing");
+            return;
+        }
 
-    public interface OnMissionCreated  { void onCreated(int missionId); }
-    public interface OnQuestionCreated { void onCreated(int questionId); }
+        isLoading.setValue(true);
+        error.setValue("");
+        successMessage.setValue("");
+
+        db.collection(COLLECTION_QUESTIONS)
+                .document(questionId)
+                .delete()
+                .addOnSuccessListener(v -> {
+                    Log.d(TAG, "Question deleted: " + questionId);
+                    successMessage.setValue("🗑️ Question deleted.");
+                    loadQuestions(); // refresh list
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error deleting question", e);
+                    error.setValue("❌ Failed to delete: " + e.getMessage());
+                    isLoading.setValue(false);
+                });
+    }
+
+    /**
+     * Toggles the published status of a question.
+     * Called by QuestionManagerActivity.
+     */
+    public void togglePublish(String questionId, boolean publish) {
+        if (questionId == null || questionId.isEmpty()) {
+            error.setValue("❌ Cannot update: question ID is missing");
+            return;
+        }
+
+        isLoading.setValue(true);
+        error.setValue("");
+        successMessage.setValue("");
+
+        Map<String, Object> update = new HashMap<>();
+        update.put("published", publish);
+        update.put("updatedAt", Timestamp.now());
+
+        db.collection(COLLECTION_QUESTIONS)
+                .document(questionId)
+                .update(update)
+                .addOnSuccessListener(v -> {
+                    Log.d(TAG, "Publish toggled: " + questionId + " → " + publish);
+                    successMessage.setValue(publish ? "✅ Published!" : "⛔ Unpublished.");
+                    loadQuestions(); // refresh list
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error toggling publish", e);
+                    error.setValue("❌ Failed to update publish status: " + e.getMessage());
+                    isLoading.setValue(false);
+                });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // Private Helpers
+    // ═══════════════════════════════════════════════════════════════
+
+    /** Converts AdminQuestion → Firestore Map */
+    private Map<String, Object> toMap(AdminQuestion q) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("questionText",  q.getQuestionText());
+        data.put("choices",       q.getChoices());
+        data.put("correctAnswer", q.getCorrectAnswer());
+        data.put("chapterId",     q.getChapterId());
+        data.put("missionId",     q.getMissionId());
+        data.put("difficulty",    q.getDifficulty());
+        data.put("explanation",   q.getExplanation() != null ? q.getExplanation() : "");
+        data.put("published",     q.isPublished());
+        data.put("createdBy",     q.getCreatedBy() != null ? q.getCreatedBy() : "");
+        data.put("createdAt",     Timestamp.now());
+        return data;
+    }
+
+    /** Converts Firestore document → AdminQuestion, returns null on parse error */
+    private AdminQuestion fromDoc(QueryDocumentSnapshot doc) {
+        try {
+            AdminQuestion q = new AdminQuestion();
+            q.setId(doc.getId());
+            q.setQuestionText(doc.getString("questionText"));
+            q.setChoices((List<String>) doc.get("choices"));
+            q.setCorrectAnswer(doc.getString("correctAnswer"));
+            q.setChapterId(doc.getString("chapterId"));
+            q.setMissionId(doc.getString("missionId"));
+            q.setDifficulty(doc.getString("difficulty"));
+            q.setExplanation(doc.getString("explanation"));
+            q.setPublished(Boolean.TRUE.equals(doc.getBoolean("published")));
+            q.setCreatedBy(doc.getString("createdBy"));
+            return q;
+        } catch (Exception e) {
+            Log.e(TAG, "Error parsing doc: " + doc.getId(), e);
+            return null;
+        }
+    }
 }

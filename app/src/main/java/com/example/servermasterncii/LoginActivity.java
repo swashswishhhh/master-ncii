@@ -117,26 +117,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply theme BEFORE super.onCreate()
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
-        // TEMPORARY: Print Facebook Key Hash to Logcat
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    getPackageName(),
-                    PackageManager.GET_SIGNATURES
-            );
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String keyHash = Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                Log.d("FB_KEY_HASH", "Key Hash: " + keyHash);
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e("FB_KEY_HASH", "NameNotFoundException", e);
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("FB_KEY_HASH", "NoSuchAlgorithmException", e);
-        }
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -293,12 +277,99 @@ public class LoginActivity extends AppCompatActivity {
     // ══════════════════════════════════════════════════════════════════════
 
     /**
-     * Navigates to {@link MainActivity} (the Dashboard / Saga Map),
-     * passing the user's display name and photo URL as extras.
+     * Navigates to appropriate dashboard based on user role.
+     * Checks Firestore for user's role and routes accordingly:
+     * - admin → AdminDashboardActivity
+     * - student (or no role) → MainActivity
      */
     private void navigateToDashboard(FirebaseUser user) {
         boolean isGuest = user.isAnonymous();
 
+        // Guest users always go to MainActivity
+        if (isGuest) {
+            navigateToMainActivity(user, true);
+            return;
+        }
+
+        // Check user role in Firestore
+        setLoading(true);
+        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(user.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    setLoading(false);
+                    
+                    if (documentSnapshot.exists()) {
+                        String role = documentSnapshot.getString("role");
+                        Log.d("AUTH_ROLE", "User role: " + role);
+                        
+                        if ("admin".equals(role)) {
+                            // Navigate to Admin Dashboard
+                            navigateToAdminDashboard(user);
+                        } else {
+                            // Navigate to Student Dashboard (MainActivity)
+                            navigateToMainActivity(user, false);
+                        }
+                    } else {
+                        // User document doesn't exist - create it with student role
+                        Log.d("AUTH_ROLE", "User document not found, creating with student role");
+                        createUserDocument(user);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    setLoading(false);
+                    Log.e("AUTH_ROLE", "Error fetching user role", e);
+                    showError("Failed to fetch user data. Please try again.");
+                    // Default to MainActivity on error
+                    navigateToMainActivity(user, false);
+                });
+    }
+
+    /**
+     * Creates a new user document in Firestore with default student role.
+     */
+    private void createUserDocument(FirebaseUser user) {
+        java.util.Map<String, Object> userData = new java.util.HashMap<>();
+        userData.put("email", user.getEmail());
+        userData.put("displayName", user.getDisplayName());
+        userData.put("role", "student");
+        userData.put("createdAt", com.google.firebase.Timestamp.now());
+
+        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(user.getUid())
+                .set(userData)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("AUTH_ROLE", "User document created with student role");
+                    navigateToMainActivity(user, false);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("AUTH_ROLE", "Error creating user document", e);
+                    showError("Failed to create user profile. Please try again.");
+                });
+    }
+
+    /**
+     * Navigates to AdminDashboardActivity for admin users.
+     */
+    private void navigateToAdminDashboard(FirebaseUser user) {
+        String displayName = user.getDisplayName() != null ? user.getDisplayName() : "Admin";
+        String photoUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
+
+        Intent intent = new Intent(this, com.example.servermasterncii.admin.AdminDashboardActivity.class);
+        intent.putExtra(EXTRA_DISPLAY_NAME, displayName);
+        intent.putExtra(EXTRA_PHOTO_URL, photoUrl);
+        intent.putExtra(EXTRA_IS_GUEST, false);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Navigates to MainActivity for student users or guests.
+     */
+    private void navigateToMainActivity(FirebaseUser user, boolean isGuest) {
         String displayName = isGuest
                 ? "GUEST_OPERATIVE"
                 : (user.getDisplayName() != null ? user.getDisplayName() : "OPERATIVE");
@@ -309,9 +380,8 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(EXTRA_DISPLAY_NAME, displayName);
-        intent.putExtra(EXTRA_PHOTO_URL,    photoUrl);
-        intent.putExtra(EXTRA_IS_GUEST,     isGuest);
-        // Clear the back stack so the user can't go back to login
+        intent.putExtra(EXTRA_PHOTO_URL, photoUrl);
+        intent.putExtra(EXTRA_IS_GUEST, isGuest);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

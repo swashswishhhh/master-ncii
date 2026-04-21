@@ -54,8 +54,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
         ItemLevelCardBinding b = holder.binding;
 
         // --- Text fields ---
-        b.tvLevelNumber.setText(
-                String.format(Locale.getDefault(), "MISSION %s", level.getLevelId()));
+        b.tvLevelNumber.setText(formatMissionLabel(level.getLevelId()));
         b.tvLevelTitle.setText(level.getTitle());
         b.tvLevelSubtitle.setText(level.getSubtitle());
 
@@ -85,6 +84,24 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
                 listener.onLevelClick(level);
             }
         });
+    }
+    /**
+     * Formats the mission label for the card badge.
+     * "1.1"         → "MISSION 1.1"
+     * "mission_1_6" → "MISSION 1.6"
+     * "mission_2_3" → "MISSION 2.3"
+     */
+    private String formatMissionLabel(String levelId) {
+        if (levelId == null) return "MISSION";
+
+        if (levelId.startsWith("mission_")) {
+            // "mission_1_6" → strip prefix → "1_6" → replace _ with . → "1.6"
+            String stripped = levelId.substring(8); // removes "mission_"
+            String formatted = stripped.replace("_", ".");
+            return "MISSION " + formatted;
+        }
+
+        return "MISSION " + levelId;
     }
 
     @Override

@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ServerMasterNCII" parent="Theme.Material3.DayNight.NoActionBar" tools:ignore="DuplicateDefinition">
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- THEME 1: CYBER DARK (Default) -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <style name="Theme.ServerMasterNCII.CyberDark" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/cyber_neon_green</item>
         <item name="colorOnPrimary">@color/cyber_bg_primary</item>
         <item name="colorPrimaryContainer">@color/cyber_neon_green_dim</item>
@@ -13,9 +15,57 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@color/cyber_bg_deepest</item>
         <item name="android:statusBarColor">@color/cyber_bg_deepest</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
     </style>
 
-    <style name="Theme.ServerMasterNCII" parent="Base.Theme.ServerMasterNCII" />
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- THEME 2: TERMINAL GREEN -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <style name="Theme.ServerMasterNCII.TerminalGreen" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/terminal_accent</item>
+        <item name="colorOnPrimary">@color/terminal_bg_primary</item>
+        <item name="colorPrimaryContainer">@color/terminal_accent_dim</item>
+        <item name="colorOnPrimaryContainer">@color/terminal_accent</item>
+        <item name="android:colorBackground">@color/terminal_bg_deepest</item>
+        <item name="colorSurface">@color/terminal_bg_surface</item>
+        <item name="colorOnSurface">@color/terminal_text_primary</item>
+        <item name="colorSurfaceVariant">@color/terminal_bg_card</item>
+        <item name="colorOnSurfaceVariant">@color/terminal_text_secondary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:navigationBarColor">@color/terminal_bg_deepest</item>
+        <item name="android:statusBarColor">@color/terminal_bg_deepest</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <!-- Monospace font family for Terminal theme -->
+        <item name="fontFamily">monospace</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- THEME 3: LIGHT GRID -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <style name="Theme.ServerMasterNCII.LightGrid" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/light_accent</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/light_accent_dim</item>
+        <item name="colorOnPrimaryContainer">@color/light_accent</item>
+        <item name="android:colorBackground">@color/light_bg_deepest</item>
+        <item name="colorSurface">@color/light_bg_surface</item>
+        <item name="colorOnSurface">@color/light_text_primary</item>
+        <item name="colorSurfaceVariant">@color/light_bg_card</item>
+        <item name="colorOnSurfaceVariant">@color/light_text_secondary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:navigationBarColor">@color/light_bg_primary</item>
+        <item name="android:statusBarColor">@color/light_bg_primary</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- Default Theme (points to Cyber Dark) -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <style name="Theme.ServerMasterNCII" parent="Theme.ServerMasterNCII.CyberDark" />
 
     <!-- ── Cyberpunk Nav Indicator (removes the Material3 pill) ── -->
     <style name="CyberNavIndicator">

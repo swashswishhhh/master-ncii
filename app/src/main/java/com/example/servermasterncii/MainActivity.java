@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply theme BEFORE super.onCreate()
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
 
         // DO NOT call EdgeToEdge.enable(this) — it causes the nav bar overlap
@@ -142,7 +144,12 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
         setupBottomNav();
         updateChapterUI(currentChapter);
         updateHallOfFame();
+        setupSettingsButton();
+
+        loadFirestoreMissions(); // ← Add this line
     }
+
+
 
     /**
      * Re-sync progress and lock state whenever the user returns from
@@ -164,6 +171,16 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
     // =====================================================================
     // Bottom Navigation
     // =====================================================================
+
+    /**
+     * Wires the Settings button to open SettingsActivity.
+     */
+    private void setupSettingsButton() {
+        binding.btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        });
+    }
 
     /**
      * Wires the BottomNavigationView to switch between chapters.
@@ -265,6 +282,75 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
     }
 
     /**
+     * Fetches admin-created missions from Firestore and appends
+     * them to allLevels for the current chapter display.
+     */
+    private void loadFirestoreMissions() {
+        com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("missions")
+                .whereEqualTo("published", true)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    boolean newMissionsAdded = false;
+
+                    for (com.google.firebase.firestore.QueryDocumentSnapshot doc : snapshot) {
+                        String missionId   = doc.getString("missionId");
+                        String title       = doc.getString("title");
+                        String description = doc.getString("description");
+                        String chapterId   = doc.getString("chapterId");
+                        String difficulty  = doc.getString("difficulty");
+
+                        if (missionId == null || title == null || chapterId == null) continue;
+
+                        // Convert chapterId to chapter number
+                        int chapterNum = 1;
+                        if ("chapter_2".equals(chapterId)) chapterNum = 2;
+                        else if ("chapter_3".equals(chapterId)) chapterNum = 3;
+
+                        // Check if this mission already exists in allLevels
+                        boolean alreadyExists = false;
+                        for (Level l : allLevels) {
+                            if (missionId.equals(l.getLevelId())) {
+                                alreadyExists = true;
+                                break;
+                            }
+                        }
+
+                        if (!alreadyExists) {
+                            // Pick a lottie based on chapter
+                            String lottie = "anim_network.json";
+                            if (chapterNum == 2) lottie = "anim_server_roles.json";
+                            else if (chapterNum == 3) lottie = "anim_terminal.json";
+
+                            Level firestoreLevel = new Level(
+                                    allLevels.size() + 1,  // sequential number
+                                    title,
+                                    description != null ? description : "",
+                                    missionId,             // e.g. "mission_1_6"
+                                    lottie,
+                                    chapterNum,
+                                    "Firestore_Quiz",      // type flag
+                                    0,                     // progress starts at 0
+                                    true                   // published = unlocked
+                            );
+                            allLevels.add(firestoreLevel);
+                            newMissionsAdded = true;
+                        }
+                    }
+
+                    if (newMissionsAdded) {
+                        // Refresh the current chapter display
+                        displayedLevels.clear();
+                        displayedLevels.addAll(filterByChapter(currentChapter));
+                        adapter.notifyDataSetChanged();
+                        updateHallOfFame();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        android.util.Log.e("MainActivity", "Failed to load Firestore missions", e));
+    }
+
+    /**
      * Factory method for constructing a Level with progress from SharedPreferences.
      */
     private Level level(int num, String title, String subtitle, String levelId,
@@ -311,8 +397,13 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
      * </ul>
      */
     private boolean isLevelUnlocked(String levelId) {
-        // Level 1.1 is always unlocked
         if ("1.1".equals(levelId)) return true;
+
+        // Firestore missions ("mission_1_1") are always unlocked —
+        // they are admin-created bonus content, not part of the gate chain
+        if (levelId.startsWith("mission_")) {
+            return true;
+        }
 
         // Check explicit unlock flag first
         if (prefs.getBoolean(KEY_UNLOCKED + levelId, false)) return true;
@@ -322,13 +413,9 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
         if (previousLevelId != null) {
             int prevScore = prefs.getInt(KEY_SCORE + previousLevelId, 0);
             int prevTotal = prefs.getInt(KEY_TOTAL + previousLevelId, 0);
-            if (prevTotal > 0) {
-                double pct = prevScore / (double) prevTotal;
-                if (pct >= UNLOCK_THRESHOLD) {
-                    // Persist the unlock so it stays unlocked
-                    prefs.edit().putBoolean(KEY_UNLOCKED + levelId, true).apply();
-                    return true;
-                }
+            if (prevTotal > 0 && (prevScore / (double) prevTotal) >= UNLOCK_THRESHOLD) {
+                prefs.edit().putBoolean(KEY_UNLOCKED + levelId, true).apply();
+                return true;
             }
         }
 
@@ -412,9 +499,13 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
     private void refreshLevels() {
         for (Level level : allLevels) {
             level.setProgressPercent(getProgressForLevel(level.getLevelId()));
-            level.setUnlocked(isLevelUnlocked(level.getLevelId()));
+            // Firestore missions stay unlocked always — don't let isLevelUnlocked() re-lock them
+            if (level.getLevelId().startsWith("mission_")) {
+                level.setUnlocked(true);
+            } else {
+                level.setUnlocked(isLevelUnlocked(level.getLevelId()));
+            }
         }
-        // Refresh the currently displayed chapter
         displayedLevels.clear();
         displayedLevels.addAll(filterByChapter(currentChapter));
         adapter.notifyDataSetChanged();
@@ -459,11 +550,25 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
                 return;
 
             default:
-                // All other levels go to the quiz
-                Intent intent = new Intent(this, QuizActivity.class);
-                intent.putExtra(QuizActivity.EXTRA_LEARNING_OUTCOME, levelId);
-                intent.putExtra("LEVEL_TYPE", level.getLevelType());
-                startActivity(intent);
+                // Check if this is a Firestore-created mission
+                if ("Firestore_Quiz".equals(level.getLevelType())) {
+                    // missionId format: "mission_1_6"
+                    // chapterId derived from level.getChapter()
+                    String chapterId = "chapter_" + level.getChapter();
+
+                    Intent intent = new Intent(this, QuizActivity.class);
+                    intent.putExtra(QuizActivity.EXTRA_LEARNING_OUTCOME, level.getLevelId());
+                    intent.putExtra("LEVEL_TYPE", "Firestore_Quiz");
+                    intent.putExtra("chapterId", chapterId);
+                    intent.putExtra("missionId", level.getLevelId());
+                    startActivity(intent);
+                } else {
+                    // Existing local JSON quiz flow — unchanged
+                    Intent intent = new Intent(this, QuizActivity.class);
+                    intent.putExtra(QuizActivity.EXTRA_LEARNING_OUTCOME, levelId);
+                    intent.putExtra("LEVEL_TYPE", level.getLevelType());
+                    startActivity(intent);
+                }
         }
     }
 }
