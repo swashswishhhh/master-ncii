@@ -196,8 +196,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -219,8 +218,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -242,8 +240,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -265,8 +262,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no" />
                         </LinearLayout>
 
                         <!-- ═══════════ SUBNET MASK ROW ═══════════ -->
@@ -299,8 +295,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -322,8 +317,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -345,8 +339,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -368,8 +361,7 @@
                                 android:textColor="#000000"
                                 android:textSize="13sp"
                                 android:fontFamily="monospace"
-                                android:importantForAutofill="no"
-                                style="@style/Widget.Material3.TextInputEditText.OutlinedBox" />
+                                android:importantForAutofill="no"/>
                         </LinearLayout>
 
                         <!-- ═══════════ DEFAULT GATEWAY ROW ═══════════ -->

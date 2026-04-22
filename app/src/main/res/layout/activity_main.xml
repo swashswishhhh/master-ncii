@@ -74,7 +74,7 @@
                     android:id="@+id/tvAppTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SERVER MASTER"
+                    android:text="BrainTap"
                     android:textColor="@color/cyber_neon_green_bright"
                     android:textSize="28sp"
                     android:textStyle="bold"

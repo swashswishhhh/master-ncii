@@ -47,7 +47,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="monospace"
             android:letterSpacing="0.05"
-            android:text="SERVER MASTER"
+            android:text="BrainTap"
             android:textColor="#FFEAEAEA"
             android:textSize="32sp"
             android:textStyle="bold" />
