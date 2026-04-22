@@ -1,6 +1,7 @@
 package com.example.servermasterncii;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
@@ -34,6 +35,20 @@ public class SettingsActivity extends AppCompatActivity {
         ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
 
+        // ── Block guest users ──────────────────────────────────────
+        SharedPreferences prefs = getSharedPreferences("server_master_prefs", MODE_PRIVATE);
+        boolean isGuest = prefs.getBoolean("is_guest", false);
+        if (isGuest) {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Access Restricted")
+                    .setMessage("Settings are only available for registered accounts.\n\nSign in with Google or Facebook to access this feature.")
+                    .setPositiveButton("OK", (d, w) -> finish())
+                    .setCancelable(false)
+                    .show();
+            return; // stop onCreate — no binding, no crash
+        }
+        // ──────────────────────────────────────────────────────────
+
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -50,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
         setupThemeCards();
         setupAccountRow();
         setupAboutRow();
+        setupLogoutRow();
         updateSelectedTheme();
     }
 
@@ -69,22 +85,32 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setupThemeCards() {
-        // Only Cyber Dark and Light Grid themes
         binding.cardCyberDark.setOnClickListener(v -> applyTheme(ThemeManager.THEME_CYBER));
         binding.cardLightGrid.setOnClickListener(v -> applyTheme(ThemeManager.THEME_LIGHT));
     }
 
     private void setupAccountRow() {
         binding.cardAccount.setOnClickListener(v -> {
-            // TODO: Create ProfileActivity and uncomment this
-            // Intent intent = new Intent(this, ProfileActivity.class);
-            // startActivity(intent);
-            
-            // Temporary: Show coming soon message
+            startActivity(new Intent(this, ProfileActivity.class));
+        });
+    }
+
+    private void setupLogoutRow() {
+        binding.cardLogout.setOnClickListener(v -> {
             new MaterialAlertDialogBuilder(this)
-                    .setTitle("Profile")
-                    .setMessage("Profile feature coming soon!\n\nThis will show your stats, rank, achievements, and more.")
-                    .setPositiveButton("OK", null)
+                    .setTitle("Terminate Session")
+                    .setMessage("Are you sure you want to log out?\n\nYour progress is saved to your account.")
+                    .setPositiveButton("LOGOUT", (dialog, which) -> {
+                        getSharedPreferences("server_master_prefs", MODE_PRIVATE)
+                                .edit().clear().apply();
+                        com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("CANCEL", null)
                     .show();
         });
     }
@@ -103,19 +129,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void navigateWithNewTheme() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | 
-                        Intent.FLAG_ACTIVITY_NEW_TASK | 
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private void updateSelectedTheme() {
-        // Reset all cards
         resetCard(binding.cardCyberDark, binding.badgeCyberDark);
         resetCard(binding.cardLightGrid, binding.badgeLightGrid);
 
-        // Highlight selected theme
         switch (currentTheme) {
             case ThemeManager.THEME_CYBER:
                 highlightCard(binding.cardCyberDark, binding.badgeCyberDark, 0xFF39FF7F);
@@ -124,8 +148,6 @@ public class SettingsActivity extends AppCompatActivity {
                 highlightCard(binding.cardLightGrid, binding.badgeLightGrid, 0xFF00BCD4);
                 break;
             case ThemeManager.THEME_TERMINAL:
-                // Terminal theme still exists in ThemeManager but not shown in Settings
-                // If user somehow has Terminal selected, show Cyber Dark as active
                 highlightCard(binding.cardCyberDark, binding.badgeCyberDark, 0xFF39FF7F);
                 break;
         }

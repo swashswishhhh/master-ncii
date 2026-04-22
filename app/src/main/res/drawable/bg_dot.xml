@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/drawable/bg_dot.xml
+    Default (inactive) state for the three loading dots.
+    Dark navy circle — swaps to bg_dot_active.xml (#00F5FF) when popping.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#1E1E3A" />
+</shape>

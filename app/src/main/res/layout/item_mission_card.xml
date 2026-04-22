@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    app:cardBackgroundColor="#12121F"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Top row: title + status badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvMissionTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mission Title"
+                android:textColor="#E8E8FF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/tvMissionStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="● LIVE"
+                android:textColor="#00FF9F"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Mission ID -->
+        <TextView
+            android:id="@+id/tvMissionId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="mission_1_1"
+            android:textColor="#4A4A8A"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="6dp"/>
+
+        <!-- Chapter + Difficulty row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/tvMissionChapter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHAPTER 1"
+                android:textColor="#00F5FF"
+                android:textSize="10sp"
+                android:fontFamily="monospace"
+                android:background="#1A1A2F"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"/>
+
+            <TextView
+                android:id="@+id/tvMissionDifficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MEDIUM"
+                android:textColor="#FFE600"
+                android:textSize="10sp"
+                android:fontFamily="monospace"
+                android:background="#1A1A2F"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_marginStart="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#1E1E2F"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Action buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Publish / Unpublish toggle -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTogglePublish"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:text="PUBLISH"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                android:textColor="#00FF9F"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="#00FF9F"
+                app:strokeWidth="1dp"
+                app:cornerRadius="2dp"
+                android:layout_marginEnd="8dp"/>
+
+            <!-- Delete -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteMission"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:text="⚠ DELETE"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                android:textColor="#FF2D78"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="#FF2D78"
+                app:strokeWidth="1dp"
+                app:cornerRadius="2dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

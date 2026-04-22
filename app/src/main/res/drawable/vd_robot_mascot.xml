@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    vd_robot_mascot.xml — VectorDrawable (static robot)
+    Place in: res/drawable/vd_robot_mascot.xml
+
+    Named groups/paths that avd_robot_mascot.xml targets:
+      eyeLeft, eyeRight  — eye rectangles (blink via scaleY)
+      antennaLight       — top antenna dot (alpha pulse)
+      mouth              — smile rect (scaleY wiggle)
+      chestScan          — horizontal scan line (translateY)
+-->
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="160"
+    android:viewportHeight="160">
+
+    <!-- ── Soft glow halo (behind everything) ── -->
+    <path
+        android:pathData="M80,80 m-50,0 a50,50 0 1,0 100,0 a50,50 0 1,0 -100,0"
+        android:fillColor="#00F5FF"
+        android:fillAlpha="0.07"/>
+
+    <!-- ── Antenna pole ── -->
+    <path
+        android:name="antennaPole"
+        android:pathData="M80,20 L80,34"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+
+    <!-- ── Antenna light ── -->
+    <group android:name="antennaLight"
+        android:pivotX="80" android:pivotY="16">
+        <path
+            android:pathData="M80,16 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"
+            android:fillColor="#FFE600"
+            android:fillAlpha="1"/>
+        <!-- tiny inner white shine -->
+        <path
+            android:pathData="M78,14 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0"
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.7"/>
+    </group>
+
+    <!-- ── Head ── -->
+    <path
+        android:pathData="M46,34 Q46,34 46,48 L46,72 Q46,86 60,86 L100,86 Q114,86 114,72 L114,48 Q114,34 100,34 Z"
+        android:fillColor="#12122A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="2"/>
+
+    <!-- ── Ear bolts ── -->
+    <path
+        android:pathData="M46,58 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"
+        android:fillColor="#1E1E3A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.5"/>
+    <path
+        android:pathData="M114,58 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"
+        android:fillColor="#1E1E3A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.5"/>
+
+    <!-- ── Eye LEFT ── -->
+    <group
+        android:name="eyeLeft"
+        android:pivotX="65"
+        android:pivotY="53">
+        <path
+            android:pathData="M56,46 Q56,46 56,51 L56,60 Q56,60 61,60 L74,60 Q74,60 74,55 L74,46 Q74,46 69,46 Z"
+            android:fillColor="#00F5FF"
+            android:fillAlpha="0.95"/>
+        <!-- pupil -->
+        <path
+            android:pathData="M62,50 Q62,50 62,52 L62,56 Q62,56 64,56 L68,56 Q68,56 68,54 L68,50 Q68,50 66,50 Z"
+            android:fillColor="#07070F"/>
+        <!-- shine -->
+        <path
+            android:pathData="M63,51 m-1.2,0 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0"
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.9"/>
+    </group>
+
+    <!-- ── Eye RIGHT ── -->
+    <group
+        android:name="eyeRight"
+        android:pivotX="95"
+        android:pivotY="53">
+        <path
+            android:pathData="M86,46 Q86,46 86,51 L86,60 Q86,60 91,60 L104,60 Q104,60 104,55 L104,46 Q104,46 99,46 Z"
+            android:fillColor="#00F5FF"
+            android:fillAlpha="0.95"/>
+        <!-- pupil -->
+        <path
+            android:pathData="M92,50 Q92,50 92,52 L92,56 Q92,56 94,56 L98,56 Q98,56 98,54 L98,50 Q98,50 96,50 Z"
+            android:fillColor="#07070F"/>
+        <!-- shine -->
+        <path
+            android:pathData="M93,51 m-1.2,0 a1.2,1.2 0 1,0 2.4,0 a1.2,1.2 0 1,0 -2.4,0"
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.9"/>
+    </group>
+
+    <!-- ── Mouth ── -->
+    <group
+        android:name="mouth"
+        android:pivotX="80"
+        android:pivotY="73.5">
+        <path
+            android:pathData="M65,69 Q65,69 65,73.5 L65,78 Q65,78 69.5,78 L90.5,78 Q95,78 95,73.5 L95,69 Q95,69 90.5,69 Z"
+            android:fillColor="#FFE600"
+            android:fillAlpha="0.95"/>
+    </group>
+
+    <!-- ── Blush LEFT ── -->
+    <path
+        android:pathData="M57,74 m-6,0 a6,4 0 1,0 12,0 a6,4 0 1,0 -12,0"
+        android:fillColor="#FF6B9D"
+        android:fillAlpha="0.35"/>
+
+    <!-- ── Blush RIGHT ── -->
+    <path
+        android:pathData="M103,74 m-6,0 a6,4 0 1,0 12,0 a6,4 0 1,0 -12,0"
+        android:fillColor="#FF6B9D"
+        android:fillAlpha="0.35"/>
+
+    <!-- ── Neck ── -->
+    <path
+        android:pathData="M72,86 Q72,86 72,89 L72,96 Q72,96 75,96 L85,96 Q88,96 88,93 L88,86 Q88,86 85,86 Z"
+        android:fillColor="#1E1E3A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.2"/>
+
+    <!-- ── Body ── -->
+    <path
+        android:pathData="M34,96 Q34,96 34,108 L34,134 Q34,146 46,146 L114,146 Q126,146 126,134 L126,108 Q126,96 114,96 Z"
+        android:fillColor="#12122A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="2"/>
+
+    <!-- ── Chest screen frame ── -->
+    <path
+        android:pathData="M48,104 Q48,104 48,110 L48,132 Q48,132 54,132 L92,132 Q92,132 92,126 L92,104 Q92,104 86,104 Z"
+        android:fillColor="#07070F"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.2"/>
+
+    <!-- ── Chest scan line (animated) ── -->
+    <group android:name="chestScan">
+        <path
+            android:pathData="M48,104 L92,104 L92,110 L48,110 Z"
+            android:fillColor="#00F5FF"
+            android:fillAlpha="0.18"/>
+    </group>
+
+    <!-- ── Chest screen content lines ── -->
+    <path android:pathData="M53,112 L73,112" android:strokeColor="#00F5FF" android:strokeWidth="2" android:strokeAlpha="0.7" android:strokeLineCap="round"/>
+    <path android:pathData="M53,117 L81,117" android:strokeColor="#FFE600" android:strokeWidth="2" android:strokeAlpha="0.6" android:strokeLineCap="round"/>
+    <path android:pathData="M53,122 L69,122" android:strokeColor="#00F5FF" android:strokeWidth="2" android:strokeAlpha="0.5" android:strokeLineCap="round"/>
+    <path android:pathData="M53,127 L77,127" android:strokeColor="#39FF14" android:strokeWidth="2" android:strokeAlpha="0.5" android:strokeLineCap="round"/>
+
+    <!-- ── Side buttons ── -->
+    <!-- red button -->
+    <path
+        android:pathData="M104,110 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0"
+        android:fillColor="#FF2D78"
+        android:fillAlpha="0.95"/>
+    <!-- yellow button -->
+    <path
+        android:pathData="M104,122 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0"
+        android:fillColor="#FFE600"
+        android:fillAlpha="0.95"/>
+
+    <!-- ── Left arm ── -->
+    <path
+        android:pathData="M14,98 Q14,98 14,108 L14,122 Q14,130 24,130 Q34,130 34,122 L34,108 Q34,98 24,98 Z"
+        android:fillColor="#12122A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.8"/>
+    <!-- left hand -->
+    <path
+        android:pathData="M24,136 m-8,0 a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0"
+        android:fillColor="#1E1E3A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.5"/>
+    <!-- left hand knuckle dots -->
+    <path android:pathData="M19,133 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" android:fillColor="#00F5FF" android:fillAlpha="0.5"/>
+    <path android:pathData="M24,131 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" android:fillColor="#00F5FF" android:fillAlpha="0.5"/>
+    <path android:pathData="M29,133 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" android:fillColor="#00F5FF" android:fillAlpha="0.5"/>
+
+    <!-- ── Right arm ── -->
+    <path
+        android:pathData="M126,98 Q126,98 126,108 L126,122 Q126,130 136,130 Q146,130 146,122 L146,108 Q146,98 136,98 Z"
+        android:fillColor="#12122A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.8"/>
+    <!-- right hand -->
+    <path
+        android:pathData="M136,136 m-8,0 a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0"
+        android:fillColor="#1E1E3A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.5"/>
+    <!-- right hand knuckle dots -->
+    <path android:pathData="M131,133 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" android:fillColor="#00F5FF" android:fillAlpha="0.5"/>
+    <path android:pathData="M136,131 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" android:fillColor="#00F5FF" android:fillAlpha="0.5"/>
+    <path android:pathData="M141,133 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" android:fillColor="#00F5FF" android:fillAlpha="0.5"/>
+
+    <!-- ── Legs ── -->
+    <path
+        android:pathData="M52,146 Q52,146 52,148 L52,156 Q52,156 57,156 L74,156 Q74,156 74,151 L74,146 Z"
+        android:fillColor="#1E1E3A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.5"/>
+    <path
+        android:pathData="M86,146 Q86,146 86,148 L86,156 Q86,156 91,156 L108,156 Q108,156 108,151 L108,146 Z"
+        android:fillColor="#1E1E3A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.5"/>
+
+    <!-- ── Feet ── -->
+    <path
+        android:pathData="M48,156 Q48,156 48,158 L48,160 Q48,160 54,160 L78,160 Q78,160 78,158 L78,156 Z"
+        android:fillColor="#12122A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.2"/>
+    <path
+        android:pathData="M82,156 Q82,156 82,158 L82,160 Q82,160 88,160 L112,160 Q112,160 112,158 L112,156 Z"
+        android:fillColor="#12122A"
+        android:strokeColor="#00F5FF"
+        android:strokeWidth="1.2"/>
+
+</vector>

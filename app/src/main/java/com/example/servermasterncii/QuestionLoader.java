@@ -138,52 +138,52 @@ public class QuestionLoader {
         List<Question> questions = new ArrayList<>();
 
         try {
-            String jsonString = loadJsonFromAsset(context, "chapters.json");
-            JSONObject root = new JSONObject(jsonString);
-            JSONArray chapters = root.getJSONArray("chapters");
+            // Extract "1_1" from "mission_1_1" → match against "SC_1.1_QN"
+            // "mission_1_1" → strip "mission_" → "1_1" → replace "_" with "." → "1.1"
+            String missionNum = missionId
+                    .replace("mission_", "")   // "1_1"
+                    .replace("_", ".");        // "1.1"
 
-            for (int i = 0; i < chapters.length(); i++) {
-                JSONObject chapter = chapters.getJSONObject(i);
-                String chapterIdFromJson = chapter.getString("id");
+            String prefix = "SC_" + missionNum + "_"; // "SC_1.1_"
 
-                if (chapterIdFromJson.equals(chapterId)) {
-                    JSONArray missions = chapter.getJSONArray("missions");
+            String jsonString = loadJsonFromAsset(context, "questions.json");
+            JSONArray allQuestions = new JSONArray(jsonString);
 
-                    for (int j = 0; j < missions.length(); j++) {
-                        JSONObject mission = missions.getJSONObject(j);
-                        String missionIdFromJson = mission.getString("id");
+            for (int i = 0; i < allQuestions.length(); i++) {
+                JSONObject qJson = allQuestions.getJSONObject(i);
+                String qId = qJson.optString("id", "");
 
-                        if (missionIdFromJson.equals(missionId)) {
-                            JSONArray missionQuestions = mission.getJSONArray("questions");
+                // Only load questions belonging to this mission
+                if (!qId.startsWith(prefix)) continue;
 
-                            for (int k = 0; k < missionQuestions.length(); k++) {
-                                JSONObject qJson = missionQuestions.getJSONObject(k);
-                                Question q = new Question();
-                                q.questionText = qJson.getString("question");
-                                q.source = "json";
+                Question q = new Question();
+                q.questionText = qJson.getString("question");
+                q.source = "json";
+                q.chapterId = chapterId;
+                q.missionId = missionId;
+                q.difficulty = qJson.optString("difficulty", "medium");
+                q.explanation = qJson.optString("explanation", "");
+                q.published = true;
 
-                                JSONArray choices = qJson.getJSONArray("choices");
-                                q.choices = new ArrayList<>();
-                                for (int c = 0; c < choices.length(); c++) {
-                                    q.choices.add(choices.getString(c));
-                                }
-
-                                q.correctAnswer = qJson.getString("correct");
-                                q.explanation = qJson.optString("explanation", "");
-                                q.chapterId = chapterId;
-                                q.missionId = missionId;
-                                q.difficulty = qJson.optString("difficulty", "medium");
-                                q.published = true;
-
-                                questions.add(q);
-                            }
-                            break;
-                        }
-                    }
-                    break;
+                // Read "options" array
+                JSONArray options = qJson.getJSONArray("options");
+                q.choices = new ArrayList<>();
+                for (int c = 0; c < options.length(); c++) {
+                    q.choices.add(options.getString(c));
                 }
+
+                // Read "answer_index" → map to correctAnswer string
+                int answerIndex = qJson.optInt("answer_index", 0);
+                if (answerIndex >= 0 && answerIndex < q.choices.size()) {
+                    q.correctAnswer = q.choices.get(answerIndex);
+                } else {
+                    q.correctAnswer = q.choices.isEmpty() ? "" : q.choices.get(0);
+                }
+
+                questions.add(q);
             }
 
+            Log.d(TAG, "Loaded " + questions.size() + " questions from JSON for mission " + missionId);
             listener.onLoaded(questions);
 
         } catch (Exception e) {

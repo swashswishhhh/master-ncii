@@ -381,19 +381,56 @@ public class QuizActivity extends AppCompatActivity {
      * QuizActivity so the back stack is clean.
      */
     private void launchResultActivity(int finalScore, int finalTotal) {
-        int[] missedIdsArray    = new int[missedQuestionIds.size()];
-        int[] userAnswersArray  = new int[missedUserAnswers.size()];
+        int[] missedIdsArray   = new int[missedQuestionIds.size()];
+        int[] userAnswersArray = new int[missedUserAnswers.size()];
+
+        // Full question data for the review section
+        ArrayList<String>  missedTexts            = new ArrayList<>();
+        ArrayList<String>  missedOptA             = new ArrayList<>();
+        ArrayList<String>  missedOptB             = new ArrayList<>();
+        ArrayList<String>  missedOptC             = new ArrayList<>();
+        ArrayList<String>  missedOptD             = new ArrayList<>();
+        ArrayList<Integer> missedCorrect           = new ArrayList<>();
+        ArrayList<Integer> missedUserAnswerOptions = new ArrayList<>();
+
         for (int i = 0; i < missedQuestionIds.size(); i++) {
-            missedIdsArray[i]   = missedQuestionIds.get(i);
+            int qId = missedQuestionIds.get(i);
+            missedIdsArray[i]   = qId;
             userAnswersArray[i] = missedUserAnswers.get(i);
+
+            // Find the full Question object by id
+            if (questionList != null) {
+                for (Question q : questionList) {
+                    if (q.getId() == qId) {
+                        missedTexts.add(q.getQuestionText() != null ? q.getQuestionText() : "");
+                        missedOptA.add(q.getOptionA() != null ? q.getOptionA() : "");
+                        missedOptB.add(q.getOptionB() != null ? q.getOptionB() : "");
+                        missedOptC.add(q.getOptionC() != null ? q.getOptionC() : "");
+                        missedOptD.add(q.getOptionD() != null ? q.getOptionD() : "");
+                        missedCorrect.add(q.getCorrectOption());
+                        missedUserAnswerOptions.add(missedUserAnswers.get(i));
+                        break;
+                    }
+                }
+            }
         }
 
         Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra(ResultActivity.EXTRA_SCORE,                finalScore);
-        intent.putExtra(ResultActivity.EXTRA_TOTAL,                finalTotal);
-        intent.putExtra(ResultActivity.EXTRA_LEARNING_OUTCOME,     learningOutcome);
-        intent.putExtra(ResultActivity.EXTRA_MISSED_QUESTION_IDS,  missedIdsArray);
-        intent.putExtra(ResultActivity.EXTRA_USER_ANSWERS,         userAnswersArray);
+        intent.putExtra(ResultActivity.EXTRA_SCORE,               finalScore);
+        intent.putExtra(ResultActivity.EXTRA_TOTAL,               finalTotal);
+        intent.putExtra(ResultActivity.EXTRA_LEARNING_OUTCOME,    learningOutcome);
+        intent.putExtra(ResultActivity.EXTRA_MISSED_QUESTION_IDS, missedIdsArray);
+        intent.putExtra(ResultActivity.EXTRA_USER_ANSWERS,        userAnswersArray);
+
+        // Full question data for review mistakes section
+        intent.putStringArrayListExtra("missed_texts",             missedTexts);
+        intent.putStringArrayListExtra("missed_opt_a",             missedOptA);
+        intent.putStringArrayListExtra("missed_opt_b",             missedOptB);
+        intent.putStringArrayListExtra("missed_opt_c",             missedOptC);
+        intent.putStringArrayListExtra("missed_opt_d",             missedOptD);
+        intent.putIntegerArrayListExtra("missed_correct",          missedCorrect);
+        intent.putIntegerArrayListExtra("missed_user_answer_options", missedUserAnswerOptions);
+
         startActivity(intent);
         finish();
     }

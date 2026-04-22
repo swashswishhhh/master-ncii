@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/drawable/bg_scanlines.xml
+    Subtle horizontal CRT scanline overlay.
+    Used as a semi-transparent layer on top of the splash background.
+    Set alpha="0.04" on the View that uses this drawable.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--
+        Simulates the scanline feel with a fine linear gradient
+        that alternates between near-black and a faint cyan tint.
+        Pure XML — no PNG tile needed.
+    -->
+    <gradient
+        android:type="linear"
+        android:angle="90"
+        android:startColor="#1A07070F"
+        android:centerColor="#0600F5FF"
+        android:endColor="#1A07070F" />
+</shape>

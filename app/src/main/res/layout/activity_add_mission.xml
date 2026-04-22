@@ -55,8 +55,7 @@
                     android:layout_height="6dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="4dp"
-                    android:background="#FFE600"
-                    android:backgroundTint="#FFE600"/>
+                    android:background="#FFE600"/>
 
                 <View
                     android:id="@+id/pill2"
@@ -183,7 +182,7 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Mission ID (Manual entry with format hint) -->
+                        <!-- ── MISSION ID (AUTO-FILLED) ───────────────── -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -200,35 +199,56 @@
                                 android:textSize="10sp"
                                 android:fontFamily="monospace"/>
 
+                            <!-- Badge: AUTO-FILLED -->
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="MANUAL ENTRY"
-                                android:textColor="#FFE600"
+                                android:text="⬡ AUTO-FILLED"
+                                android:textColor="#00FF9F"
                                 android:textSize="9sp"
-                                android:fontFamily="monospace"/>
+                                android:fontFamily="monospace"
+                                android:background="#0D1F14"
+                                android:paddingStart="6dp"
+                                android:paddingEnd="6dp"
+                                android:paddingTop="2dp"
+                                android:paddingBottom="2dp"/>
 
                         </LinearLayout>
 
+                        <!-- Mission ID input — editable but pre-filled -->
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="12dp"
-                            app:boxStrokeColor="#FFE600"
-                            app:hintTextColor="#6B6B99">
+                            android:layout_marginBottom="4dp"
+                            app:boxStrokeColor="#00FF9F"
+                            app:hintTextColor="#6B6B99"
+                            app:startIconDrawable="@drawable/ic_lock"
+                            app:startIconTint="#00FF9F">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etMissionId"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="MISSION 1.6"
-                                android:textColor="#FFE600"
+                                android:hint="Fetching next ID..."
+                                android:textColor="#00FF9F"
                                 android:fontFamily="monospace"
                                 android:inputType="text"
-                                android:text="MISSION "/>
+                                android:textStyle="bold"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Hint label — shown after autofill -->
+                        <TextView
+                            android:id="@+id/tvMissionIdHint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="#4A7A5A"
+                            android:textSize="10sp"
+                            android:fontFamily="monospace"
+                            android:layout_marginBottom="12dp"
+                            android:visibility="gone"/>
 
                         <!-- Description -->
                         <TextView
@@ -306,7 +326,6 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <!-- Context bar: chapter › mission + count -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -348,7 +367,6 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Question chips (progress tracker) -->
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroupQuestions"
                     android:layout_width="match_parent"
@@ -356,7 +374,6 @@
                     android:layout_marginBottom="16dp"
                     app:chipSpacingHorizontal="8dp"/>
 
-                <!-- // QUESTION DATA -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -382,7 +399,6 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <!-- Question text -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -413,125 +429,30 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Choice A -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Choice A"
-                            android:textColor="#00F5FF"
-                            android:textSize="13sp"
-                            android:fontFamily="monospace"
-                            android:layout_marginBottom="4dp"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            app:boxBackgroundColor="#0F0F1A"
-                            app:boxStrokeColor="#00F5FF">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etQChoiceA"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:textSize="14sp"/>
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Choice A" android:textColor="#00F5FF" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginBottom="4dp"/>
+                        <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp" app:boxBackgroundColor="#0F0F1A" app:boxStrokeColor="#00F5FF">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etQChoiceA" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E8E8FF" android:fontFamily="monospace" android:textSize="14sp"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Choice B -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Choice B"
-                            android:textColor="#00F5FF"
-                            android:textSize="13sp"
-                            android:fontFamily="monospace"
-                            android:layout_marginBottom="4dp"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            app:boxBackgroundColor="#0F0F1A"
-                            app:boxStrokeColor="#00F5FF">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etQChoiceB"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:textSize="14sp"/>
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Choice B" android:textColor="#00F5FF" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginBottom="4dp"/>
+                        <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp" app:boxBackgroundColor="#0F0F1A" app:boxStrokeColor="#00F5FF">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etQChoiceB" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E8E8FF" android:fontFamily="monospace" android:textSize="14sp"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Choice C -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Choice C"
-                            android:textColor="#00F5FF"
-                            android:textSize="13sp"
-                            android:fontFamily="monospace"
-                            android:layout_marginBottom="4dp"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            app:boxBackgroundColor="#0F0F1A"
-                            app:boxStrokeColor="#00F5FF">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etQChoiceC"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:textSize="14sp"/>
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Choice C" android:textColor="#00F5FF" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginBottom="4dp"/>
+                        <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="10dp" app:boxBackgroundColor="#0F0F1A" app:boxStrokeColor="#00F5FF">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etQChoiceC" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E8E8FF" android:fontFamily="monospace" android:textSize="14sp"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Choice D -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Choice D"
-                            android:textColor="#00F5FF"
-                            android:textSize="13sp"
-                            android:fontFamily="monospace"
-                            android:layout_marginBottom="4dp"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:boxBackgroundColor="#0F0F1A"
-                            app:boxStrokeColor="#00F5FF">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etQChoiceD"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:textSize="14sp"/>
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Choice D" android:textColor="#00F5FF" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginBottom="4dp"/>
+                        <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" app:boxBackgroundColor="#0F0F1A" app:boxStrokeColor="#00F5FF">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etQChoiceD" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#E8E8FF" android:fontFamily="monospace" android:textSize="14sp"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- // ANSWER CONFIG -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="// ANSWER CONFIG"
-                    android:textColor="#6B6B99"
-                    android:textSize="11sp"
-                    android:fontFamily="monospace"
-                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="// ANSWER CONFIG" android:textColor="#6B6B99" android:textSize="11sp" android:fontFamily="monospace" android:layout_marginBottom="8dp"/>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -549,15 +470,7 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <!-- Correct Answer — Radio group replaces spinner -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Correct Answer"
-                            android:textColor="#FFE600"
-                            android:textSize="13sp"
-                            android:fontFamily="monospace"
-                            android:layout_marginBottom="8dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Correct Answer" android:textColor="#FFE600" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginBottom="8dp"/>
 
                         <RadioGroup
                             android:id="@+id/rgCorrectAnswer"
@@ -565,101 +478,23 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_marginBottom="16dp">
-
-                            <RadioButton
-                                android:id="@+id/rbAnswerA"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="A"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:buttonTint="#FFE600"/>
-
-                            <RadioButton
-                                android:id="@+id/rbAnswerB"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="B"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:buttonTint="#FFE600"/>
-
-                            <RadioButton
-                                android:id="@+id/rbAnswerC"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="C"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:buttonTint="#FFE600"/>
-
-                            <RadioButton
-                                android:id="@+id/rbAnswerD"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="D"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:buttonTint="#FFE600"/>
-
+                            <RadioButton android:id="@+id/rbAnswerA" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="A" android:textColor="#E8E8FF" android:fontFamily="monospace" android:buttonTint="#FFE600"/>
+                            <RadioButton android:id="@+id/rbAnswerB" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="B" android:textColor="#E8E8FF" android:fontFamily="monospace" android:buttonTint="#FFE600"/>
+                            <RadioButton android:id="@+id/rbAnswerC" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="C" android:textColor="#E8E8FF" android:fontFamily="monospace" android:buttonTint="#FFE600"/>
+                            <RadioButton android:id="@+id/rbAnswerD" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="D" android:textColor="#E8E8FF" android:fontFamily="monospace" android:buttonTint="#FFE600"/>
                         </RadioGroup>
 
-                        <!-- Difficulty -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Difficulty"
-                            android:textColor="#FFE600"
-                            android:textSize="13sp"
-                            android:fontFamily="monospace"
-                            android:layout_marginBottom="4dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Difficulty" android:textColor="#FFE600" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginBottom="4dp"/>
+                        <Spinner android:id="@+id/spinnerQDifficulty" android:layout_width="match_parent" android:layout_height="48dp" android:background="#1E1E3A" android:paddingStart="12dp" android:paddingEnd="12dp" android:layout_marginBottom="16dp"/>
 
-                        <Spinner
-                            android:id="@+id/spinnerQDifficulty"
-                            android:layout_width="match_parent"
-                            android:layout_height="48dp"
-                            android:background="#1E1E3A"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:layout_marginBottom="16dp"/>
-
-                        <!-- Explanation -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Explanation (Optional)"
-                            android:textColor="#FFE600"
-                            android:textSize="13sp"
-                            android:fontFamily="monospace"
-                            android:layout_marginBottom="4dp"/>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:boxBackgroundColor="#0F0F1A"
-                            app:boxStrokeColor="#FFE600">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etQExplanation"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:minHeight="56dp"
-                                android:gravity="top|start"
-                                android:inputType="textMultiLine"
-                                android:textColor="#E8E8FF"
-                                android:fontFamily="monospace"
-                                android:textSize="14sp"/>
-
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Explanation (Optional)" android:textColor="#FFE600" android:textSize="13sp" android:fontFamily="monospace" android:layout_marginBottom="4dp"/>
+                        <com.google.android.material.textfield.TextInputLayout android:layout_width="match_parent" android:layout_height="wrap_content" app:boxBackgroundColor="#0F0F1A" app:boxStrokeColor="#FFE600">
+                            <com.google.android.material.textfield.TextInputEditText android:id="@+id/etQExplanation" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="56dp" android:gravity="top|start" android:inputType="textMultiLine" android:textColor="#E8E8FF" android:fontFamily="monospace" android:textSize="14sp"/>
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Add question button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnAddQuestion"
                     android:layout_width="match_parent"
@@ -672,7 +507,6 @@
                     app:backgroundTint="#00F5FF"
                     app:cornerRadius="4dp"/>
 
-                <!-- Done adding questions -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnDoneQuestions"
                     android:layout_width="match_parent"
@@ -700,14 +534,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="// MISSION SUMMARY"
-                    android:textColor="#6B6B99"
-                    android:textSize="11sp"
-                    android:fontFamily="monospace"
-                    android:layout_marginBottom="8dp"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="// MISSION SUMMARY" android:textColor="#6B6B99" android:textSize="11sp" android:fontFamily="monospace" android:layout_marginBottom="8dp"/>
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -719,143 +546,35 @@
                     app:strokeColor="#FFE600"
                     app:strokeWidth="1dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
 
-                        <!-- Chapter row -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:text="CHAPTER"
-                                android:textColor="#6B6B99"
-                                android:textSize="10sp"
-                                android:fontFamily="monospace"/>
-
-                            <TextView
-                                android:id="@+id/tvReviewChapter"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="—"
-                                android:textColor="#E8E8FF"
-                                android:textSize="13sp"
-                                android:fontFamily="monospace"/>
-
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="10dp">
+                            <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="CHAPTER" android:textColor="#6B6B99" android:textSize="10sp" android:fontFamily="monospace"/>
+                            <TextView android:id="@+id/tvReviewChapter" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="—" android:textColor="#E8E8FF" android:textSize="13sp" android:fontFamily="monospace"/>
                         </LinearLayout>
 
-                        <!-- Mission title row -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:text="TITLE"
-                                android:textColor="#6B6B99"
-                                android:textSize="10sp"
-                                android:fontFamily="monospace"/>
-
-                            <TextView
-                                android:id="@+id/tvReviewTitle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="—"
-                                android:textColor="#FFE600"
-                                android:textSize="13sp"
-                                android:fontFamily="monospace"/>
-
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="10dp">
+                            <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="TITLE" android:textColor="#6B6B99" android:textSize="10sp" android:fontFamily="monospace"/>
+                            <TextView android:id="@+id/tvReviewTitle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="—" android:textColor="#FFE600" android:textSize="13sp" android:fontFamily="monospace"/>
                         </LinearLayout>
 
-                        <!-- Mission ID row -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:text="ID"
-                                android:textColor="#6B6B99"
-                                android:textSize="10sp"
-                                android:fontFamily="monospace"/>
-
-                            <TextView
-                                android:id="@+id/tvReviewMissionId"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="—"
-                                android:textColor="#E8E8FF"
-                                android:textSize="13sp"
-                                android:fontFamily="monospace"/>
-
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="10dp">
+                            <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="ID" android:textColor="#6B6B99" android:textSize="10sp" android:fontFamily="monospace"/>
+                            <TextView android:id="@+id/tvReviewMissionId" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="—" android:textColor="#00FF9F" android:textSize="13sp" android:fontFamily="monospace"/>
                         </LinearLayout>
 
-                        <!-- Difficulty row -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:text="DIFFICULTY"
-                                android:textColor="#6B6B99"
-                                android:textSize="10sp"
-                                android:fontFamily="monospace"/>
-
-                            <TextView
-                                android:id="@+id/tvReviewDifficulty"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="—"
-                                android:textColor="#E8E8FF"
-                                android:textSize="13sp"
-                                android:fontFamily="monospace"/>
-
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="10dp">
+                            <TextView android:layout_width="100dp" android:layout_height="wrap_content" android:text="DIFFICULTY" android:textColor="#6B6B99" android:textSize="10sp" android:fontFamily="monospace"/>
+                            <TextView android:id="@+id/tvReviewDifficulty" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="—" android:textColor="#E8E8FF" android:textSize="13sp" android:fontFamily="monospace"/>
                         </LinearLayout>
 
-                        <!-- Divider -->
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#1E1E3A"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="12dp"/>
+                        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#1E1E3A" android:layout_marginTop="4dp" android:layout_marginBottom="12dp"/>
 
-                        <!-- Question count — highlighted -->
-                        <TextView
-                            android:id="@+id/tvReviewQuestionCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 questions ready"
-                            android:textColor="#00F5FF"
-                            android:textSize="15sp"
-                            android:fontFamily="monospace"
-                            android:textStyle="bold"/>
+                        <TextView android:id="@+id/tvReviewQuestionCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 questions ready" android:textColor="#00F5FF" android:textSize="15sp" android:fontFamily="monospace" android:textStyle="bold"/>
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Publish -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnPublishMission"
                     android:layout_width="match_parent"
@@ -868,7 +587,6 @@
                     app:backgroundTint="#FFE600"
                     app:cornerRadius="4dp"/>
 
-                <!-- Save draft -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSaveDraft"
                     android:layout_width="match_parent"
@@ -888,9 +606,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <!-- ══════════════════════════════════════════════════════════
-         LOADING OVERLAY
-    ══════════════════════════════════════════════════════════ -->
+    <!-- LOADING OVERLAY -->
     <FrameLayout
         android:id="@+id/loadingOverlay"
         android:layout_width="match_parent"

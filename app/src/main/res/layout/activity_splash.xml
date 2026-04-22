@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#07070F">
+
+    <!-- ── Scanline overlay (subtle horizontal lines for CRT feel) ── -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_scanlines"
+        android:alpha="0.04"/>
+
+    <!-- ── Radial glow behind robot ── -->
+    <View
+        android:id="@+id/glowCircle"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/bg_glow_circle"
+        android:alpha="0.35"/>
+
+    <!-- ── Main content ── -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingBottom="40dp">
+
+        <!-- Robot mascot -->
+        <ImageView
+            android:id="@+id/ivRobot"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/avd_robot_mascot"
+            android:scaleType="fitCenter"
+            android:contentDescription="Server Master Robot Mascot"/>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="SERVER MASTER"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.12"
+            android:shadowColor="#00F5FF"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="20"/>
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/tvSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="CSS NC II TRAINING SYSTEM"
+            android:textColor="#00F5FF"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.22"/>
+
+        <!-- Loader section -->
+        <LinearLayout
+            android:id="@+id/loaderWrap"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="36dp">
+
+            <!-- Label row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:id="@+id/tvLoadLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="INITIALIZING"
+                    android:textColor="#6B6B99"
+                    android:textSize="9sp"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.18"/>
+
+                <TextView
+                    android:id="@+id/tvLoadPct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0%"
+                    android:textColor="#6B6B99"
+                    android:textSize="9sp"
+                    android:fontFamily="monospace"/>
+
+            </LinearLayout>
+
+            <!-- Progress bar track -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="4dp">
+
+                <!-- Track background -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/bg_progress_track"/>
+
+                <!-- Filled progress -->
+                <ProgressBar
+                    android:id="@+id/progressLoader"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:progressDrawable="@drawable/progress_splash_bar"
+                    android:max="100"
+                    android:progress="0"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <!-- Animated dots -->
+        <LinearLayout
+            android:id="@+id/dotsWrap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp"
+            android:gravity="center">
+
+            <View
+                android:id="@+id/dot1"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_dot"/>
+
+            <View
+                android:id="@+id/dot2"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/bg_dot"/>
+
+            <View
+                android:id="@+id/dot3"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:background="@drawable/bg_dot"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Version tag pinned to bottom -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:text="v1.0 · BUILD 2026"
+        android:textColor="#2D2D4A"
+        android:textSize="9sp"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.18"/>
+
+</FrameLayout>

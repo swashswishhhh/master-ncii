@@ -19,6 +19,15 @@
         <item name="android:windowLightNavigationBar">false</item>
     </style>
 
+    <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_theme_background</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">#07070F</item>
+        <item name="colorPrimary">#00F5FF</item>
+        <item name="colorAccent">#FFE600</item>
+    </style>
+
     <!-- ═══════════════════════════════════════════════════════════════════ -->
     <!-- THEME 2: TERMINAL GREEN -->
     <!-- ═══════════════════════════════════════════════════════════════════ -->

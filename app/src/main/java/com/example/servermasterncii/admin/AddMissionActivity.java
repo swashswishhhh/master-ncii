@@ -1,11 +1,10 @@
 package com.example.servermasterncii.admin;
 
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -19,7 +18,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -33,11 +32,9 @@ import java.util.Map;
  * Unified Mission Builder — 3-step wizard.
  *
  * Step 1: Fill mission metadata (chapter, title, ID, difficulty, description)
- * Step 2: Add questions inline — no activity switch needed
+ *         → Mission ID auto-fills with the next available ID for the selected chapter
+ * Step 2: Add questions inline
  * Step 3: Review summary → Publish or Save Draft
- *
- * The mission is written to Firestore once (at publish/draft time).
- * Questions are batched in memory and written together at the end.
  */
 public class AddMissionActivity extends AppCompatActivity {
 
@@ -46,9 +43,9 @@ public class AddMissionActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     // ── Wizard state ──────────────────────────────────────────────
-    private static final int STEP_MISSION_INFO = 0;
+    private static final int STEP_MISSION_INFO  = 0;
     private static final int STEP_ADD_QUESTIONS = 1;
-    private static final int STEP_REVIEW = 2;
+    private static final int STEP_REVIEW        = 2;
     private int currentStep = STEP_MISSION_INFO;
 
     // ── Chapter / difficulty data ─────────────────────────────────
@@ -60,8 +57,8 @@ public class AddMissionActivity extends AppCompatActivity {
     };
     private final String[] difficulties  = {"beginner", "intermediate", "advanced"};
 
-    // ── Saved mission reference (set after step 1 next) ──────────
-    private String savedMissionDocId = null; // Firestore doc id after first write
+    // ── Resolved mission fields ───────────────────────────────────
+    private String savedMissionDocId = null;
     private String resolvedChapterId;
     private String resolvedMissionId;
     private String resolvedTitle;
@@ -79,63 +76,68 @@ public class AddMissionActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
-        db = FirebaseFirestore.getInstance();
+        db        = FirebaseFirestore.getInstance();
         viewModel = new ViewModelProvider(this).get(AdminViewModel.class);
 
         setupToolbar();
-        setupSpinners();
-        setupMissionIdManualEntry(); // Changed from auto-fill to manual entry
+        setupSpinners();           // sets up chapter + difficulty spinners
         setupStepButtons();
         observeViewModel();
         goToStep(STEP_MISSION_INFO);
     }
 
     // ─────────────────────────────────────────────────────────────
-    // Setup helpers
+    // Setup
     // ─────────────────────────────────────────────────────────────
 
     private void setupToolbar() {
         binding.toolbar.setNavigationOnClickListener(v -> {
-            if (currentStep == STEP_MISSION_INFO) {
-                finish();
-            } else {
-                goToStep(currentStep - 1);
-            }
+            if (currentStep == STEP_MISSION_INFO) finish();
+            else goToStep(currentStep - 1);
         });
     }
 
     private void setupSpinners() {
+        // Chapter spinner
         ArrayAdapter<String> chapterAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, chapterTitles);
-        chapterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        chapterAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerChapter.setAdapter(chapterAdapter);
 
+        // Auto-fill mission ID whenever chapter changes
+        binding.spinnerChapter.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent,
+                                               View view, int position, long id) {
+                        fetchAndAutoFillNextMissionId(chapterIds[position]);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+
+        // Difficulty spinner
         ArrayAdapter<String> diffAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, difficulties);
-        diffAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        diffAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerDifficulty.setAdapter(diffAdapter);
-    }
 
-    /** Manual entry for Mission ID — no auto-fill, just format hint */
-    private void setupMissionIdManualEntry() {
-        binding.etMissionId.setHint("e.g. MISSION 1.6");
-        binding.etMissionId.setText("");  // remove the "MISSION " pre-fill
-
-
+        // Trigger auto-fill for default selection (chapter_1)
+        fetchAndAutoFillNextMissionId(chapterIds[0]);
     }
 
     private void setupStepButtons() {
-        // Step 1 → Step 2
         binding.btnNext.setOnClickListener(v -> {
             if (validateMissionInfo()) advanceToQuestions();
         });
 
-        // Step 2: add a question to the batch
         binding.btnAddQuestion.setOnClickListener(v -> {
             if (validateQuestionForm()) saveQuestionToBatch();
         });
 
-        // Step 2 → Step 3
         binding.btnDoneQuestions.setOnClickListener(v -> {
             if (pendingQuestions.isEmpty()) {
                 Toast.makeText(this,
@@ -146,10 +148,7 @@ public class AddMissionActivity extends AppCompatActivity {
             goToStep(STEP_REVIEW);
         });
 
-        // Step 3: Publish
         binding.btnPublishMission.setOnClickListener(v -> saveMission(true));
-
-        // Step 3: Save draft
         binding.btnSaveDraft.setOnClickListener(v -> saveMission(false));
     }
 
@@ -162,10 +161,93 @@ public class AddMissionActivity extends AppCompatActivity {
                 Toast.makeText(this, err, Toast.LENGTH_LONG).show();
         });
         viewModel.getSuccessMessage().observe(this, msg -> {
-            if (msg != null && !msg.isEmpty()) {
+            if (msg != null && !msg.isEmpty())
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-            }
         });
+    }
+
+    // ─────────────────────────────────────────────────────────────
+    // AUTO-FILL: query Firestore → find highest mission number → +1
+    // ─────────────────────────────────────────────────────────────
+
+    /**
+     * Queries Firestore for all missions in the given chapter,
+     * finds the highest sub-number (e.g. "mission_1_5" → 5),
+     * then sets the Mission ID field to the next one ("MISSION 1.6").
+     *
+     * Format rules:
+     *   chapter_1 → MISSION 1.X
+     *   chapter_2 → MISSION 2.X
+     *   chapter_3 → MISSION 3.X
+     */
+    private void fetchAndAutoFillNextMissionId(String chapterId) {
+        // Extract chapter number from "chapter_1" → 1
+        String chapterNum = chapterId.replace("chapter_", "");
+
+        // Show a loading hint while querying
+        binding.etMissionId.setEnabled(false);
+        binding.etMissionId.setText("Loading...");
+
+        db.collection("missions")
+                .whereEqualTo("chapterId", chapterId)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    int maxSubNumber = 0;
+
+                    for (QueryDocumentSnapshot doc : snapshot) {
+                        String missionId = doc.getString("missionId");
+                        if (missionId == null) continue;
+
+                        // Parse "mission_1_6" → extract last segment → 6
+                        // Expected format: mission_{chapterNum}_{subNum}
+                        String prefix = "mission_" + chapterNum + "_";
+                        if (missionId.startsWith(prefix)) {
+                            try {
+                                int subNum = Integer.parseInt(
+                                        missionId.substring(prefix.length()));
+                                if (subNum > maxSubNumber) maxSubNumber = subNum;
+                            } catch (NumberFormatException e) {
+                                Log.w("AddMission",
+                                        "Could not parse mission id: " + missionId);
+                            }
+                        }
+                    }
+
+                    // Next available = max + 1
+                    int nextSubNumber = maxSubNumber + 1;
+
+                    // Format display: "MISSION 1.6"
+                    String suggestedId = "MISSION " + chapterNum + "." + nextSubNumber;
+
+                    runOnUiThread(() -> {
+                        binding.etMissionId.setEnabled(true);
+                        binding.etMissionId.setText(suggestedId);
+
+                        // Move cursor to end so admin can edit if needed
+                        binding.etMissionId.setSelection(
+                                binding.etMissionId.getText().length());
+
+                        // Show hint label
+                        binding.tvMissionIdHint.setText(
+                                "Next available for " + chapterId.replace("_", " ")
+                                        .toUpperCase(Locale.ROOT)
+                                        + "  —  edit if needed");
+                        binding.tvMissionIdHint.setVisibility(View.VISIBLE);
+                    });
+                })
+                .addOnFailureListener(e -> {
+                    // Fallback — let admin fill manually
+                    runOnUiThread(() -> {
+                        binding.etMissionId.setEnabled(true);
+                        binding.etMissionId.setText(
+                                "MISSION " + chapterNum + ".1");
+                        binding.tvMissionIdHint.setText(
+                                "Could not fetch existing missions — check manually");
+                        binding.tvMissionIdHint.setVisibility(View.VISIBLE);
+                        Log.e("AddMission",
+                                "Failed to fetch missions for autofill", e);
+                    });
+                });
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -174,41 +256,26 @@ public class AddMissionActivity extends AppCompatActivity {
 
     private void goToStep(int step) {
         currentStep = step;
-
-        // Update step indicator pills
         updateStepIndicator(step);
 
-        // Show / hide sections
         binding.sectionMissionInfo.setVisibility(
-                step == STEP_MISSION_INFO ? View.VISIBLE : View.GONE);
+                step == STEP_MISSION_INFO  ? View.VISIBLE : View.GONE);
         binding.sectionAddQuestions.setVisibility(
                 step == STEP_ADD_QUESTIONS ? View.VISIBLE : View.GONE);
         binding.sectionReview.setVisibility(
-                step == STEP_REVIEW ? View.VISIBLE : View.GONE);
+                step == STEP_REVIEW        ? View.VISIBLE : View.GONE);
 
-        // Update review section when entering step 3
-        if (step == STEP_REVIEW) {
-            populateReviewSection();
-        }
+        if (step == STEP_REVIEW) populateReviewSection();
 
-        // Toolbar title
         String[] titles = {"⬡ NEW MISSION", "⬡ ADD QUESTIONS", "⬡ REVIEW"};
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(titles[step]);
     }
 
     private void updateStepIndicator(int activeStep) {
-        // Pills: step1Pill, step2Pill, step3Pill defined in XML
-        int activeColor   = getResources().getColor(
-                com.google.android.material.R.color.design_default_color_primary, getTheme());
-        int inactiveColor = 0xFF1E1E3A;
-        int activeText    = 0xFF0A0A0F;
-        int inactiveText  = 0xFF6B6B99;
-
-        View[] pills   = {binding.pill1, binding.pill2, binding.pill3};
+        View[] pills = {binding.pill1, binding.pill2, binding.pill3};
         for (int i = 0; i < pills.length; i++) {
-            boolean active = (i == activeStep);
-            pills[i].setBackgroundResource(active
+            pills[i].setBackgroundResource(i == activeStep
                     ? com.example.servermasterncii.R.drawable.bg_pill_active
                     : com.example.servermasterncii.R.drawable.bg_pill_inactive);
         }
@@ -219,17 +286,14 @@ public class AddMissionActivity extends AppCompatActivity {
     // ─────────────────────────────────────────────────────────────
 
     private void advanceToQuestions() {
-        // Cache mission data for the context bar in Step 2
-        resolvedChapterId = chapterIds[binding.spinnerChapter.getSelectedItemPosition()];
-        resolvedTitle = binding.etMissionTitle.getText().toString().trim();
+        resolvedChapterId  = chapterIds[binding.spinnerChapter.getSelectedItemPosition()];
+        resolvedTitle      = binding.etMissionTitle.getText().toString().trim();
         resolvedDifficulty = difficulties[binding.spinnerDifficulty.getSelectedItemPosition()];
 
-        // Get raw mission ID and normalize spaces
+        // Normalize: collapse spaces, uppercase
         String rawId = binding.etMissionId.getText().toString().trim();
-        // Normalize: collapse multiple spaces, e.g. "MISSION  1.6" → "MISSION 1.6"
         String normalizedId = rawId.replaceAll("\\s+", " ").toUpperCase(Locale.ROOT);
 
-        // Validate mission ID format (must be "MISSION X.Y")
         if (!normalizedId.matches("MISSION \\d+\\.\\d+")) {
             Toast.makeText(this,
                     "Mission ID must follow format: MISSION X.Y (e.g., MISSION 1.6)",
@@ -237,13 +301,12 @@ public class AddMissionActivity extends AppCompatActivity {
             return;
         }
 
-        // Convert "MISSION 1.6" → "mission_1_6" for Firestore storage
+        // Convert "MISSION 1.6" → "mission_1_6"
         resolvedMissionId = normalizedId
-                .toLowerCase(Locale.ROOT)   // "mission 1.6"
-                .replace(" ", "_")          // "mission_1.6"
-                .replace(".", "_");         // "mission_1_6" ✅
+                .toLowerCase(Locale.ROOT)
+                .replace(" ", "_")
+                .replace(".", "_");
 
-        // Show context bar in step 2
         binding.tvContextBar.setText(
                 chapterTitles[binding.spinnerChapter.getSelectedItemPosition()]
                         + "  ›  " + resolvedTitle);
@@ -258,17 +321,14 @@ public class AddMissionActivity extends AppCompatActivity {
     // ─────────────────────────────────────────────────────────────
 
     private void saveQuestionToBatch() {
-        String qText  = binding.etQText.getText().toString().trim();
-        String choiceA = binding.etQChoiceA.getText().toString().trim();
-        String choiceB = binding.etQChoiceB.getText().toString().trim();
-        String choiceC = binding.etQChoiceC.getText().toString().trim();
-        String choiceD = binding.etQChoiceD.getText().toString().trim();
-
-        // Determine correct answer from radio group
-        String correct = getSelectedCorrectAnswer(choiceA, choiceB, choiceC, choiceD);
-
-        String difficulty = binding.spinnerQDifficulty.getSelectedItem().toString();
-        String explanation = binding.etQExplanation.getText().toString().trim();
+        String qText    = binding.etQText.getText().toString().trim();
+        String choiceA  = binding.etQChoiceA.getText().toString().trim();
+        String choiceB  = binding.etQChoiceB.getText().toString().trim();
+        String choiceC  = binding.etQChoiceC.getText().toString().trim();
+        String choiceD  = binding.etQChoiceD.getText().toString().trim();
+        String correct  = getSelectedCorrectAnswer(choiceA, choiceB, choiceC, choiceD);
+        String diff     = binding.spinnerQDifficulty.getSelectedItem().toString();
+        String explain  = binding.etQExplanation.getText().toString().trim();
 
         AdminQuestion q = new AdminQuestion();
         q.setQuestionText(qText);
@@ -276,12 +336,11 @@ public class AddMissionActivity extends AppCompatActivity {
         q.setCorrectAnswer(correct);
         q.setChapterId(resolvedChapterId);
         q.setMissionId(resolvedMissionId);
-        q.setDifficulty(difficulty);
-        q.setExplanation(explanation);
-        q.setPublished(false); // committed at final publish
+        q.setDifficulty(diff);
+        q.setExplanation(explain);
+        q.setPublished(false);
 
         pendingQuestions.add(q);
-
         addQuestionChip(pendingQuestions.size(), qText);
         clearQuestionForm();
         refreshQuestionCount();
@@ -291,41 +350,36 @@ public class AddMissionActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    /** Returns the correct answer text based on which radio button is selected. */
     private String getSelectedCorrectAnswer(String a, String b, String c, String d) {
         int checkedId = binding.rgCorrectAnswer.getCheckedRadioButtonId();
         if (checkedId == binding.rbAnswerA.getId()) return a;
         if (checkedId == binding.rbAnswerB.getId()) return b;
         if (checkedId == binding.rbAnswerC.getId()) return c;
         if (checkedId == binding.rbAnswerD.getId()) return d;
-        return a; // fallback
+        return a;
     }
 
-    /** Adds a dismissible chip for each saved question. Tap chip to remove it. */
     private void addQuestionChip(int number, String questionText) {
         Chip chip = new Chip(this);
         chip.setText("Q" + number);
         chip.setCheckable(false);
         chip.setCloseIconVisible(true);
         chip.setChipBackgroundColorResource(
-                com.example.servermasterncii.R.color.chip_background); // define in colors.xml
+                com.example.servermasterncii.R.color.chip_background);
         chip.setTextColor(0xFF00F5FF);
         chip.setCloseIconTint(
                 android.content.res.ColorStateList.valueOf(0xFF6B6B99));
 
-        // Long-press to see the question text
         chip.setOnLongClickListener(v -> {
             Toast.makeText(this, questionText, Toast.LENGTH_LONG).show();
             return true;
         });
 
-        // Close = remove from batch
         final int index = pendingQuestions.size() - 1;
         chip.setOnCloseIconClickListener(v -> {
             pendingQuestions.remove(index);
             binding.chipGroupQuestions.removeView(chip);
             refreshQuestionCount();
-            // Renumber remaining chips
             renumberChips();
         });
 
@@ -336,15 +390,14 @@ public class AddMissionActivity extends AppCompatActivity {
         int count = binding.chipGroupQuestions.getChildCount();
         for (int i = 0; i < count; i++) {
             View child = binding.chipGroupQuestions.getChildAt(i);
-            if (child instanceof Chip) {
-                ((Chip) child).setText("Q" + (i + 1));
-            }
+            if (child instanceof Chip) ((Chip) child).setText("Q" + (i + 1));
         }
     }
 
     private void refreshQuestionCount() {
         int count = pendingQuestions.size();
-        binding.tvQuestionCount.setText(count + " question" + (count == 1 ? "" : "s") + " added");
+        binding.tvQuestionCount.setText(
+                count + " question" + (count == 1 ? "" : "s") + " added");
         binding.btnDoneQuestions.setEnabled(count > 0);
     }
 
@@ -357,11 +410,11 @@ public class AddMissionActivity extends AppCompatActivity {
         binding.etQExplanation.setText("");
         binding.rgCorrectAnswer.check(binding.rbAnswerA.getId());
 
-        // Reset difficulty to easy
         ArrayAdapter<String> diffAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item,
                 new String[]{"easy", "medium", "hard"});
-        diffAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        diffAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerQDifficulty.setAdapter(diffAdapter);
     }
 
@@ -392,12 +445,14 @@ public class AddMissionActivity extends AppCompatActivity {
             valid = false;
         }
 
-        String missionId = binding.etMissionId.getText().toString().trim();
+        String missionId = binding.etMissionId.getText().toString().trim()
+                .replaceAll("\\s+", " ").toUpperCase(Locale.ROOT);
         if (TextUtils.isEmpty(missionId)) {
             binding.etMissionId.setError("Mission ID is required");
             valid = false;
         } else if (!missionId.matches("MISSION \\d+\\.\\d+")) {
-            binding.etMissionId.setError("Must follow format: MISSION X.Y (e.g., MISSION 1.6)");
+            binding.etMissionId.setError(
+                    "Must follow format: MISSION X.Y (e.g., MISSION 1.6)");
             valid = false;
         }
 
@@ -406,33 +461,27 @@ public class AddMissionActivity extends AppCompatActivity {
 
     private boolean validateQuestionForm() {
         boolean valid = true;
-
         if (TextUtils.isEmpty(binding.etQText.getText())) {
             binding.etQText.setError("Question text is required");
             valid = false;
         }
         if (TextUtils.isEmpty(binding.etQChoiceA.getText())) {
-            binding.etQChoiceA.setError("Required");
-            valid = false;
+            binding.etQChoiceA.setError("Required"); valid = false;
         }
         if (TextUtils.isEmpty(binding.etQChoiceB.getText())) {
-            binding.etQChoiceB.setError("Required");
-            valid = false;
+            binding.etQChoiceB.setError("Required"); valid = false;
         }
         if (TextUtils.isEmpty(binding.etQChoiceC.getText())) {
-            binding.etQChoiceC.setError("Required");
-            valid = false;
+            binding.etQChoiceC.setError("Required"); valid = false;
         }
         if (TextUtils.isEmpty(binding.etQChoiceD.getText())) {
-            binding.etQChoiceD.setError("Required");
-            valid = false;
+            binding.etQChoiceD.setError("Required"); valid = false;
         }
-
         return valid;
     }
 
     // ─────────────────────────────────────────────────────────────
-    // Firestore writes  (same paths as original)
+    // Firestore writes
     // ─────────────────────────────────────────────────────────────
 
     private void saveMission(boolean published) {
@@ -441,10 +490,8 @@ public class AddMissionActivity extends AppCompatActivity {
 
         String adminEmail = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : "";
-
         String description = binding.etDescription.getText().toString().trim();
 
-        // ── Mission document (same structure as original) ─────────
         Map<String, Object> missionData = new HashMap<>();
         missionData.put("title",       resolvedTitle);
         missionData.put("missionId",   resolvedMissionId);
@@ -469,16 +516,13 @@ public class AddMissionActivity extends AppCompatActivity {
                 .addOnSuccessListener(missionRef -> {
                     savedMissionDocId = missionRef.getId();
 
-                    // Write to chapter subcollection
                     db.collection("chapters")
                             .document(resolvedChapterId)
                             .collection("missions")
                             .document(resolvedMissionId)
                             .set(subcollectionData)
-                            .addOnSuccessListener(v -> {
-                                // Now batch-write all questions
-                                writeAllQuestions(published, missionRef.getId());
-                            })
+                            .addOnSuccessListener(v ->
+                                    writeAllQuestions(published, missionRef.getId()))
                             .addOnFailureListener(e -> {
                                 setLoading(false);
                                 Toast.makeText(this,
@@ -494,22 +538,19 @@ public class AddMissionActivity extends AppCompatActivity {
                 });
     }
 
-    /** Writes all pending questions as a Firestore batch under the mission. */
     private void writeAllQuestions(boolean published, String missionDocId) {
         if (pendingQuestions.isEmpty()) {
             onSaveComplete(published);
             return;
         }
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         WriteBatch batch = db.batch();
 
         for (AdminQuestion q : pendingQuestions) {
             q.setPublished(published);
-            q.setMissionId(resolvedMissionId);   // already normalized "mission_1_7"
+            q.setMissionId(resolvedMissionId);
             q.setChapterId(resolvedChapterId);
 
-            // Build the question map manually for the batch
             Map<String, Object> qData = new HashMap<>();
             qData.put("questionText",  q.getQuestionText());
             qData.put("choices",       q.getChoices());
@@ -523,19 +564,18 @@ public class AddMissionActivity extends AppCompatActivity {
             qData.put("createdBy",     FirebaseAuth.getInstance().getCurrentUser() != null
                     ? FirebaseAuth.getInstance().getCurrentUser().getEmail() : "");
 
-            // Auto-generate a new doc ref in the "questions" collection
             DocumentReference docRef = db.collection("questions").document();
             batch.set(docRef, qData);
         }
 
         batch.commit()
                 .addOnSuccessListener(unused -> {
-                    Log.d("AddMission", "Batch wrote " + pendingQuestions.size() + " questions ✅");
+                    Log.d("AddMission",
+                            "Batch wrote " + pendingQuestions.size() + " questions ✅");
                     onSaveComplete(published);
                 })
                 .addOnFailureListener(e -> {
                     setLoading(false);
-                    Log.e("AddMission", "Batch write FAILED: " + e.getMessage());
                     Toast.makeText(this,
                             "❌ Questions save failed: " + e.getMessage(),
                             Toast.LENGTH_LONG).show();
@@ -546,7 +586,7 @@ public class AddMissionActivity extends AppCompatActivity {
         setLoading(false);
         String msg = published
                 ? "✅ Mission published with " + pendingQuestions.size() + " questions!"
-                : "📝 Draft saved with " + pendingQuestions.size() + " questions!";
+                : "📝 Draft saved with "       + pendingQuestions.size() + " questions!";
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         finish();
     }

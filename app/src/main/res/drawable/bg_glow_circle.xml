@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/drawable/bg_glow_circle.xml
+    Soft radial glow placed behind the robot mascot.
+    Use on a View sized ~280dp x 280dp with alpha="0.35".
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <gradient
+        android:type="radial"
+        android:gradientRadius="50%p"
+        android:startColor="#6600F5FF"
+        android:centerColor="#2200F5FF"
+        android:endColor="#0000F5FF" />
+</shape>

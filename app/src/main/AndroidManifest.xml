@@ -8,20 +8,43 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/avd_robot_mascot"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/avd_robot_mascot"
         android:supportsRtl="true"
         android:theme="@style/Theme.ServerMasterNCII">
+
+        <!-- ══ SPLASH — entry point ══════════════════════════════ -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.SplashScreen"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- ══ AUTH ══════════════════════════════════════════════ -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <!-- ══ MAIN GAME ══════════════════════════════════════════ -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".QuizActivity"
             android:exported="false" />
         <activity
             android:name=".ResultActivity"
             android:exported="false" />
+
+        <!-- ══ SIMULATORS ════════════════════════════════════════ -->
         <activity
             android:name=".WorkgroupConfigActivity"
             android:exported="false" />
@@ -46,20 +69,30 @@
         <activity
             android:name=".DecisionTreeActivity"
             android:exported="false" />
+
+        <!-- ══ PROFILE / SETTINGS ════════════════════════════════ -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="Settings"
             android:theme="@style/Theme.ServerMasterNCII" />
+
+        <!-- ══ ADMIN ══════════════════════════════════════════════ -->
         <activity
             android:name=".admin.AdminDashboardActivity"
             android:exported="false"
             android:label="Admin Console"
             android:theme="@style/Theme.ServerMasterNCII" />
         <activity
-            android:name=".admin.AddMissionActivity"
-            android:label="Add Mission"
+            android:name=".admin.MissionManagerActivity"
             android:exported="false" />
+        <activity
+            android:name=".admin.AddMissionActivity"
+            android:exported="false"
+            android:label="Add Mission" />
         <activity
             android:name=".admin.QuestionManagerActivity"
             android:exported="false"
@@ -70,18 +103,8 @@
             android:exported="false"
             android:label="Add Question"
             android:theme="@style/Theme.ServerMasterNCII" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true">
-            <!-- Make LoginActivity the launcher entry point -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
-        <!-- Facebook SDK: required for Facebook Login -->
-        <!-- IMPORTANT: Verify these match your Meta Developer Console settings -->
+        <!-- ══ FACEBOOK SDK ═══════════════════════════════════════ -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -89,14 +112,12 @@
             android:name="com.facebook.sdk.ClientToken"
             android:value="@string/facebook_client_token" />
 
-        <!-- Facebook Login Activity (handles OAuth flow) -->
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:exported="true" />
 
-        <!-- Custom Tab Activity (for modern Facebook login flow) -->
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -107,6 +128,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

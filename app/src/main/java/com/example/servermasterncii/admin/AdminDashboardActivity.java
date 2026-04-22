@@ -44,15 +44,21 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
+        // Manage existing questions
         binding.btnManageQuestions.setOnClickListener(v ->
                 startActivity(new Intent(this, QuestionManagerActivity.class)));
 
+        // Add a new question
         binding.btnAddQuestion.setOnClickListener(v ->
                 startActivity(new Intent(this, AddQuestionActivity.class)));
 
-        // ← Add this
+        // Add a new mission
         binding.btnAddMission.setOnClickListener(v ->
                 startActivity(new Intent(this, AddMissionActivity.class)));
+
+        // ── NEW: Manage (view/delete/publish) missions ──
+        binding.btnManageMissions.setOnClickListener(v ->
+                startActivity(new Intent(this, MissionManagerActivity.class)));
 
         binding.btnSignOut.setOnClickListener(v -> showSignOutDialog());
     }
@@ -92,7 +98,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 .setPositiveButton("CONFIRM", (dialog, which) -> {
                     FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(this, LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 })
                 .setNegativeButton("CANCEL", null)

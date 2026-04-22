@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    avd_robot_mascot.xml — AnimatedVectorDrawable
+    Place in: res/drawable/avd_robot_mascot.xml
+
+    Animations:
+      - Eyes blink every ~3s (scaleY 1→0.05→1)
+      - Antenna light pulses (alpha 1→0→1)
+      - Mouth wiggles (scaleY 1→0.3→1)
+      - Blush fades in/out gently
+-->
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/vd_robot_mascot">
+
+    <!-- ── Eye left blink ── -->
+    <target android:name="eyeLeft">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <!-- wait 2s -->
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="2000"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+                <!-- close -->
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="80"
+                    android:valueFrom="1"
+                    android:valueTo="0.05"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <!-- open -->
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="80"
+                    android:valueFrom="0.05"
+                    android:valueTo="1"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <!-- idle before repeat -->
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="1400"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <!-- ── Eye right blink (slight delay via longer initial wait) ── -->
+    <target android:name="eyeRight">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="2120"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="80"
+                    android:valueFrom="1"
+                    android:valueTo="0.05"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="80"
+                    android:valueFrom="0.05"
+                    android:valueTo="1"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="1280"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <!-- ── Antenna light pulse ── -->
+    <target android:name="antennaLight">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:propertyName="fillAlpha"
+                    android:duration="600"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+                <objectAnimator
+                    android:propertyName="fillAlpha"
+                    android:duration="300"
+                    android:valueFrom="1"
+                    android:valueTo="0.1"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="fillAlpha"
+                    android:duration="300"
+                    android:valueFrom="0.1"
+                    android:valueTo="1"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="fillAlpha"
+                    android:duration="2400"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <!-- ── Mouth wiggle ── -->
+    <target android:name="mouth">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="800"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="200"
+                    android:valueFrom="1"
+                    android:valueTo="0.3"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="200"
+                    android:valueFrom="0.3"
+                    android:valueTo="1"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="150"
+                    android:valueFrom="1"
+                    android:valueTo="0.5"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="150"
+                    android:valueFrom="0.5"
+                    android:valueTo="1"
+                    android:interpolator="@android:interpolator/accelerate_decelerate"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="2060"
+                    android:valueFrom="1"
+                    android:valueTo="1"/>
+            </set>
+        </aapt:attr>
+    </target>
+
+    <!-- ── Chest scan line translate ── -->
+    <target android:name="chestScan">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="translateY"
+                android:duration="1500"
+                android:valueFrom="-28"
+                android:valueTo="28"
+                android:repeatCount="infinite"
+                android:repeatMode="restart"
+                android:interpolator="@android:interpolator/linear"/>
+        </aapt:attr>
+    </target>
+
+</animated-vector>

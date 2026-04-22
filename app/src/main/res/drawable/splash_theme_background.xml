@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/drawable/splash_theme_background.xml
+    Applied as android:windowBackground in Theme.SplashScreen.
+    This is what Android renders BEFORE setContentView() is called,
+    so setting it to the same dark background (#07070F) as the splash
+    layout prevents the white/grey flash on cold app start.
+
+    Also add this style to res/values/themes.xml:
+
+    <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_theme_background</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">#07070F</item>
+        <item name="colorPrimary">#00F5FF</item>
+        <item name="colorAccent">#FFE600</item>
+    </style>
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Solid dark background — matches splash screen background color -->
+    <item>
+        <color android:color="#07070F" />
+    </item>
+
+    <!-- Optional: faint centered glow so even the window background
+         looks intentional rather than just a black void             -->
+    <item
+        android:gravity="center"
+        android:width="300dp"
+        android:height="300dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="50%p"
+                android:startColor="#1400F5FF"
+                android:endColor="#0000F5FF" />
+        </shape>
+    </item>
+
+</layer-list>
