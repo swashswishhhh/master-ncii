@@ -44,6 +44,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
+
+        // ← Add this
+        binding.btnAnalytics.setOnClickListener(v ->
+                startActivity(new Intent(this, com.example.servermasterncii.admin.AnalyticsActivity.class)));
         // Manage existing questions
         binding.btnManageQuestions.setOnClickListener(v ->
                 startActivity(new Intent(this, QuestionManagerActivity.class)));

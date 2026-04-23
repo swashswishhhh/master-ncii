@@ -56,17 +56,7 @@
             android:shadowDy="0"
             android:shadowRadius="20"/>
 
-        <!-- Subtitle -->
-        <TextView
-            android:id="@+id/tvSubtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="CSS NC II TRAINING SYSTEM"
-            android:textColor="#00F5FF"
-            android:textSize="10sp"
-            android:fontFamily="monospace"
-            android:letterSpacing="0.22"/>
+
 
         <!-- Loader section -->
         <LinearLayout

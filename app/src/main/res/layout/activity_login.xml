@@ -53,15 +53,18 @@
             android:textStyle="bold" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
             android:fontFamily="monospace"
             android:letterSpacing="0.15"
-            android:text="NC II TRAINING SYSTEM"
+            android:text="AN INTERACTIVE MOBILE ASSESSMENT APPLICATION FOR COMPUTER TECHNOLOGY STUDENTS OF CNSC-COTT"
             android:textColor="#FF39FF7F"
-            android:textSize="12sp" />
-
+            android:textSize="12sp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:lineSpacingExtra="4dp" />
         <View
             android:layout_width="80dp"
             android:layout_height="1dp"
@@ -270,16 +273,6 @@
         </LinearLayout>
     </FrameLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:fontFamily="monospace"
-        android:text="CSS NC II v1.0 // TESDA COMPLIANT"
-        android:textColor="#FF2A3A2A"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

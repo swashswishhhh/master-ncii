@@ -201,6 +201,19 @@
                 android:fontFamily="monospace"
                 android:layout_marginBottom="8dp"/>
 
+            <!-- Analytics Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAnalytics"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:text="📊  PLAYER ANALYTICS"
+                android:fontFamily="monospace"
+                android:textColor="#0A0A0F"
+                android:textSize="13sp"
+                app:backgroundTint="#FFE600"
+                app:cornerRadius="4dp"/>
+
             <!-- Manage Questions -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnManageQuestions"

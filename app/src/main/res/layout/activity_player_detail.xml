@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A0A0F">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0F0F1A"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#0F0F1A"
+            app:title="⬡ AGENT REPORT"
+            app:titleTextColor="#00F5FF"
+            app:navigationIcon="@drawable/ic_arrow_back"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="16dp"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ── Agent Identity ─────────────────────────────── -->
+            <TextView
+                android:id="@+id/tvPlayerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AGENT NAME"
+                android:textColor="#E8E8FF"
+                android:textSize="20sp"
+                android:fontFamily="monospace"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- ── Hall of Fame Card ──────────────────────────── -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#12121F"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Skill Points Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="4dp">
+
+                        <TextView
+                            android:id="@+id/tvSkillPoints"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="#00FF9F"
+                            android:textSize="32sp"
+                            android:fontFamily="monospace"
+                            android:textStyle="bold"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginStart="12dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="SKILL POINTS"
+                                android:textColor="#6B6B99"
+                                android:textSize="11sp"
+                                android:fontFamily="monospace"/>
+
+                            <TextView
+                                android:id="@+id/tvMissionsComplete"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0 of 21 missions complete"
+                                android:textColor="#6B6B99"
+                                android:textSize="11sp"
+                                android:fontFamily="monospace"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Mastery Progress Bar -->
+                    <ProgressBar
+                        android:id="@+id/progressMastery"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:max="100"
+                        android:progress="0"
+                        android:progressTint="#00FF9F"
+                        android:progressBackgroundTint="#1E1E3A"/>
+
+                    <!-- Mastery Percent Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvMasteryPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0%"
+                            android:textColor="#00FF9F"
+                            android:textSize="11sp"
+                            android:fontFamily="monospace"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OVERALL MASTERY"
+                            android:textColor="#6B6B99"
+                            android:textSize="11sp"
+                            android:fontFamily="monospace"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- ── Chapter Selection ──────────────────────────── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="// SELECT CHAPTER"
+                android:textColor="#6B6B99"
+                android:textSize="11sp"
+                android:fontFamily="monospace"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Chapter 1 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardChapter1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#12121F"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Chapter 1 — User Access"
+                        android:textColor="#E8E8FF"
+                        android:textSize="14sp"
+                        android:fontFamily="monospace"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="→"
+                        android:textColor="#00F5FF"
+                        android:textSize="16sp"
+                        android:fontFamily="monospace"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Chapter 2 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardChapter2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#12121F"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Chapter 2 — Server Setup"
+                        android:textColor="#E8E8FF"
+                        android:textSize="14sp"
+                        android:fontFamily="monospace"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="→"
+                        android:textColor="#FF2D78"
+                        android:textSize="16sp"
+                        android:fontFamily="monospace"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Chapter 3 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardChapter3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="#12121F"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Chapter 3 — Maintenance"
+                        android:textColor="#E8E8FF"
+                        android:textSize="14sp"
+                        android:fontFamily="monospace"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="→"
+                        android:textColor="#FFE600"
+                        android:textSize="16sp"
+                        android:fontFamily="monospace"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

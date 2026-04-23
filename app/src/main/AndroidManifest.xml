@@ -70,6 +70,8 @@
             android:name=".DecisionTreeActivity"
             android:exported="false" />
 
+
+
         <!-- ══ PROFILE / SETTINGS ════════════════════════════════ -->
         <activity
             android:name=".ProfileActivity"
@@ -104,6 +106,16 @@
             android:label="Add Question"
             android:theme="@style/Theme.ServerMasterNCII" />
 
+        <activity
+            android:name=".admin.AnalyticsActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".admin.PlayerDetailActivity"
+            android:exported="false"/>
+
+
+
         <!-- ══ FACEBOOK SDK ═══════════════════════════════════════ -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -128,6 +140,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".admin.ChapterMissionsActivity"
+            android:exported="false"/>
 
     </application>
 

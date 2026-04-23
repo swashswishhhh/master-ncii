@@ -19,6 +19,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.servermasterncii.ProgressTracker;
+
 import com.example.servermasterncii.databinding.ActivityQuizBinding;
 import com.example.servermasterncii.db.AppDatabase;
 import com.example.servermasterncii.model.Question;
@@ -381,6 +383,20 @@ public class QuizActivity extends AppCompatActivity {
      * QuizActivity so the back stack is clean.
      */
     private void launchResultActivity(int finalScore, int finalTotal) {
+
+        // Convert learningOutcome to missionId + chapterId format
+        String missionId = learningOutcome.startsWith("mission_")
+                ? learningOutcome
+                : "mission_" + learningOutcome.replace(".", "_");
+
+        String chapterNum = missionId.replace("mission_", "").split("_")[0];
+        String chapterId  = "chapter_" + chapterNum;
+
+        // Sync to Firestore — fires and forgets, doesn't block UI
+        ProgressTracker.syncMissionResult(missionId, chapterId,
+                finalScore, finalTotal);
+
+        // Build missed questions arrays
         int[] missedIdsArray   = new int[missedQuestionIds.size()];
         int[] userAnswersArray = new int[missedUserAnswers.size()];
 
@@ -390,7 +406,7 @@ public class QuizActivity extends AppCompatActivity {
         ArrayList<String>  missedOptB             = new ArrayList<>();
         ArrayList<String>  missedOptC             = new ArrayList<>();
         ArrayList<String>  missedOptD             = new ArrayList<>();
-        ArrayList<Integer> missedCorrect           = new ArrayList<>();
+        ArrayList<Integer> missedCorrect          = new ArrayList<>();
         ArrayList<Integer> missedUserAnswerOptions = new ArrayList<>();
 
         for (int i = 0; i < missedQuestionIds.size(); i++) {
@@ -398,7 +414,6 @@ public class QuizActivity extends AppCompatActivity {
             missedIdsArray[i]   = qId;
             userAnswersArray[i] = missedUserAnswers.get(i);
 
-            // Find the full Question object by id
             if (questionList != null) {
                 for (Question q : questionList) {
                     if (q.getId() == qId) {

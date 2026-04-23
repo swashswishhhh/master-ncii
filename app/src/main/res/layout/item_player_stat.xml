@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="#12121F"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Top row: Rank + Name + Points -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/tvRank"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="#1"
+                android:textColor="#FFE600"
+                android:textSize="18sp"
+                android:fontFamily="monospace"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:id="@+id/tvPlayerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PLAYER NAME"
+                    android:textColor="#E8E8FF"
+                    android:textSize="13sp"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvPlayerEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="email@gmail.com"
+                    android:textColor="#6B6B99"
+                    android:textSize="10sp"
+                    android:fontFamily="monospace"/>
+
+            </LinearLayout>
+
+            <!-- Skill Points -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tvAvgScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 pts"
+                    android:textColor="#00FF9F"
+                    android:textSize="16sp"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SKILL PTS"
+                    android:textColor="#6B6B99"
+                    android:textSize="8sp"
+                    android:fontFamily="monospace"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Missions complete row -->
+        <TextView
+            android:id="@+id/tvMissionsCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 of 21 missions complete"
+            android:textColor="#6B6B99"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:layout_marginStart="48dp"
+            android:layout_marginBottom="6dp"/>
+
+        <!-- Overall Mastery progress bar -->
+        <ProgressBar
+            android:id="@+id/progressPlayer"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginBottom="4dp"
+            android:max="100"
+            android:progress="0"
+            android:progressTint="#00FF9F"
+            android:progressBackgroundTint="#1E1E3A"/>
+
+        <!-- Mastery percent row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="48dp">
+
+            <TextView
+                android:id="@+id/tvMasteryPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0%"
+                android:textColor="#00FF9F"
+                android:textSize="10sp"
+                android:fontFamily="monospace"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OVERALL MASTERY"
+                android:textColor="#6B6B99"
+                android:textSize="10sp"
+                android:fontFamily="monospace"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

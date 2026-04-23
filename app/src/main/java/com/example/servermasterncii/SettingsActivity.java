@@ -172,11 +172,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showAboutDialog() {
         new MaterialAlertDialogBuilder(this)
-                .setTitle("About Server Master NC II")
+                .setTitle("About BrainTap")
                 .setMessage("Version 1.0\n\n" +
-                        "A cyberpunk-themed learning app for CSS NC II certification.\n\n" +
-                        "Complete missions, earn ranks, and master server administration skills.\n\n" +
-                        "© 2026 Server Master NC II")
+                        "A cyberpunk-themed learning assessment app for Computer Technology Student CNSC-COTT\n\n" +
+                        "© 2026 BrainTap")
                 .setPositiveButton("OK", null)
                 .show();
     }

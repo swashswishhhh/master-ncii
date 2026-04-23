@@ -101,6 +101,8 @@ public class ResultActivity extends AppCompatActivity {
 
     private void saveProgress() {
         if (learningOutcome.isEmpty() || total == 0) return;
+
+        // ── 1. Local SharedPreferences + users/{uid}/progress/ (existing) ──
         ProgressManager.saveProgress(
                 prefs,
                 learningOutcome,
@@ -109,6 +111,19 @@ public class ResultActivity extends AppCompatActivity {
                 true,
                 getNextLevelId(learningOutcome)
         );
+
+        // ── 2. Firestore progress/{uid} — what AnalyticsActivity reads ──
+        // Convert learningOutcome to missionId format for ProgressTracker
+        // "1.1" → "mission_1_1", "mission_1_6" stays as-is
+        String missionId = learningOutcome.startsWith("mission_")
+                ? learningOutcome
+                : "mission_" + learningOutcome.replace(".", "_");
+
+        // chapterId derived from missionId: "mission_1_1" → "chapter_1"
+        String chapterNum = missionId.replace("mission_", "").split("_")[0];
+        String chapterId  = "chapter_" + chapterNum;
+
+        ProgressTracker.syncMissionResult(missionId, chapterId, score, total);
     }
 
     private String getNextLevelId(String id) {

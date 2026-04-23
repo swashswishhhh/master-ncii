@@ -74,10 +74,6 @@ public class SplashActivity extends AppCompatActivity {
 
         binding.tvTitle.setAlpha(0f);
         binding.tvTitle.setTranslationY(30f);
-
-        binding.tvSubtitle.setAlpha(0f);
-        binding.tvSubtitle.setTranslationY(20f);
-
         binding.loaderWrap.setAlpha(0f);
         binding.progressLoader.setProgress(0);
 
@@ -120,15 +116,6 @@ public class SplashActivity extends AppCompatActivity {
                     .start();
         }, 800);
 
-        // ── 4. Subtitle fades in ─────────────────────────────────
-        handler.postDelayed(() -> {
-            binding.tvSubtitle.animate()
-                    .alpha(1f)
-                    .translationY(0f)
-                    .setDuration(400)
-                    .setInterpolator(new DecelerateInterpolator())
-                    .start();
-        }, 1100);
 
         // ── 5. Loader appears + fills ────────────────────────────
         handler.postDelayed(() -> {
