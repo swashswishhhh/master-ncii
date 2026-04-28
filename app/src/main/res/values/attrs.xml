@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Background levels -->
+    <attr name="bgDeepest"   format="color"/>
+    <attr name="bgPrimary"   format="color"/>
+    <attr name="bgSurface"   format="color"/>
+    <attr name="bgCard"      format="color"/>
+
+    <!-- Text -->
+    <attr name="textPrimary"   format="color"/>
+    <attr name="textSecondary" format="color"/>
+    <attr name="textMuted"     format="color"/>
+
+    <!-- Accent / brand -->
+    <attr name="accentColor"    format="color"/>
+    <attr name="accentColorDim" format="color"/>
+
+    <!-- Stroke / divider -->
+    <attr name="strokeLocked" format="color"/>
+    <attr name="dividerColor" format="color"/>
+</resources>

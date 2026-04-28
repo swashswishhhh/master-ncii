@@ -1,5 +1,6 @@
 package com.example.servermasterncii;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -14,20 +15,8 @@ import com.example.servermasterncii.model.Level;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * RecyclerView adapter for the Saga Map level grid.
- * <p>
- * Uses {@link ItemLevelCardBinding} (ViewBinding) and displays each level card
- * in one of three visual states:
- * <ul>
- *     <li><b>Locked</b>   — dimmed, gray stroke, no interaction</li>
- *     <li><b>Unlocked</b> — full brightness, neon green (#39FF14) glow border</li>
- *     <li><b>Completed</b> — full brightness, cyan (#00CCFF) glow border</li>
- * </ul>
- */
 public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHolder> {
 
-    /** Callback for handling level clicks. */
     public interface OnLevelClickListener {
         void onLevelClick(Level level);
     }
@@ -36,7 +25,7 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
     private final OnLevelClickListener listener;
 
     public LevelAdapter(List<Level> levels, OnLevelClickListener listener) {
-        this.levels = levels;
+        this.levels   = levels;
         this.listener = listener;
     }
 
@@ -52,199 +41,148 @@ public class LevelAdapter extends RecyclerView.Adapter<LevelAdapter.LevelViewHol
     public void onBindViewHolder(@NonNull LevelViewHolder holder, int position) {
         Level level = levels.get(position);
         ItemLevelCardBinding b = holder.binding;
+        Context ctx = holder.itemView.getContext();
 
-        // --- Text fields ---
         b.tvLevelNumber.setText(formatMissionLabel(level.getLevelId()));
         b.tvLevelTitle.setText(level.getTitle());
         b.tvLevelSubtitle.setText(level.getSubtitle());
+        b.tvLevelType.setText(formatLevelType(level.getLevelType()));
 
-        // --- Level Type tag ---
-        String typeLabel = formatLevelType(level.getLevelType());
-        b.tvLevelType.setText(typeLabel);
-
-        // --- Lottie animation ---
         b.lottieIcon.setAnimation(level.getLottieAsset());
         b.lottieIcon.playAnimation();
 
-        // --- Apply visual state ---
         if (!level.isUnlocked()) {
-            // ══════ LOCKED STATE ══════
-            applyLockedState(holder);
+            applyLockedState(holder, ctx);
         } else if (level.isCompleted()) {
-            // ══════ COMPLETED STATE (≥ 70%) ══════
-            applyCompletedState(holder, level);
+            applyCompletedState(holder, level, ctx);
         } else {
-            // ══════ UNLOCKED STATE ══════
-            applyUnlockedState(holder, level);
+            applyUnlockedState(holder, level, ctx);
         }
 
-        // --- Click handling ---
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onLevelClick(level);
-            }
+            if (listener != null) listener.onLevelClick(level);
         });
-    }
-    /**
-     * Formats the mission label for the card badge.
-     * "1.1"         → "MISSION 1.1"
-     * "mission_1_6" → "MISSION 1.6"
-     * "mission_2_3" → "MISSION 2.3"
-     */
-    private String formatMissionLabel(String levelId) {
-        if (levelId == null) return "MISSION";
-
-        if (levelId.startsWith("mission_")) {
-            // "mission_1_6" → strip prefix → "1_6" → replace _ with . → "1.6"
-            String stripped = levelId.substring(8); // removes "mission_"
-            String formatted = stripped.replace("_", ".");
-            return "MISSION " + formatted;
-        }
-
-        return "MISSION " + levelId;
     }
 
     @Override
-    public int getItemCount() {
-        return levels.size();
-    }
+    public int getItemCount() { return levels.size(); }
 
-    // ─────────────────────────────────────────────────────────────
-    // Visual state helpers
-    // ─────────────────────────────────────────────────────────────
+    // ── Visual states ─────────────────────────────────────────────
 
-    /**
-     * LOCKED: dimmed out, dark stroke, lock icon, no progress.
-     */
-    private void applyLockedState(@NonNull LevelViewHolder holder) {
+    private void applyLockedState(@NonNull LevelViewHolder holder, Context ctx) {
         ItemLevelCardBinding b = holder.binding;
-        int ctx = holder.itemView.getContext().hashCode(); // unused
 
-        // Card stroke → dark gray
-        b.cardRoot.setStrokeColor(ContextCompat.getColor(
-                holder.itemView.getContext(), R.color.cyber_stroke_locked));
+        b.cardRoot.setStrokeColor(ThemeColors.strokeLocked(ctx));
         b.cardRoot.setStrokeWidth(dpToPx(holder, 1));
         b.cardRoot.setCardElevation(2f);
+        b.cardRoot.setCardBackgroundColor(ThemeColors.bgCard(ctx));
 
-        // Lock icon
         b.ivLockIcon.setImageResource(R.drawable.ic_lock);
+        b.ivLockIcon.setImageTintList(
+                ColorStateList.valueOf(ThemeColors.textMuted(ctx)));
 
-        // Dim all content
-        b.lottieIcon.setAlpha(0.2f);
+        // Dim lottie container + text
+        b.lottieBg.setAlpha(0.25f);
         b.tvLevelTitle.setAlpha(0.4f);
         b.tvLevelSubtitle.setAlpha(0.3f);
         b.tvLevelNumber.setAlpha(0.4f);
         b.tvLevelType.setAlpha(0.3f);
 
-        // Progress hidden
         b.progressLevel.setProgress(0);
         b.tvProgressPercent.setText("🔒");
-        b.tvProgressPercent.setTextColor(ContextCompat.getColor(
-                holder.itemView.getContext(), R.color.cyber_text_muted));
+        b.tvProgressPercent.setTextColor(ThemeColors.textMuted(ctx));
     }
 
-    /**
-     * UNLOCKED: neon green glow border, full opacity, green progress bar.
-     */
-    private void applyUnlockedState(@NonNull LevelViewHolder holder, Level level) {
+    private void applyUnlockedState(@NonNull LevelViewHolder holder,
+                                    Level level, Context ctx) {
         ItemLevelCardBinding b = holder.binding;
 
-        // Card stroke → neon green glow
-        b.cardRoot.setStrokeColor(ContextCompat.getColor(
-                holder.itemView.getContext(), R.color.cyber_neon_green_bright));
+        b.cardRoot.setStrokeColor(ThemeColors.accent(ctx));
         b.cardRoot.setStrokeWidth(dpToPx(holder, 1.5f));
         b.cardRoot.setCardElevation(8f);
+        b.cardRoot.setCardBackgroundColor(ThemeColors.bgCard(ctx));
 
-        // Unlock icon
         b.ivLockIcon.setImageResource(R.drawable.ic_unlock);
+        b.ivLockIcon.setImageTintList(
+                ColorStateList.valueOf(ThemeColors.accent(ctx)));
 
-        // Full opacity
-        b.lottieIcon.setAlpha(1.0f);
+        b.lottieBg.setAlpha(1.0f);
         b.tvLevelTitle.setAlpha(1.0f);
         b.tvLevelSubtitle.setAlpha(1.0f);
         b.tvLevelNumber.setAlpha(1.0f);
         b.tvLevelType.setAlpha(1.0f);
 
-        // Green progress
-        b.progressLevel.setProgressDrawable(ContextCompat.getDrawable(
-                holder.itemView.getContext(), R.drawable.progress_bar_neon));
+        b.tvLevelTitle.setTextColor(ThemeColors.textPrimary(ctx));
+        b.tvLevelSubtitle.setTextColor(ThemeColors.textSecondary(ctx));
+        b.tvLevelNumber.setTextColor(ThemeColors.accent(ctx));
+
+        b.progressLevel.setProgressDrawable(
+                ContextCompat.getDrawable(ctx, R.drawable.progress_bar_neon));
         b.progressLevel.setProgress(level.getProgressPercent());
         b.tvProgressPercent.setText(
                 String.format(Locale.getDefault(), "%d%%", level.getProgressPercent()));
-        b.tvProgressPercent.setTextColor(ContextCompat.getColor(
-                holder.itemView.getContext(), R.color.cyber_neon_green_bright));
+        b.tvProgressPercent.setTextColor(ThemeColors.accent(ctx));
     }
 
-    /**
-     * COMPLETED: cyan glow border, full opacity, cyan progress bar.
-     */
-    private void applyCompletedState(@NonNull LevelViewHolder holder, Level level) {
+    private void applyCompletedState(@NonNull LevelViewHolder holder,
+                                     Level level, Context ctx) {
         ItemLevelCardBinding b = holder.binding;
 
-        // Card stroke → cyan glow
-        b.cardRoot.setStrokeColor(ContextCompat.getColor(
-                holder.itemView.getContext(), R.color.cyber_blue));
+        int cyan = ContextCompat.getColor(ctx, R.color.cyber_blue);
+
+        b.cardRoot.setStrokeColor(cyan);
         b.cardRoot.setStrokeWidth(dpToPx(holder, 1.5f));
         b.cardRoot.setCardElevation(8f);
+        b.cardRoot.setCardBackgroundColor(ThemeColors.bgCard(ctx));
 
-        // Unlock icon (tinted cyan would be nice but we keep it simple)
         b.ivLockIcon.setImageResource(R.drawable.ic_unlock);
-        b.ivLockIcon.setImageTintList(ColorStateList.valueOf(
-                ContextCompat.getColor(holder.itemView.getContext(), R.color.cyber_blue)));
+        b.ivLockIcon.setImageTintList(ColorStateList.valueOf(cyan));
 
-        // Full opacity
-        b.lottieIcon.setAlpha(1.0f);
+        b.lottieBg.setAlpha(1.0f);
         b.tvLevelTitle.setAlpha(1.0f);
         b.tvLevelSubtitle.setAlpha(1.0f);
         b.tvLevelNumber.setAlpha(1.0f);
         b.tvLevelType.setAlpha(1.0f);
 
-        // Level number badge → cyan accent
-        b.tvLevelNumber.setTextColor(ContextCompat.getColor(
-                holder.itemView.getContext(), R.color.cyber_blue));
+        b.tvLevelTitle.setTextColor(ThemeColors.textPrimary(ctx));
+        b.tvLevelSubtitle.setTextColor(ThemeColors.textSecondary(ctx));
+        b.tvLevelNumber.setTextColor(cyan);
 
-        // Cyan progress
-        b.progressLevel.setProgressDrawable(ContextCompat.getDrawable(
-                holder.itemView.getContext(), R.drawable.progress_bar_cyan));
+        b.progressLevel.setProgressDrawable(
+                ContextCompat.getDrawable(ctx, R.drawable.progress_bar_cyan));
         b.progressLevel.setProgress(level.getProgressPercent());
         b.tvProgressPercent.setText(
                 String.format(Locale.getDefault(), "%d%%", level.getProgressPercent()));
-        b.tvProgressPercent.setTextColor(ContextCompat.getColor(
-                holder.itemView.getContext(), R.color.cyber_blue));
+        b.tvProgressPercent.setTextColor(cyan);
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // Utility
-    // ─────────────────────────────────────────────────────────────
+    // ── Utilities ─────────────────────────────────────────────────
 
-    /**
-     * Converts a human-readable level type code to a short UI label.
-     */
+    private String formatMissionLabel(String levelId) {
+        if (levelId == null) return "MISSION";
+        if (levelId.startsWith("mission_")) {
+            return "MISSION " + levelId.substring(8).replace("_", ".");
+        }
+        return "MISSION " + levelId;
+    }
+
     private String formatLevelType(String levelType) {
-        if (levelType == null) return "QUIZ";
+        if (levelType == null) return "📝 QUIZ";
         switch (levelType) {
-            case "Interactive_CMD":  return "⌨ CMD";
-            case "Interactive_UI":   return "🖥 SIM";
-            case "Standard_Quiz":    return "📝 QUIZ";
-            default:                 return "📝 QUIZ";
+            case "Interactive_CMD": return "⌨ CMD";
+            case "Interactive_UI":  return "🖥 SIM";
+            default:                return "📝 QUIZ";
         }
     }
 
-    /**
-     * Simple dp → px conversion for setting stroke width.
-     */
     private int dpToPx(@NonNull LevelViewHolder holder, float dp) {
-        float density = holder.itemView.getContext().getResources().getDisplayMetrics().density;
+        float density = holder.itemView.getContext()
+                .getResources().getDisplayMetrics().density;
         return Math.round(dp * density);
     }
 
-    // ─────────────────────────────────────────────────────────────
-    // ViewHolder
-    // ─────────────────────────────────────────────────────────────
-
     static class LevelViewHolder extends RecyclerView.ViewHolder {
         final ItemLevelCardBinding binding;
-
         LevelViewHolder(@NonNull ItemLevelCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

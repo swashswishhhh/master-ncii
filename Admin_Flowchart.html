@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServerMasterNCII — Admin Side Flowchart</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#0d1117; color:#c9d1d9; line-height:1.7; padding:40px 20px; }
+  .container { max-width:960px; margin:0 auto; }
+  h1 { font-size:28px; color:#00ff9f; margin-bottom:8px; }
+  h2 { font-size:22px; color:#00f5ff; margin:40px 0 16px; border-bottom:2px solid #1a2332; padding-bottom:8px; }
+  h3 { font-size:17px; color:#ffe600; margin:28px 0 10px; }
+  h4 { font-size:15px; color:#ff6b9d; margin:20px 0 8px; }
+  p, li { font-size:14px; }
+  .subtitle { color:#8b949e; font-size:14px; margin-bottom:30px; }
+  .mermaid { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:20px; margin:16px 0; overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; margin:12px 0 20px; font-size:13px; }
+  th { background:#1a2332; color:#00f5ff; padding:10px 12px; text-align:left; border:1px solid #30363d; }
+  td { padding:8px 12px; border:1px solid #30363d; background:#0d1117; }
+  tr:nth-child(even) td { background:#161b22; }
+  code { font-family:'JetBrains Mono',monospace; background:#1a2332; color:#ff6b9d; padding:2px 6px; border-radius:4px; font-size:12px; }
+  .alert { border-left:4px solid #ffe600; background:#1a1d00; padding:12px 16px; border-radius:4px; margin:12px 0; font-size:13px; }
+  .alert strong { color:#ffe600; }
+  ul { margin:8px 0 8px 24px; }
+  .print-note { text-align:center; color:#8b949e; font-size:12px; margin-top:40px; border-top:1px solid #30363d; padding-top:16px; }
+  @media print {
+    body { background:#fff; color:#000; padding:20px; }
+    h1 { color:#006644; } h2 { color:#005577; border-color:#ccc; } h3 { color:#886600; } h4 { color:#aa3355; }
+    th { background:#eee; color:#005577; } td { background:#fff; border-color:#ccc; }
+    .mermaid { border-color:#ccc; background:#fafafa; }
+    code { background:#f0f0f0; color:#c00; }
+    .alert { background:#fffff0; border-color:#cc0; }
+    .print-note { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🛡️ ServerMasterNCII — Admin Side Flowchart</h1>
+<p class="subtitle">Complete navigation map, button reference, and data model for the admin panel.</p>
+
+<!-- ============================================================ -->
+<h2>1. Login → Admin Routing</h2>
+<p>After authentication, the app checks <code>users/{uid}.role</code> in Firestore to decide where to navigate.</p>
+<div class="mermaid">
+flowchart TD
+    A["LoginActivity"] -->|"Google / Facebook / Guest"| B{"Check Firestore users doc role"}
+    B -->|"role == admin"| C["AdminDashboardActivity"]
+    B -->|"role == student or null"| D["MainActivity — Student Side"]
+    B -->|"Guest user"| D
+    B -->|"No user doc"| E["Create doc role=student"] --> D
+</div>
+<div class="alert"><strong>⚠ Important:</strong> Admin access requires manually setting <code>role: "admin"</code> in Firestore Console under <code>users/{uid}</code>.</div>
+
+<!-- ============================================================ -->
+<h2>2. Admin Dashboard — Master Navigation</h2>
+<div class="mermaid">
+flowchart TD
+    DASH["AdminDashboardActivity"]
+    DASH -->|"btnAnalytics"| ANA["AnalyticsActivity"]
+    DASH -->|"btnManageQuestions"| QM["QuestionManagerActivity"]
+    DASH -->|"btnAddQuestion"| AQ["AddQuestionActivity — Create"]
+    DASH -->|"btnAddMission"| AM["AddMissionActivity — 3-Step Wizard"]
+    DASH -->|"btnManageMissions"| MM["MissionManagerActivity"]
+    DASH -->|"btnSignOut"| SO{"Confirm: TERMINATE SESSION"}
+    SO -->|"CONFIRM"| LO["signOut → LoginActivity"]
+    SO -->|"CANCEL"| DASH
+    ANA -->|"Tap player"| PD["PlayerDetailActivity"]
+    PD -->|"Tap chapter"| CM["ChapterMissionsActivity"]
+    QM -->|"FAB +"| AQ
+    QM -->|"Edit btn"| AQ2["AddQuestionActivity — Edit"]
+    QM -->|"Delete btn"| QDEL["Confirm → Firestore delete"]
+    MM -->|"Delete btn"| MDEL["Confirm → Delete questions + mission"]
+    MM -->|"Toggle btn"| MTOG["Toggle published field"]
+</div>
+
+<!-- ============================================================ -->
+<h2>3. Dashboard Buttons — Reference Table</h2>
+<table>
+  <tr><th>#</th><th>Button ID</th><th>Label</th><th>Destination</th><th>What It Does</th></tr>
+  <tr><td>1</td><td><code>btnAnalytics</code></td><td>Analytics</td><td>AnalyticsActivity</td><td>View student stats, leaderboard, hardest mission</td></tr>
+  <tr><td>2</td><td><code>btnManageQuestions</code></td><td>Manage Questions</td><td>QuestionManagerActivity</td><td>View / Edit / Delete all Firestore questions</td></tr>
+  <tr><td>3</td><td><code>btnAddQuestion</code></td><td>Add Question</td><td>AddQuestionActivity</td><td>Create a single new question for any mission</td></tr>
+  <tr><td>4</td><td><code>btnAddMission</code></td><td>Add Mission</td><td>AddMissionActivity</td><td>3-step wizard: create mission + batch add questions</td></tr>
+  <tr><td>5</td><td><code>btnManageMissions</code></td><td>Manage Missions</td><td>MissionManagerActivity</td><td>View / Delete / Publish / Unpublish missions</td></tr>
+  <tr><td>6</td><td><code>btnSignOut</code></td><td>Sign Out</td><td>LoginActivity</td><td>Firebase sign out + clear task stack</td></tr>
+</table>
+<p><strong>Dashboard also shows:</strong> Admin name (<code>tvAdminName</code>), total questions (<code>tvTotalQuestions</code>), total users (<code>tvTotalUsers</code>)</p>
+
+<!-- ============================================================ -->
+<h2>4. Screen-by-Screen Breakdown</h2>
+
+<h3>📊 AnalyticsActivity</h3>
+<p>Overview of all student performance + leaderboard.</p>
+<table>
+  <tr><th>Element</th><th>Source</th><th>Description</th></tr>
+  <tr><td><code>tvTotalPlayers</code></td><td>progress collection size</td><td>Total registered players</td></tr>
+  <tr><td><code>tvTotalCompleted</code></td><td>Sum of totalMissionsCompleted</td><td>All missions completed across users</td></tr>
+  <tr><td><code>tvHardestMission</code></td><td>Mission with most fails</td><td>Most failed mission name</td></tr>
+  <tr><td><code>recyclerPlayers</code></td><td>progress collection</td><td>Leaderboard sorted by skillPoints</td></tr>
+</table>
+<p><strong>Tap a player row →</strong> Opens <code>PlayerDetailActivity</code></p>
+
+<h3>👤 PlayerDetailActivity</h3>
+<p>Deep-dive into a single student's progress.</p>
+<ul>
+  <li><code>tvSkillPoints</code> — Total skill points</li>
+  <li><code>tvMissionsComplete</code> — "X of 21 missions complete"</li>
+  <li><code>progressMastery</code> — Mastery percentage bar</li>
+</ul>
+<table>
+  <tr><th>Card</th><th>Click Action</th><th>Data Passed</th></tr>
+  <tr><td>Chapter 1 — User Access</td><td>→ ChapterMissionsActivity</td><td>uid, chapter_1</td></tr>
+  <tr><td>Chapter 2 — Server Setup</td><td>→ ChapterMissionsActivity</td><td>uid, chapter_2</td></tr>
+  <tr><td>Chapter 3 — Maintenance</td><td>→ ChapterMissionsActivity</td><td>uid, chapter_3</td></tr>
+</table>
+
+<h3>📋 ChapterMissionsActivity</h3>
+<p>Shows all mission results for a specific student in a chapter. Each row shows: Mission ID, Score, Total, Percentage, Completed status.</p>
+
+<h3>📝 QuestionManagerActivity</h3>
+<p>CRUD interface for all Firestore questions.</p>
+<table>
+  <tr><th>Button</th><th>Action</th><th>Details</th></tr>
+  <tr><td>✏️ Edit</td><td>Edit Question</td><td>Opens AddQuestionActivity in edit mode with fields pre-filled</td></tr>
+  <tr><td>🗑️ Delete</td><td>Delete Question</td><td>Confirmation dialog → Firestore delete → refresh list</td></tr>
+  <tr><td>➕ FAB</td><td>Add Question</td><td>Opens AddQuestionActivity in create mode</td></tr>
+</table>
+
+<h3>➕ AddQuestionActivity</h3>
+<p>Create or edit a single question. Two modes: <strong>Create</strong> (empty form) and <strong>Edit</strong> (pre-filled).</p>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+  <tr><td><code>spinnerChapter</code></td><td>Dropdown</td><td>Chapter selection (loaded from Firestore chapters collection)</td></tr>
+  <tr><td><code>spinnerMission</code></td><td>Dropdown</td><td>Cascading — updates when chapter changes</td></tr>
+  <tr><td><code>etQuestionText</code></td><td>TextInput</td><td>The question text</td></tr>
+  <tr><td><code>etChoiceA</code> – <code>etChoiceD</code></td><td>TextInputs</td><td>4 answer choices</td></tr>
+  <tr><td><code>spinnerCorrectAnswer</code></td><td>Dropdown</td><td>Auto-populated from choices</td></tr>
+  <tr><td><code>spinnerDifficulty</code></td><td>Dropdown</td><td>easy / medium / hard</td></tr>
+  <tr><td><code>etExplanation</code></td><td>TextInput</td><td>Optional explanation</td></tr>
+</table>
+<table>
+  <tr><th>Button</th><th>Action</th><th>published field</th></tr>
+  <tr><td><code>btnPublish</code></td><td>Save + visible to students</td><td>true</td></tr>
+  <tr><td><code>btnSaveDraft</code></td><td>Save but hidden</td><td>false</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2>5. AddMissionActivity — 3-Step Wizard</h2>
+<div class="mermaid">
+flowchart LR
+    S1["STEP 1: Mission Info"] -->|"btnNext"| S2["STEP 2: Add Questions"]
+    S2 -->|"btnDoneQuestions"| S3["STEP 3: Review"]
+    S3 -->|"btnPublishMission"| PUB["Firestore — published: true"]
+    S3 -->|"btnSaveDraft"| DRF["Firestore — published: false"]
+</div>
+
+<h4>Step 1 — Mission Info</h4>
+<table>
+  <tr><th>Field</th><th>Description</th></tr>
+  <tr><td><code>spinnerChapter</code></td><td>Chapter 1 / 2 / 3</td></tr>
+  <tr><td><code>etMissionId</code></td><td>Auto-filled next available ID (e.g. "MISSION 1.6")</td></tr>
+  <tr><td><code>etMissionTitle</code></td><td>Display title</td></tr>
+  <tr><td><code>spinnerDifficulty</code></td><td>beginner / intermediate / advanced</td></tr>
+  <tr><td><code>etDescription</code></td><td>Optional description</td></tr>
+</table>
+
+<h4>Step 2 — Add Questions</h4>
+<table>
+  <tr><th>Button</th><th>Action</th></tr>
+  <tr><td><code>btnAddQuestion</code></td><td>Validates form → adds to batch → shows chip (Q1, Q2…)</td></tr>
+  <tr><td>Chip ✕</td><td>Removes question from batch</td></tr>
+  <tr><td>Chip long-press</td><td>Shows question text in Toast</td></tr>
+  <tr><td><code>btnDoneQuestions</code></td><td>Requires ≥1 question → advances to Step 3</td></tr>
+</table>
+
+<h4>Step 3 — Review &amp; Publish</h4>
+<p>Displays summary: Chapter, Title, Mission ID, Difficulty, Question count.</p>
+<p><strong>Firestore write order:</strong> Mission doc → Chapter subcollection entry → Batch-write all questions.</p>
+
+<!-- ============================================================ -->
+<h2>6. MissionManagerActivity</h2>
+<p>View, publish/unpublish, and delete admin-created missions.</p>
+<table>
+  <tr><th>Button</th><th>Action</th><th>Details</th></tr>
+  <tr><td><code>btnDeleteMission</code> 🗑️</td><td>Delete Mission</td><td>Confirm → batch-delete all questions → delete mission doc → remove card</td></tr>
+  <tr><td><code>btnTogglePublish</code></td><td>Publish / Unpublish</td><td>Toggles <code>published</code> field. LIVE (green) ↔ DRAFT (yellow)</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2>7. Firestore Data Model</h2>
+<div class="mermaid">
+erDiagram
+    users {
+        string uid PK
+        string email
+        string displayName
+        string role
+        timestamp createdAt
+    }
+    missions {
+        string docId PK
+        string missionId
+        string title
+        string chapterId FK
+        string difficulty
+        boolean published
+        string createdBy
+    }
+    questions {
+        string docId PK
+        string questionText
+        list choices
+        string correctAnswer
+        string missionId FK
+        string chapterId FK
+        string difficulty
+        boolean published
+    }
+    progress {
+        string uid PK
+        int totalSkillPoints
+        int totalMissionsPlayed
+        int totalMissionsCompleted
+    }
+    progress_missions {
+        string missionId
+        string chapterId
+        int score
+        int percentage
+        boolean completed
+    }
+    missions ||--|{ questions : "has"
+    progress ||--|{ progress_missions : "records"
+</div>
+
+<!-- ============================================================ -->
+<h2>8. AdminViewModel — Shared Operations</h2>
+<table>
+  <tr><th>Method</th><th>Used By</th><th>What It Does</th></tr>
+  <tr><td><code>loadStats()</code></td><td>Dashboard</td><td>Counts total questions + total users</td></tr>
+  <tr><td><code>loadQuestions()</code></td><td>QuestionManager</td><td>Fetches all questions ordered by chapterId</td></tr>
+  <tr><td><code>publishQuestion(q)</code></td><td>AddQuestion</td><td>Creates new question doc in Firestore</td></tr>
+  <tr><td><code>updateQuestion(q)</code></td><td>AddQuestion (edit)</td><td>Updates existing question doc</td></tr>
+  <tr><td><code>deleteQuestion(id)</code></td><td>QuestionManager</td><td>Deletes question → refreshes list</td></tr>
+  <tr><td><code>togglePublish(id, bool)</code></td><td>QuestionManager</td><td>Flips published field on a question</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2>9. Complete Admin Flow</h2>
+<div class="mermaid">
+flowchart TD
+    LOGIN["Login — Google/Facebook"] --> ROLE{"Firestore role check"}
+    ROLE -->|admin| DASH["Admin Dashboard"]
+    DASH --> A1["Analytics"]
+    DASH --> A2["Manage Questions"]
+    DASH --> A3["Add Question"]
+    DASH --> A4["Add Mission Wizard"]
+    DASH --> A5["Manage Missions"]
+    DASH --> A6["Sign Out"]
+    A1 --> B1["Player Detail"]
+    B1 --> C1["Chapter Missions"]
+    A2 --> D1["Edit → AddQuestion"]
+    A2 --> D2["Delete Question"]
+    A2 --> D3["FAB → AddQuestion"]
+    A4 --> G1["Step 1: Info"]
+    G1 --> G2["Step 2: Questions"]
+    G2 --> G3["Step 3: Review"]
+    G3 --> F["Save to Firestore"]
+    A5 --> H1["Delete Mission + Questions"]
+    A5 --> H2["Publish / Unpublish"]
+    A6 --> LOGIN
+</div>
+
+<p class="print-note">💡 To save as PDF: Press <strong>Ctrl+P</strong> → choose "Save as PDF" as the printer.<br>To view in Docs: Upload this HTML file to Google Drive → Open with Google Docs.</p>
+
+</div>
+<script>mermaid.initialize({theme:'dark',startOnLoad:true});</script>
+</body>
+</html>

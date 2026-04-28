@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.util.TypedValue;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -28,6 +29,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -221,19 +223,33 @@ public class QuizActivity extends AppCompatActivity {
             Question mapped = new Question();
             mapped.setId(idCounter++);
             mapped.setQuestionText(q.questionText);
-            mapped.setType(Question.TYPE_STATIC);
+            // Detect true/false: use explicit type from JSON, fallback to choice count
+            boolean isTF = "true_false".equals(q.type) || q.choices.size() == 2;
+            mapped.setType(isTF ? Question.TYPE_TRUE_FALSE : (q.type != null ? q.type : Question.TYPE_STATIC));
             mapped.setLearningOutcome(learningOutcome);
             mapped.setExplanation(q.explanation);
 
-            mapped.setOptionA(q.choices.size() > 0 ? q.choices.get(0) : "");
-            mapped.setOptionB(q.choices.size() > 1 ? q.choices.get(1) : "");
-            mapped.setOptionC(q.choices.size() > 2 ? q.choices.get(2) : "");
-            mapped.setOptionD(q.choices.size() > 3 ? q.choices.get(3) : "");
+            // ── Shuffle answer choices ──────────────────────────────────
+            // Create a mutable copy and shuffle so A/B/C/D positions are
+            // randomized every attempt — students cannot memorize "Q3 = B".
+            List<String> shuffled = new ArrayList<>(q.choices);
 
-            // Match correctAnswer string → correctOption (1-based)
+            // For True/False questions, keep only the first 2 choices
+            if (isTF && shuffled.size() > 2) {
+                shuffled = shuffled.subList(0, 2);
+            }
+
+            Collections.shuffle(shuffled);
+
+            mapped.setOptionA(shuffled.size() > 0 ? shuffled.get(0) : "");
+            mapped.setOptionB(shuffled.size() > 1 ? shuffled.get(1) : "");
+            mapped.setOptionC(isTF ? "" : (shuffled.size() > 2 ? shuffled.get(2) : ""));
+            mapped.setOptionD(isTF ? "" : (shuffled.size() > 3 ? shuffled.get(3) : ""));
+
+            // Find which shuffled position now holds the correct answer
             int correctOption = 1;
-            for (int i = 0; i < q.choices.size(); i++) {
-                if (q.choices.get(i).equals(q.correctAnswer)) {
+            for (int i = 0; i < shuffled.size(); i++) {
+                if (shuffled.get(i).equals(q.correctAnswer)) {
                     correctOption = i + 1;
                     break;
                 }
@@ -493,17 +509,64 @@ public class QuizActivity extends AppCompatActivity {
             resetButtonStyle(btn);
         }
 
+// Enable auto-size text so long choices shrink to fit
+        for (MaterialButton btn : optionButtons) {
+            androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                    btn, 8, 13, 1, TypedValue.COMPLEX_UNIT_SP);
+        }
+
         binding.btnOptionA.setText(String.format("A.  %s", q.getOptionA()));
         binding.btnOptionB.setText(String.format("B.  %s", q.getOptionB()));
 
         if (isTrueFalse) {
+            // Hide C and D
             binding.btnOptionC.setVisibility(View.GONE);
             binding.btnOptionD.setVisibility(View.GONE);
+
+            // Restore grid height to match_constraint
+            binding.gridChoices.getLayoutParams().height = 0;
+            binding.gridChoices.requestLayout();
+
+            // A and B fill full height — bottom anchors to PARENT instead of guideH
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams paramsA =
+                    (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)
+                            binding.btnOptionA.getLayoutParams();
+            paramsA.bottomToBottom = androidx.constraintlayout.widget.ConstraintSet.PARENT_ID;
+            paramsA.bottomToTop    = androidx.constraintlayout.widget.ConstraintSet.UNSET;
+            binding.btnOptionA.setLayoutParams(paramsA);
+
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams paramsB =
+                    (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)
+                            binding.btnOptionB.getLayoutParams();
+            paramsB.bottomToBottom = androidx.constraintlayout.widget.ConstraintSet.PARENT_ID;
+            paramsB.bottomToTop    = androidx.constraintlayout.widget.ConstraintSet.UNSET;
+            binding.btnOptionB.setLayoutParams(paramsB);
+
         } else {
+            // Show all 4
             binding.btnOptionC.setVisibility(View.VISIBLE);
             binding.btnOptionD.setVisibility(View.VISIBLE);
             binding.btnOptionC.setText(String.format("C.  %s", q.getOptionC()));
             binding.btnOptionD.setText(String.format("D.  %s", q.getOptionD()));
+
+            // Restore grid height
+            binding.gridChoices.getLayoutParams().height = 0;
+            binding.gridChoices.requestLayout();
+
+            // Restore A and B to top half — bottom anchors back to guideH
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams paramsA =
+                    (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)
+                            binding.btnOptionA.getLayoutParams();
+            paramsA.bottomToBottom = androidx.constraintlayout.widget.ConstraintSet.UNSET;
+            paramsA.bottomToTop    = binding.guideH.getId();
+            binding.btnOptionA.setLayoutParams(paramsA);
+
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams paramsB =
+                    (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams)
+                            binding.btnOptionB.getLayoutParams();
+            paramsB.bottomToBottom = androidx.constraintlayout.widget.ConstraintSet.UNSET;
+            paramsB.bottomToTop    = binding.guideH.getId();
+            binding.btnOptionB.setLayoutParams(paramsB);
         }
 
         binding.gridChoices.setVisibility(View.VISIBLE);

@@ -7,11 +7,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    app:cardBackgroundColor="@color/cyber_card_surface"
+    app:cardBackgroundColor="?attr/bgCard"
     app:cardCornerRadius="16dp"
     app:cardElevation="6dp"
     app:strokeWidth="1.5dp"
-    app:strokeColor="@color/cyber_stroke_locked"
+    app:strokeColor="?attr/strokeLocked"
     android:foreground="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:padding="14dp">
 
-        <!-- Level Badge ("MISSION 1.3") -->
+        <!-- Level Badge -->
         <TextView
             android:id="@+id/tvLevelNumber"
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:background="@drawable/bg_level_badge"
             android:fontFamily="monospace"
             android:textSize="9sp"
-            android:textColor="@color/cyber_neon_green_bright"
+            android:textColor="?attr/accentColor"
             android:textStyle="bold"
             android:letterSpacing="0.1"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
-        <!-- Level Type Tag ("Interactive_CMD") -->
+        <!-- Level Type Tag -->
         <TextView
             android:id="@+id/tvLevelType"
             android:layout_width="wrap_content"
@@ -56,32 +56,40 @@
             android:background="@drawable/bg_level_badge"
             android:fontFamily="monospace"
             android:textSize="7sp"
-            android:textColor="@color/cyber_blue"
+            android:textColor="?attr/colorPrimary"
             android:letterSpacing="0.05"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivLockIcon"
-            tools:text="INTERACTIVE" />
+            tools:text="QUIZ" />
 
-        <!-- Lottie Animation Icon (centered) -->
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottieIcon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+        <!-- Lottie wrapped in tinted circle bg so it shows on light theme -->
+        <FrameLayout
+            android:id="@+id/lottieBg"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
+            android:background="@drawable/lottie_icon_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLevelNumber"
-            tools:background="#1A39FF14" />
+            app:layout_constraintTop_toBottomOf="@id/tvLevelNumber">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieIcon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"/>
+
+        </FrameLayout>
 
         <!-- Level Title -->
         <TextView
             android:id="@+id/tvLevelTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/cyber_text_primary"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -89,7 +97,7 @@
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lottieIcon"
+            app:layout_constraintTop_toBottomOf="@id/lottieBg"
             tools:text="Firewalls" />
 
         <!-- Level Subtitle -->
@@ -97,7 +105,7 @@
             android:id="@+id/tvLevelSubtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/cyber_text_secondary"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="10sp"
             android:gravity="center"
             android:maxLines="1"
@@ -129,7 +137,7 @@
             android:id="@+id/tvProgressPercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/cyber_neon_green_bright"
+            android:textColor="?attr/accentColor"
             android:textSize="11sp"
             android:textStyle="bold"
             android:fontFamily="monospace"

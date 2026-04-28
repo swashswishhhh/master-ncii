@@ -273,6 +273,9 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
                             if (chapterNum == 2) lottie = "anim_server_roles.json";
                             else if (chapterNum == 3) lottie = "anim_terminal.json";
 
+                            // ── Use isLevelUnlocked() — respects prerequisite ──
+                            boolean unlocked = isLevelUnlocked(missionId);
+
                             Level firestoreLevel = new Level(
                                     allLevels.size() + 1,
                                     title,
@@ -282,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
                                     chapterNum,
                                     "Firestore_Quiz",
                                     getProgressForLevel(missionId),
-                                    true
+                                    unlocked         // ← was hardcoded true
                             );
                             allLevels.add(firestoreLevel);
                             newMissionsAdded = true;
@@ -326,7 +329,21 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
 
     private boolean isLevelUnlocked(String levelId) {
         if ("1.1".equals(levelId)) return true;
-        if (levelId.startsWith("mission_")) return true;
+
+        // Firestore missions — check prerequisite, don't auto-unlock
+        if (levelId.startsWith("mission_")) {
+            if (prefs.getBoolean(KEY_UNLOCKED + levelId, false)) return true;
+            String prereq = getFirestoreMissionPrerequisite(levelId);
+            if (prereq == null) return false;
+            int prevScore = prefs.getInt(KEY_SCORE + prereq, 0);
+            int prevTotal = prefs.getInt(KEY_TOTAL + prereq, 0);
+            if (prevTotal > 0 && (prevScore / (double) prevTotal) >= UNLOCK_THRESHOLD) {
+                prefs.edit().putBoolean(KEY_UNLOCKED + levelId, true).apply();
+                return true;
+            }
+            return false;
+        }
+
         if (prefs.getBoolean(KEY_UNLOCKED + levelId, false)) return true;
 
         String previousLevelId = getPreviousLevelId(levelId);
@@ -339,6 +356,45 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
             }
         }
         return false;
+    }
+
+    /**
+     * Returns the prerequisite level ID for a Firestore mission.
+     *
+     * Rules:
+     *   mission_1_1 → "1.5"  (first admin mission in ch1 unlocks after last built-in)
+     *   mission_1_2 → "mission_1_1"
+     *   mission_1_6 → "mission_1_5"
+     *   mission_2_1 → "2.12"
+     *   mission_3_1 → "3.4"
+     */
+    private String getFirestoreMissionPrerequisite(String missionId) {
+        // Parse "mission_1_6" → chapterNum=1, subNum=6
+        try {
+            String stripped = missionId.substring(8); // remove "mission_"
+            String[] parts  = stripped.split("_");
+            if (parts.length != 2) return null;
+
+            int chapterNum = Integer.parseInt(parts[0]);
+            int subNum     = Integer.parseInt(parts[1]);
+
+            if (subNum == 1) {
+                // First Firestore mission in chapter → prerequisite is last built-in level
+                switch (chapterNum) {
+                    case 1: return "1.5";
+                    case 2: return "2.12";
+                    case 3: return "3.4";
+                    default: return null;
+                }
+            } else {
+                // Subsequent Firestore missions → prerequisite is previous one
+                return "mission_" + chapterNum + "_" + (subNum - 1);
+            }
+        } catch (NumberFormatException e) {
+            android.util.Log.w("MainActivity",
+                    "Could not parse Firestore mission prereq: " + missionId);
+            return null;
+        }
     }
 
     private String getPreviousLevelId(String levelId) {
@@ -411,11 +467,8 @@ public class MainActivity extends AppCompatActivity implements LevelAdapter.OnLe
         if (allLevels == null) return;
         for (Level level : allLevels) {
             level.setProgressPercent(getProgressForLevel(level.getLevelId()));
-            if (level.getLevelId().startsWith("mission_")) {
-                level.setUnlocked(true);
-            } else {
-                level.setUnlocked(isLevelUnlocked(level.getLevelId()));
-            }
+            // Both built-in and Firestore missions now go through isLevelUnlocked()
+            level.setUnlocked(isLevelUnlocked(level.getLevelId()));
         }
         displayedLevels.clear();
         displayedLevels.addAll(filterByChapter(currentChapter));

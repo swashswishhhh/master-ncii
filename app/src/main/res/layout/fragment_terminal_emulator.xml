@@ -1,163 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#1B1B1B"
     tools:context=".TerminalEmulatorFragment">
 
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- MAIN TERMINAL CONTENT                                     -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+
     <LinearLayout
-        android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="#0C0C0C"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="10dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⬛"
-            android:textSize="12sp" />
+        <LinearLayout
+            android:id="@+id/titleBar"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="#0C0C0C"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Command Prompt"
-            android:textColor="#CCCCCC"
-            android:textSize="12sp"
-            android:fontFamily="sans-serif" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⬛"
+                android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/btnWinMinimize"
-            android:layout_width="32dp"
-            android:layout_height="28dp"
-            android:gravity="center"
-            android:text="—"
-            android:textColor="#999999"
-            android:textSize="11sp"
-            android:background="?attr/selectableItemBackground" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Command Prompt"
+                android:textColor="#CCCCCC"
+                android:textSize="12sp"
+                android:fontFamily="sans-serif" />
 
-        <TextView
-            android:id="@+id/btnWinMaximize"
-            android:layout_width="32dp"
-            android:layout_height="28dp"
-            android:gravity="center"
-            android:text="□"
-            android:textColor="#999999"
-            android:textSize="11sp"
-            android:background="?attr/selectableItemBackground" />
+            <TextView
+                android:id="@+id/btnWinMinimize"
+                android:layout_width="32dp"
+                android:layout_height="28dp"
+                android:gravity="center"
+                android:text="—"
+                android:textColor="#999999"
+                android:textSize="11sp"
+                android:background="?attr/selectableItemBackground" />
 
-        <TextView
-            android:id="@+id/btnWinClose"
-            android:layout_width="32dp"
-            android:layout_height="28dp"
-            android:gravity="center"
-            android:text="✕"
-            android:textColor="#FFFFFF"
-            android:textSize="11sp"
-            android:background="@color/win_close_btn" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/btnWinMaximize"
+                android:layout_width="32dp"
+                android:layout_height="28dp"
+                android:gravity="center"
+                android:text="□"
+                android:textColor="#999999"
+                android:textSize="11sp"
+                android:background="?attr/selectableItemBackground" />
 
-    <ScrollView
-        android:id="@+id/scrollOutput"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#0C0C0C"
-        android:paddingHorizontal="8dp"
-        android:paddingTop="8dp"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="true"
-        android:fillViewport="true">
+            <TextView
+                android:id="@+id/btnWinClose"
+                android:layout_width="32dp"
+                android:layout_height="28dp"
+                android:gravity="center"
+                android:text="✕"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:background="@color/win_close_btn" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvOutput"
+        <!-- ──── HINT BANNER (top, immediately visible) ──── -->
+        <LinearLayout
+            android:id="@+id/hintBanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:textColor="#CCCCCC"
-            android:textSize="12sp"
-            android:lineSpacingMultiplier="1.25"
-            android:textIsSelectable="true" />
-    </ScrollView>
+            android:orientation="horizontal"
+            android:background="#1A0078D4"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#0C0C0C"
-        android:gravity="bottom"
-        android:paddingHorizontal="8dp"
-        android:paddingBottom="12dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="💡 Try: ipconfig  •  ping 192.168.1.1  •  help  •  cls"
+                android:textColor="#80BCFF"
+                android:textSize="11sp"
+                android:fontFamily="sans-serif" />
 
-        <TextView
-            android:id="@+id/tvPrompt"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/btnDismissHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✕"
+                android:textColor="#80BCFF"
+                android:textSize="13sp"
+                android:paddingHorizontal="8dp"
+                android:background="?attr/selectableItemBackground" />
+        </LinearLayout>
+
+        <!-- ──── INPUT ROW (below hint, above output) ──── -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="C:\\Users\\Admin>"
-            android:textColor="#CCCCCC"
-            android:textSize="12sp"
-            android:fontFamily="monospace"
-            android:includeFontPadding="false" />
-
-        <EditText
-            android:id="@+id/etInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:textColor="#CCCCCC"
-            android:textColorHint="#666666"
-            android:textSize="12sp"
-            android:fontFamily="monospace"
-            android:hint="type a command..."
-            android:inputType="text"
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textCursorDrawable="@null"
-            android:paddingStart="4dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:includeFontPadding="false"
-            android:minHeight="0dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/hintBanner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#1A0078D4"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="💡 Try: ipconfig  •  ping 192.168.1.1  •  help  •  cls"
-            android:textColor="#80BCFF"
-            android:textSize="11sp"
-            android:fontFamily="sans-serif" />
-
-        <TextView
-            android:id="@+id/btnDismissHint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="✕"
-            android:textColor="#80BCFF"
-            android:textSize="13sp"
+            android:orientation="horizontal"
+            android:background="#0C0C0C"
+            android:gravity="center_vertical"
             android:paddingHorizontal="8dp"
-            android:background="?attr/selectableItemBackground" />
+            android:paddingVertical="8dp">
+
+            <TextView
+                android:id="@+id/tvPrompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="C:\\Users\\Admin>"
+                android:textColor="#CCCCCC"
+                android:textSize="12sp"
+                android:fontFamily="monospace"
+                android:includeFontPadding="false" />
+
+            <EditText
+                android:id="@+id/etInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:textColor="#CCCCCC"
+                android:textColorHint="#666666"
+                android:textSize="12sp"
+                android:fontFamily="monospace"
+                android:hint="type a command..."
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textCursorDrawable="@null"
+                android:paddingStart="4dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:includeFontPadding="false"
+                android:minHeight="0dp" />
+        </LinearLayout>
+
+        <!-- ──── OUTPUT AREA (fills remaining space below input) ──── -->
+        <ScrollView
+            android:id="@+id/scrollOutput"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#0C0C0C"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="8dp"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"
+            android:fillViewport="true">
+
+            <TextView
+                android:id="@+id/tvOutput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textColor="#CCCCCC"
+                android:textSize="12sp"
+                android:lineSpacingMultiplier="1.25"
+                android:textIsSelectable="true" />
+        </ScrollView>
+
     </LinearLayout>
 
-</LinearLayout>
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- CELEBRATION OVERLAY (hidden by default)                   -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+
+    <FrameLayout
+        android:id="@+id/overlayContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottieAnimation"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_fileName="welcome_celebration.json" />
+
+            <TextView
+                android:id="@+id/tvSuccessTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="✅ Task Completed!"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvSuccessMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="You have successfully completed\nthe terminal configuration task"
+                android:textColor="#CCCCCC"
+                android:textSize="15sp"
+                android:lineSpacingMultiplier="1.3"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDismissOverlay"
+                style="@style/Widget.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Continue"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"
+                app:backgroundTint="#00FF9F"
+                android:textColor="#0A0A0F"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

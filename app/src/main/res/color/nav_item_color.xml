@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:color="@color/cyber_neon_green_bright"
-        android:state_checked="true" />
-    <item
-        android:color="#4D39FF7F"
-        android:state_checked="false" />
+    <!-- Selected state — always use colorPrimary (cyan in both themes) -->
+    <item android:state_checked="true"  android:color="?attr/colorPrimary"/>
+    <!-- Unselected state — use colorOnSurfaceVariant (readable in both themes) -->
+    <item android:state_checked="false" android:color="?attr/colorOnSurfaceVariant"/>
 </selector>

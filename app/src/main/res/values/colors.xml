@@ -14,6 +14,9 @@
     <color name="status_nyc_bg">#1AFFC107</color>
     <color name="gold_accent">#FFFFD600</color>
 
+    <!-- Semantic aliases — resolved differently per theme via attrs -->
+    <color name="transparent">#00000000</color>
+
     <!-- Workgroup Config — Windows theme colours -->
     <color name="win_title_bar">#FF0078D4</color>
     <color name="win_close_btn">#FFE81123</color>

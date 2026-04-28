@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- ═══ LIGHT GRID Theme Colors ═══ -->
-    <color name="light_bg_deepest">#FFF5F5F5</color>
-    <color name="light_bg_primary">#FFFFFFFF</color>
-    <color name="light_bg_surface">#FFFAFAFA</color>
-    <color name="light_bg_card">#FFFFFFFF</color>
+    <!-- ═══════════════════════════════════════════════════════════
+         LIGHT GRID Theme — Cyber-tinted light palette
+         Goal: keeps cyberpunk feel but on a light background.
+         Primary accent stays cyan (#00BCD4).
+         Backgrounds are cool blue-grey, not plain white.
+    ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Backgrounds — cool blue-grey tinted, not pure white -->
+    <color name="light_bg_deepest">#FFE8EEF4</color>   <!-- page background -->
+    <color name="light_bg_primary">#FFF0F4F8</color>   <!-- toolbar/nav bg -->
+    <color name="light_bg_surface">#FFDDE8F0</color>   <!-- Hall of Fame card -->
+    <color name="light_bg_card">#FFF5F8FC</color>       <!-- level cards -->
+
+    <!-- Accent — keep the same cyan as dark theme -->
     <color name="light_accent">#FF00BCD4</color>
-    <color name="light_accent_dim">#1A00BCD4</color>
-    <color name="light_text_primary">#FF0A0F2A</color>
-    <color name="light_text_secondary">#FF5A6B8C</color>
-    <color name="light_text_muted">#FF8A9AB0</color>
-    <color name="light_divider">#FFE0E0E0</color>
+    <color name="light_accent_dim">#2600BCD4</color>
+
+    <!-- Text — dark navy for readability on light bg -->
+    <color name="light_text_primary">#FF0A1A2E</color>
+    <color name="light_text_secondary">#FF3A5A7A</color>
+    <color name="light_text_muted">#FF7A98B0</color>
+
+    <!-- Divider / stroke -->
+    <color name="light_divider">#FFB8D0E8</color>
+
+    <!-- Stroke for locked cards — subtle blue-grey -->
+    <color name="light_stroke_locked">#FFCCDAE8</color>
 </resources>

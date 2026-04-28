@@ -1,5 +1,10 @@
 package com.example.servermasterncii;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,8 +16,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,6 +27,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.button.MaterialButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,6 +80,14 @@ public class TerminalEmulatorFragment extends Fragment {
     private ScrollView scrollOutput;
     private LinearLayout hintBanner;
 
+    // Celebration overlay views
+    private FrameLayout overlayContainer;
+    private LottieAnimationView lottieAnimation;
+    private TextView tvSuccessTitle;
+    private TextView tvSuccessMessage;
+    private MaterialButton btnDismissOverlay;
+    private MediaPlayer mediaPlayer;
+
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final SpannableStringBuilder outputBuffer = new SpannableStringBuilder();
     private final Random random = new Random();
@@ -98,12 +116,26 @@ public class TerminalEmulatorFragment extends Fragment {
         scrollOutput = view.findViewById(R.id.scrollOutput);
         hintBanner   = view.findViewById(R.id.hintBanner);
 
+        // Celebration overlay views
+        overlayContainer  = view.findViewById(R.id.overlayContainer);
+        lottieAnimation   = view.findViewById(R.id.lottieAnimation);
+        tvSuccessTitle    = view.findViewById(R.id.tvSuccessTitle);
+        tvSuccessMessage  = view.findViewById(R.id.tvSuccessMessage);
+        btnDismissOverlay = view.findViewById(R.id.btnDismissOverlay);
+
         // Close button (finishes hosting Activity with result)
         view.findViewById(R.id.btnWinClose).setOnClickListener(v -> finishWithResult());
 
         // Dismiss hint banner
         view.findViewById(R.id.btnDismissHint).setOnClickListener(v ->
                 hintBanner.setVisibility(View.GONE));
+
+        // Dismiss celebration overlay → return result
+        btnDismissOverlay.setOnClickListener(v -> {
+            overlayContainer.setVisibility(View.GONE);
+            lottieAnimation.cancelAnimation();
+            finishWithResult();
+        });
 
         // Handle "Enter" / "Done" on soft keyboard
         etInput.setOnEditorActionListener((v, actionId, event) -> {
@@ -124,6 +156,7 @@ public class TerminalEmulatorFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null);
+        releaseMediaPlayer();
     }
 
     // =====================================================================
@@ -180,7 +213,7 @@ public class TerminalEmulatorFragment extends Fragment {
         } else if (cmd.equals("whoami")) {
             executeWhoami();
         } else if (cmd.equals("exit")) {
-            finishWithResult();
+            playCelebration();
         } else if (cmd.equals("ver")) {
             executeVer();
         } else if (cmd.equals("systeminfo")) {
@@ -392,6 +425,101 @@ public class TerminalEmulatorFragment extends Fragment {
             ((TerminalEmulatorActivity) getActivity()).completeAndFinish();
         } else if (getActivity() != null) {
             getActivity().finish();
+        }
+    }
+
+    // =====================================================================
+    // Celebration: Lottie + Sound
+    // =====================================================================
+
+    /**
+     * Shows the dark overlay, plays the Lottie celebration animation,
+     * and triggers a system notification chime as a success sound effect.
+     */
+    private void playCelebration() {
+        // Show the overlay
+        overlayContainer.setVisibility(View.VISIBLE);
+        overlayContainer.setAlpha(0f);
+        overlayContainer.animate()
+                .alpha(1f)
+                .setDuration(400)
+                .start();
+
+        // Reset and play Lottie
+        lottieAnimation.setProgress(0f);
+        lottieAnimation.playAnimation();
+
+        // Play system notification sound as a success chime
+        playSuccessSound();
+
+        // After the animation ends, reveal the success text
+        lottieAnimation.addAnimatorListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                showSuccessText();
+            }
+        });
+
+        // Fallback: show text after 2.5 s even if animation listener doesn't fire
+        handler.postDelayed(this::showSuccessText, 2500);
+    }
+
+    /**
+     * Fades in the "Task Completed!" text and the Continue button
+     * with a pleasant overshoot scale animation.
+     */
+    private void showSuccessText() {
+        if (tvSuccessTitle == null) return;
+
+        // Guard against double-firing (listener + handler)
+        if (tvSuccessTitle.getVisibility() == View.VISIBLE) return;
+
+        tvSuccessTitle.setVisibility(View.VISIBLE);
+        tvSuccessMessage.setVisibility(View.VISIBLE);
+        btnDismissOverlay.setVisibility(View.VISIBLE);
+
+        // Scale-up entrance
+        View[] views = {tvSuccessTitle, tvSuccessMessage, btnDismissOverlay};
+        for (int i = 0; i < views.length; i++) {
+            View view = views[i];
+            view.setAlpha(0f);
+            view.setScaleX(0.6f);
+            view.setScaleY(0.6f);
+            view.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(500)
+                    .setStartDelay(i * 150L)
+                    .setInterpolator(new OvershootInterpolator(1.2f))
+                    .start();
+        }
+    }
+
+    /**
+     * Plays the system default notification sound as a success chime.
+     */
+    private void playSuccessSound() {
+        try {
+            releaseMediaPlayer();
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            mediaPlayer = MediaPlayer.create(requireContext(), notification);
+            if (mediaPlayer != null) {
+                mediaPlayer.setOnCompletionListener(MediaPlayer::release);
+                mediaPlayer.start();
+            }
+        } catch (Exception e) {
+            // Non-critical — the animation alone is fine
+        }
+    }
+
+    private void releaseMediaPlayer() {
+        if (mediaPlayer != null) {
+            try {
+                if (mediaPlayer.isPlaying()) mediaPlayer.stop();
+                mediaPlayer.release();
+            } catch (Exception ignored) { }
+            mediaPlayer = null;
         }
     }
 }

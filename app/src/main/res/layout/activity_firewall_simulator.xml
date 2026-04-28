@@ -181,6 +181,20 @@
                                 android:gravity="center" />
                         </LinearLayout>
 
+                        <!-- ──── TASK GUIDELINES (visible first) ──── -->
+                        <TextView
+                            android:id="@+id/tvHint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:text="💡 Task: Allow 'File and Printer Sharing' through the firewall.\n\nCheck both the Private and Public boxes for that app, then click OK."
+                            android:textColor="@color/win_title_bar"
+                            android:textSize="12sp"
+                            android:lineSpacingMultiplier="1.4"
+                            android:fontFamily="sans-serif"
+                            android:padding="10dp"
+                            android:background="@color/win_hint_bg" />
+
                         <!-- ──── APP LIST ──── -->
 
                         <!-- Row 1: Cast to Device -->
@@ -563,19 +577,7 @@
                                 android:clickable="false" />
                         </LinearLayout>
 
-                        <!-- Hint text -->
-                        <TextView
-                            android:id="@+id/tvHint"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="💡 Task: Allow 'File and Printer Sharing' through the firewall.\n\nCheck both the Private and Public boxes for that app, then click OK."
-                            android:textColor="@color/win_title_bar"
-                            android:textSize="12sp"
-                            android:lineSpacingMultiplier="1.4"
-                            android:fontFamily="sans-serif"
-                            android:padding="10dp"
-                            android:background="@color/win_hint_bg" />
+
 
                     </LinearLayout>
 

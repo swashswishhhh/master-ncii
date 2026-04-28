@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class QuestionLoader {
         public String difficulty;
         public boolean published;
         public String source; // "json" or "firestore"
+        public String type;   // "static", "true_false", "interactive_cmd", etc.
 
         public Question() {
             choices = new ArrayList<>();
@@ -107,27 +109,12 @@ public class QuestionLoader {
     }
 
     private static void sortAndDeliver(List<Question> questions, OnQuestionsLoadedListener listener) {
-        // Sort: Firestore questions first, then JSON (or by difficulty order)
-        questions.sort((a, b) -> {
-            // Firestore questions (admin created) come first
-            if ("firestore".equals(a.source) && !"firestore".equals(b.source)) return -1;
-            if (!"firestore".equals(a.source) && "firestore".equals(b.source)) return 1;
-
-            // Then sort by difficulty: easy, medium, hard
-            String[] difficultyOrder = {"easy", "medium", "hard"};
-            int aDiffIndex = getDifficultyIndex(a.difficulty, difficultyOrder);
-            int bDiffIndex = getDifficultyIndex(b.difficulty, difficultyOrder);
-            return Integer.compare(aDiffIndex, bDiffIndex);
-        });
+        // ── Shuffle questions randomly ──────────────────────────────────
+        // Prevents students from memorizing the fixed question sequence.
+        // Every quiz attempt presents questions in a different order.
+        Collections.shuffle(questions);
 
         listener.onLoaded(questions);
-    }
-
-    private static int getDifficultyIndex(String difficulty, String[] order) {
-        for (int i = 0; i < order.length; i++) {
-            if (order[i].equalsIgnoreCase(difficulty)) return i;
-        }
-        return 1; // default medium
     }
 
     /**
@@ -159,6 +146,7 @@ public class QuestionLoader {
                 Question q = new Question();
                 q.questionText = qJson.getString("question");
                 q.source = "json";
+                q.type = qJson.optString("type", "static");
                 q.chapterId = chapterId;
                 q.missionId = missionId;
                 q.difficulty = qJson.optString("difficulty", "medium");
@@ -209,6 +197,7 @@ public class QuestionLoader {
                         Question q = new Question();
                         q.questionText = doc.getString("questionText");
                         q.source = "firestore";
+                        q.type = doc.getString("type");
 
                         // Get choices list
                         List<String> choicesList = (List<String>) doc.get("choices");
